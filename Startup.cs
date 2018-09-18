@@ -28,25 +28,26 @@ namespace SystemSupportingMSE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {   
-            // var authSettingsSection = Configuration.GetSection("AuthSettings");
-            // services.Configure<AuthSettings>(authSettingsSection);
+            var authSettingsSection = Configuration.GetSection("AuthSettings");
+            services.Configure<AuthSettings>(authSettingsSection);
 
-            // var authSettings = authSettingsSection.Get<AuthSettings>();
-            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            // .AddJwtBearer(options =>
-            // {
-            //     options.TokenValidationParameters = new TokenValidationParameters
-            //     {
-            //         ValidateIssuer = true,
-            //         ValidateAudience = true,
-            //         ValidateLifetime = true,
-            //         ValidateIssuerSigningKey = true,
+            var authSettings = authSettingsSection.Get<AuthSettings>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
         
-            //         ValidIssuer = authSettings.Domain,
-            //         ValidAudience = authSettings.Audience,
-            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret))
-            //     };
-            // });
+                    ValidIssuer = authSettings.Domain,
+                    ValidAudience = authSettings.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret))
+                };
+            });
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -78,7 +79,7 @@ namespace SystemSupportingMSE
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            // app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

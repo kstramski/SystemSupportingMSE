@@ -40,6 +40,20 @@ namespace SystemSupportingMSE.Services
                 .SingleOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<User> AuthenticateUser(string email, string password)
+        {
+            var user = await context.Users.Include(t => t.Team)
+                .SingleOrDefaultAsync(u => u.Email == email);
+            if(user == null)
+                return user; //throw new HttpResponseException("Invalid email."); //change to Invalid email or password
+                
+
+            if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                return user = null; //throw new ArgumentException("Invalid password.");
+
+            return user;
+        }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await context.Users.ToListAsync();
@@ -89,5 +103,7 @@ namespace SystemSupportingMSE.Services
 
             return true;
         }
+
+        
     }
 }

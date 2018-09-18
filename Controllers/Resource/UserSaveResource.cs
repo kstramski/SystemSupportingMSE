@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace SystemSupportingMSE.Controllers.Resource
@@ -22,5 +24,12 @@ namespace SystemSupportingMSE.Controllers.Resource
         public DateTime BirthDate { get; set; }
 
         public string City { get; set; }
+
+        public ICollection<int> Roles { get; set; }
+
+        public UserSaveResource()
+        {
+            Roles = new Collection<int>();
+        }
     }
 }

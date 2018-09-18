@@ -6,8 +6,6 @@ namespace SystemSupportingMSE.Controllers.Resource
 
     public class UserAuthResource
     {
-        public int Id { get; set; }
-
         [Required]
         [StringLength(255)]
         public string Email { get; set; }

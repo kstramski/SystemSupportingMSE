@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SystemSupportingMSE.Controllers.Resource
@@ -21,6 +22,8 @@ namespace SystemSupportingMSE.Controllers.Resource
         public string City { get; set; }
 
         public KeyValuePairResource Team { get; set; }
+
+        public ICollection<KeyValuePairResource> Roles { get; set; }
 
         public DateTime DateOfRegistration { get; set; }
 
