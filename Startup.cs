@@ -1,10 +1,18 @@
+using System.Text;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using SystemSupportingMSE.Core;
+using SystemSupportingMSE.Helpers;
+using SystemSupportingMSE.Services;
 
 namespace SystemSupportingMSE
 {
@@ -19,7 +27,31 @@ namespace SystemSupportingMSE
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {   
+            // var authSettingsSection = Configuration.GetSection("AuthSettings");
+            // services.Configure<AuthSettings>(authSettingsSection);
+
+            // var authSettings = authSettingsSection.Get<AuthSettings>();
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            // .AddJwtBearer(options =>
+            // {
+            //     options.TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         ValidateIssuer = true,
+            //         ValidateAudience = true,
+            //         ValidateLifetime = true,
+            //         ValidateIssuerSigningKey = true,
+        
+            //         ValidIssuer = authSettings.Domain,
+            //         ValidAudience = authSettings.Audience,
+            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret))
+            //     };
+            // });
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddAutoMapper();
+            services.AddDbContext<SportEventsDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
@@ -45,6 +77,8 @@ namespace SystemSupportingMSE
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            // app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
