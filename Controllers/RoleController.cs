@@ -37,7 +37,7 @@ namespace SystemSupportingMSE.Controllers
             if(role == null)
                 return NotFound();
 
-            var result = mapper.Map<Role, KeyValuePairResource>(role);
+            var result = mapper.Map<Role, RoleResource>(role);
 
             return Ok(result);
         }

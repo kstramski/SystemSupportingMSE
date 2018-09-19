@@ -12,6 +12,7 @@ namespace SystemSupportingMSE.Helpers
 
             //Model to Domain
             CreateMap<Role, KeyValuePairResource>();
+            CreateMap<Role, RoleResource>();
             CreateMap<Team, KeyValuePairResource>();
             CreateMap<User, UserProfileResource>()
                 .ForMember(up => up.Roles, opt => opt.MapFrom(u => u.Roles.Select(ur => new Role{ Id = ur.Role.Id, Name = ur.Role.Name })))
