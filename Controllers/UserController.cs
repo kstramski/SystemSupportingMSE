@@ -48,6 +48,11 @@ namespace SystemSupportingMSE.Controllers
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
             var claims = new List<Claim>();
+
+            claims.Add(new Claim(ClaimTypes.Name, user.Email));
+            foreach (var role in user.Roles)
+                claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+            
             var tokeOptions = new JwtSecurityToken(
                 issuer: authSettings.Domain,
                 audience: authSettings.Audience,
@@ -62,9 +67,8 @@ namespace SystemSupportingMSE.Controllers
 
         }
 
-
         [HttpGet]
-        //[Authorize]
+        //[Authorize(Roles="User")]
         public async Task<IEnumerable<UserProfileResource>> GetUsers()
         {
             var users = await userRepository.GetUsers();
@@ -74,6 +78,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet("{id}")]
+        //[Authorize(Roles="Moderator")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await userRepository.GetUser(id);
@@ -93,7 +98,7 @@ namespace SystemSupportingMSE.Controllers
 
             var user = mapper.Map<UserSaveResource, User>(userSaveResource);
             user.DateOfRegistration = DateTime.Now;
-            //user.Roles = new Role<int>(){ 1};
+            user.Roles.Add(new UserRole{RoleId = 3});
 
             userRepository.Add(user, userSaveResource.Password);
             await unitOfWork.Complete();

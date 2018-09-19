@@ -14,6 +14,9 @@ namespace SystemSupportingMSE.Core.Models
         [StringLength(50)]
         public string Name { get; set; }
 
+        [StringLength(255)]
+        public string Description { get; set; }
+
         public ICollection<UserRole> Users { get; set; }
 
         public Role()

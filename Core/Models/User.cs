@@ -34,9 +34,7 @@ namespace SystemSupportingMSE.Core.Models
         [StringLength(50)]
         public string City { get; set; }
 
-        public int? TeamId { get; set; }
-        
-        public Team Team { get; set; }
+        public ICollection<UserTeam> Teams { get; set; }
 
         public DateTime DateOfRegistration { get; set; }
 
@@ -47,6 +45,7 @@ namespace SystemSupportingMSE.Core.Models
         public User()
         {
             this.Roles = new Collection<UserRole>();
+            this.Teams = new Collection<UserTeam>();
         }
     }
 }

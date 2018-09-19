@@ -15,6 +15,6 @@ namespace SystemSupportingMSE.Core.Models
 
         public int Captain { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserTeam> Users { get; set; }
     }
 }

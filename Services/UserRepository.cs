@@ -20,29 +20,29 @@ namespace SystemSupportingMSE.Services
             this.context = context;
         }
 
-        public void Add(User user, string password)
+        public async Task<IEnumerable<User>> GetUsers()
         {
-            byte[] passwordHash, passwordSalt;
-            CreatePaswordHash(password, out passwordHash, out passwordSalt);
-
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-
-            context.Users.Add(user);
+            return await context.Users
+                .Include(r => r.Roles)
+                    .ThenInclude(ur => ur.Role)
+                .ToListAsync();
         }
-
-
 
         public async Task<User> GetUser(int id)
         {
             return await context.Users
-                .Include(t => t.Team)
+                .Include(t => t.Teams)
+                    .ThenInclude(ut => ut.Team)
+                .Include(r => r.Roles)
+                    .ThenInclude(ur => ur.Role)
                 .SingleOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User> AuthenticateUser(string email, string password)
         {
-            var user = await context.Users.Include(t => t.Team)
+            var user = await context.Users
+                .Include(r => r.Roles)
+                    .ThenInclude(ur => ur.Role)
                 .SingleOrDefaultAsync(u => u.Email == email);
             if(user == null)
                 return user; //throw new HttpResponseException("Invalid email."); //change to Invalid email or password
@@ -54,9 +54,15 @@ namespace SystemSupportingMSE.Services
             return user;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public void Add(User user, string password)
         {
-            return await context.Users.ToListAsync();
+            byte[] passwordHash, passwordSalt;
+            CreatePaswordHash(password, out passwordHash, out passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            context.Users.Add(user);
         }
 
         public void Remove(User user)

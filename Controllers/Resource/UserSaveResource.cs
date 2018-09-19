@@ -25,11 +25,5 @@ namespace SystemSupportingMSE.Controllers.Resource
 
         public string City { get; set; }
 
-        public ICollection<int> Roles { get; set; }
-
-        public UserSaveResource()
-        {
-            Roles = new Collection<int>();
-        }
     }
 }

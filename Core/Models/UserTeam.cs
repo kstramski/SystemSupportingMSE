@@ -1,15 +1,14 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SystemSupportingMSE.Core.Models
 {
-    [Table("UserRoles")]
-    public class UserRole
+    [Table("UserTeams")]
+    public class UserTeam
     {
         public int UserId { get; set; }
-        public int RoleId { get; set; }
+        public int TeamId { get; set; }
 
         public User User { get; set; }
-        public Role Role { get; set; }
+        public Team Team { get; set; }
     }
 }

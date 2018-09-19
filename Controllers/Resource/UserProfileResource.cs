@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using SystemSupportingMSE.Core.Models;
 
 namespace SystemSupportingMSE.Controllers.Resource
 {
@@ -21,13 +23,19 @@ namespace SystemSupportingMSE.Controllers.Resource
         [StringLength(50)]
         public string City { get; set; }
 
-        public KeyValuePairResource Team { get; set; }
+        public ICollection<KeyValuePairResource> Teams { get; set; }
 
         public ICollection<KeyValuePairResource> Roles { get; set; }
 
         public DateTime DateOfRegistration { get; set; }
 
         public DateTime LastLogin { get; set; }
+
+        public UserProfileResource()
+        {
+            Roles = new Collection<KeyValuePairResource>();
+            Teams = new Collection<KeyValuePairResource>();
+        }
 
     }
 }
