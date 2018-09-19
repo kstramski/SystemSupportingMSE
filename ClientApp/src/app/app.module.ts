@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { UserViewComponent } from './user-view/user-view.component';
+import { UsersListComponent } from './users-list/users-list.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { UserViewComponent } from './user-view/user-view.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    UserViewComponent
+    UserViewComponent,
+    UsersListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,7 +34,7 @@ import { UserViewComponent } from './user-view/user-view.component';
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
-      { path: 'users', component: CounterComponent },
+      { path: 'users', component: UsersListComponent },
       { path: 'users/:id', component: UserViewComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       
