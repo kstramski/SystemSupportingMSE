@@ -48,6 +48,14 @@ namespace SystemSupportingMSE
                 };
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
+                });
+            });
+
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -82,6 +90,7 @@ namespace SystemSupportingMSE
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
+            app.UseCors("EnableCORS");
 
             app.UseMvc(routes =>
             {

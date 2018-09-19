@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SystemSupportingMSE.Controllers.Resource
 {
-    public class UserSaveResource
+    public class UserRegisterResource
     {
         public int Id { get; set; }
 

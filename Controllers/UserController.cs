@@ -49,7 +49,7 @@ namespace SystemSupportingMSE.Controllers
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
             var claims = new List<Claim>();
 
-            claims.Add(new Claim(ClaimTypes.Name, user.Email));
+            claims.Add(new Claim(ClaimTypes.Name, user.Id.ToString()));
             foreach (var role in user.Roles)
                 claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
             
@@ -68,7 +68,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles="User")]
+        [Authorize(Roles="User")]
         public async Task<IEnumerable<UserProfileResource>> GetUsers()
         {
             var users = await userRepository.GetUsers();
@@ -91,16 +91,16 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser([FromBody] UserSaveResource userSaveResource)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegisterResource userRegisterResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = mapper.Map<UserSaveResource, User>(userSaveResource);
+            var user = mapper.Map<UserRegisterResource, User>(userRegisterResource);
             user.DateOfRegistration = DateTime.Now;
             user.Roles.Add(new UserRole{RoleId = 3});
 
-            userRepository.Add(user, userSaveResource.Password);
+            userRepository.Add(user, userRegisterResource.Password);
             await unitOfWork.Complete();
 
             user = await userRepository.GetUser(user.Id);

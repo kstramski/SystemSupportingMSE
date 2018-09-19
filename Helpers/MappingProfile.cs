@@ -25,7 +25,7 @@ namespace SystemSupportingMSE.Helpers
                 .ForMember(r => r.Name, opt => opt.Ignore());
             CreateMap<UserAuthResource, User>();
             CreateMap<UserProfileResource, User>();
-            CreateMap<UserSaveResource, User>();
+            CreateMap<UserRegisterResource, User>();
             CreateMap<UserSaveProfileResource, User>()
                 .ForMember(u => u.Id, opt => opt.Ignore());
         }

@@ -21,7 +21,7 @@ export class UserViewComponent implements OnInit {
     this.route.paramMap.subscribe(p => {
       this.userId = +p.get("id");
       if(isNaN(this.userId) || this.userId <= 0) {
-        this.router.navigate(['/users/1']);
+        this.router.navigate(['/users']);
         return;
       }
     });
@@ -34,7 +34,7 @@ export class UserViewComponent implements OnInit {
     }, err => {
       if(err.status == 404){
         this.toastr.error("User does not exist.", "Error", { timeOut: 5000 });
-        this.router.navigate(['/users/1']);
+        this.router.navigate(['/users']);
       }
     }); 
   }
@@ -44,7 +44,7 @@ export class UserViewComponent implements OnInit {
       this.userService.delete(this.userId)
       .subscribe(u => {
         this.toastr.success("User was succesfully deleted.", "Success", { timeOut: 5000 });
-        this.router.navigate(['users/1']);
+        this.router.navigate(['users']);
       });
   }
 

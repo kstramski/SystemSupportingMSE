@@ -18,18 +18,16 @@
                     </a>
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
-                    <a [routerLink]='["/counter"]' (click)='collapse()'>
-                        <span class='glyphicon glyphicon-education'></span> Counter
-                    </a>
-                </li>
-                <li [routerLinkActive]='["link-active"]'>
-                    <a [routerLink]='["/fetch-data"]' (click)='collapse()'>
-                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
-                    </a>
-                </li>
-                <li [routerLinkActive]='["link-active"]'>
                     <a [routerLink]='["/users"]' (click)='collapse()'>
                         <span class='glyphicon glyphicon-th-list'></span> Users
+                    </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]'>
+                    <a [routerLink]='["/login"]' (click)='collapse()' *ngIf="!auth.isLoggedIn()">
+                        <span class='glyphicon glyphicon-th-user'></span> Login
+                    </a>
+                    <a (click)='auth.logout()' *ngIf="auth.isLoggedIn()">
+                        <span class='glyphicon glyphicon-th-user'></span> Logout
                     </a>
                 </li>
             </ul>

@@ -1,0 +1,30 @@
+<h2>Edit User</h2>
+<hr>
+<p>
+    {{ user | json }}
+  </p>
+<form #f="ngForm" (ngSubmit)=submit() *ngIf="user">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" class="form-control" [(ngModel)]="user.name" required #name="ngModel">
+    <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please enter your name.</div>
+  </div>
+  <div class="form-group">
+    <label for="surname">Surname</label>
+    <input type="text" id="surname" name="surname" class="form-control" [(ngModel)]="user.surname" required #surname="ngModel">
+    <div class="alert alert-danger" *ngIf="surname.touched && !surname.valid">Please enter your surname</div>
+  </div>
+  <div class="form-group">
+    <label for="birthDate">Birth Date</label>
+    <input type="text" id="birthDate" name="birthDate" class="form-control" [(ngModel)]="user.birthDate" required #birthDate="ngModel">
+    <div class="alert alert-danger" *ngIf="birthDate.touched && !birthDate.valid">Please enter your birth date</div>
+  </div>
+  <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" id="city" name="city" class="form-control" [(ngModel)]="user.city">
+  </div>
+  <hr>
+  
+  <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
+  <a class="btn btn-default" [routerLink]="['/users/', user.id]" >Cancel</a>
+</form>
