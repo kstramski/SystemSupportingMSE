@@ -9,6 +9,9 @@ import { NgModule } from '@angular/core';
 //Custom Modules
 import { AppRoutingModule } from './app-routing.module';
 
+//Charts
+import { ChartsModule } from 'ng2-charts';
+
 //JWT
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -60,6 +63,7 @@ export function tokenGetter() {
 
     AppRoutingModule,
 
+    ChartsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

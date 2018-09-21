@@ -1,3 +1,36 @@
-<p>
-  dashboard works!
-</p>
+<div class="container-fluid">
+  <h2>Users and Accounts Information Charts</h2>
+  <hr>
+  <div class="row">
+    <div class="chart col-md-4 col-sm-12">
+      <div class="legend">Users Gender</div>
+      <canvas baseChart [data]="genderData" [labels]="genderLabels" [chartType]="circleChart" [colors]="circleColors"
+        [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div class="chart col-md-4 col-sm-12">
+      <div class="legend">zzz</div>
+      <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="circleChart" [legend]="legendDisplay"
+        [colors]="circleColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div class="chart col-md-4 col-sm-12">
+      <div class="legend">Emails Confirmed</div>
+      <canvas baseChart [data]="emailData" [labels]="emailLabels" [chartType]="circleChart" [colors]="circleColors"
+        [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="chart col-md-6 col-sm-12">
+      <div class="legend">Users Age</div>
+      <canvas baseChart [data]="ageData" [labels]="ageLabels" [chartType]="rectangleChart" [options]="rectangleOptions"
+        [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </div>
+    <div class="chart col-md-6 col-sm-12">
+      <div class="legend">Accounts Registred per Day</div>
+      <canvas baseChart [data]="registerData" [labels]="registerLabels" [chartType]="lineChart"
+         [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+  <hr>
+</div>
