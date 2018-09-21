@@ -61,10 +61,11 @@ namespace SystemSupportingMSE.Controllers
                 signingCredentials: signinCredentials
             );
 
+            user.LastLogin = DateTime.Now;
+            await unitOfWork.Complete();
+
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
             return Ok(new { Token = tokenString });
-
-
         }
 
         [HttpGet]

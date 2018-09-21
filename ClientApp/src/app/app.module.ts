@@ -1,25 +1,40 @@
+//Angular
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { JwtModule } from '@auth0/angular-jwt';
-import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+
+//Custom Modules
+import { AppRoutingModule } from './app-routing.module';
+
+//JWT
+import { JwtModule } from '@auth0/angular-jwt';
+
+//Toastr
 import { ToastrModule } from 'ngx-toastr';
 
-import { AuthGuard } from './services/auth-guard.service';
-import { AuthService } from './services/auth.service';
-import { UserService } from './services/user.service';
+//Bootstrap
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
+//--------------------------------------------------------
 
+//Services
+import { AuthGuard } from './../services/guards/auth-guard.service';
+import { AuthService } from '../services/auth.service';
+import { UserService } from './../services/user.service';
+
+//Components
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { LoginComponent } from './login/login.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { UserEditComponent } from './user-edit/user-edit.component';
-import { LoginComponent } from './login/login.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -28,20 +43,23 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
+    LoginComponent,
+    UserEditComponent,
     UserViewComponent,
     UsersListComponent,
-    UserEditComponent,
-    LoginComponent
+    NavMenuComponent,
+    NavbarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserAnimationsModule,
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule,
+    CommonModule,
     FormsModule,
     HttpClientModule,
+
+    AppRoutingModule,
+
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -50,22 +68,15 @@ export function tokenGetter() {
       }
     }),
     ToastrModule.forRoot(),
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'users', component: UsersListComponent, canActivate: [AuthGuard] },
-      { path: 'users/edit/:id', component: UserEditComponent },
-      { path: 'users/:id', component: UserViewComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      
-    ])
+
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [
     AuthGuard,
     AuthService,
     UserService
-
   ],
   bootstrap: [AppComponent]
 })

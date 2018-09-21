@@ -16,7 +16,7 @@
   </div>
   <div class="form-group">
     <label for="birthDate">Birth Date</label>
-    <input type="text" id="birthDate" name="birthDate" class="form-control" [(ngModel)]="user.birthDate" required #birthDate="ngModel">
+    <input type="text" id="birthDate" datetime="dd/MM/yyyy" name="birthDate" class="form-control" [(ngModel)]="user.birthDate" required #birthDate="ngModel">
     <div class="alert alert-danger" *ngIf="birthDate.touched && !birthDate.valid">Please enter your birth date</div>
   </div>
   <div class="form-group">

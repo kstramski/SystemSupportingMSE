@@ -1,8 +1,8 @@
-import { AuthService } from './../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +11,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
   invalidLogin: boolean;
-
+  
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService) { }
 
   ngOnInit() {
   }

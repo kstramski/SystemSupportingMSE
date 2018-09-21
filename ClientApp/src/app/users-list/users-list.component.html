@@ -12,7 +12,7 @@
         <td>{{user.id}}</td>
         <td>{{user.name}}</td>
         <td>{{user.surname}}</td>
-        <td>{{user.lastLogin}}</td>
+        <td>{{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</td>
         <td><a class="btn btn-primary" [routerLink]="['/users/', user.id]">View</a></td>
       </tr>
     </tbody>

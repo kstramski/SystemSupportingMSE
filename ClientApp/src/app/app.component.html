@@ -1,10 +1,14 @@
-<div class='container-fluid'>
-  <div class='row'>
-    <div class='col-sm-3'>
-      <app-nav-menu></app-nav-menu>
+<div *ngIf="auth.isLoggedIn()">
+    <app-navbar></app-navbar>
+    <div class="container-fluid">
+        <div class="row navbar-expand-md">
+            <app-nav-menu></app-nav-menu>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <router-outlet></router-outlet>
+            </main>
+        </div>
     </div>
-    <div class='col-sm-9 body-content'>
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+</div>
+<div *ngIf="!auth.isLoggedIn()">
+    <app-login></app-login>
 </div>

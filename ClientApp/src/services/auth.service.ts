@@ -22,10 +22,15 @@ export class AuthService {
 
     logout() {
         localStorage.removeItem("access_token");
+
+    }
+
+    getToken() {
+        return this.jwtHelper.tokenGetter();
     }
 
     isLoggedIn() {
-        var token = this.jwtHelper.tokenGetter();
+        var token = this.getToken();
 
         if(token && !this.jwtHelper.isTokenExpired(token)) {
             return true;
