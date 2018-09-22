@@ -24,6 +24,15 @@ export class NavbarComponent {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
+
+  profile() {
+    this.router.navigate(['/users/', this.auth.getUserId()]);
+  }
+
+  messages() {
+
+  }
+
   logout() {
     this.auth.logout();
     this.toastr.success("User has been successfully logged out.", "Success", { timeOut: 5000 });

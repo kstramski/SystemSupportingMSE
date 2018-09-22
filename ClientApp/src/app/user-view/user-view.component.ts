@@ -30,13 +30,13 @@ export class UserViewComponent implements OnInit {
   ngOnInit() {
     this.userService.getUser(this.userId)
     .subscribe(u => {
-      this.user = u;
-    }, err => {
-      if(err.status == 404){
-        this.toastr.error("User does not exist.", "Error", { timeOut: 5000 });
-        this.router.navigate(['/users']);
-      }
-    }); 
+      this.user = u;});
+    // }, err => {
+    //   if(err.status == 404){
+    //     this.toastr.error("User does not exist.", "Error", { timeOut: 5000 });
+    //     this.router.navigate(['/users']);
+    //   }
+    // }); 
   }
 
   delete() {

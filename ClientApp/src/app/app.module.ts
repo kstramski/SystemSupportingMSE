@@ -1,10 +1,16 @@
+//****************************/
+//Modules
+//****************************/
+//ErrorHandler
+import { AppErrorHandler } from './app.error-handler';
+
 //Angular
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 
 //Custom Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -22,22 +28,40 @@ import { ToastrModule } from 'ngx-toastr';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
-//--------------------------------------------------------
 
+
+//****************************/
 //Services
+//****************************/
 import { AuthGuard } from './../services/guards/auth-guard.service';
 import { AuthService } from '../services/auth.service';
 import { UserService } from './../services/user.service';
 
+//****************************/
 //Components
+//****************************/
+//Global
 import { AppComponent } from './app.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { NavbarComponent } from './navbar/navbar.component';
+
+//Dashboard
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+//Events
+
+
+//Login
 import { LoginComponent } from './login/login.component';
+
+//Roles
+
+
+//Users
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UsersListComponent } from './users-list/users-list.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -78,6 +102,7 @@ export function tokenGetter() {
     ModalModule.forRoot()
   ],
   providers: [
+    { provide: ErrorHandler, useClass: AppErrorHandler },
     AuthGuard,
     AuthService,
     UserService

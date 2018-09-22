@@ -29,6 +29,12 @@ export class AuthService {
         return this.jwtHelper.tokenGetter();
     }
 
+    getUserId() {
+        var token = this.getToken();
+        var decodedToken = this.jwtHelper.decodeToken(token);
+        return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+    }
+
     isLoggedIn() {
         var token = this.getToken();
 
