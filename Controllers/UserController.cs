@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,66 +33,8 @@ namespace SystemSupportingMSE.Controllers
             this.userRepository = userRepository;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserAuthResource userResource)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (String.IsNullOrWhiteSpace(userResource.Email) || String.IsNullOrWhiteSpace(userResource.Password))
-                return BadRequest();
-
-            var user = await userRepository.AuthenticateUser(userResource.Email, userResource.Password);
-            if (user == null)
-                return Unauthorized();
-
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
-            var claims = new List<Claim>();
-
-            claims.Add(new Claim(ClaimTypes.Name, user.Id.ToString()));
-            foreach (var role in user.Roles)
-                claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
-            
-            var tokeOptions = new JwtSecurityToken(
-                issuer: authSettings.Domain,
-                audience: authSettings.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: signinCredentials
-            );
-
-            user.LastLogin = DateTime.Now;
-            await unitOfWork.Complete();
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return Ok(new { Token = tokenString });
-        }
-
-        [HttpGet]
-        [Authorize(Roles="User")]
-        public async Task<IEnumerable<UserProfileResource>> GetUsers()
-        {
-            var users = await userRepository.GetUsers();
-            var result = mapper.Map<IEnumerable<User>, IEnumerable<UserProfileResource>>(users);
-
-            return result;
-        }
-
-        [HttpGet("{id}")]
-        //[Authorize(Roles="Moderator")]
-        public async Task<IActionResult> GetUser(int id)
-        {
-            var user = await userRepository.GetUser(id);
-            if (user == null)
-                return NotFound();
-
-            var result = mapper.Map<User, UserProfileResource>(user);
-
-            return Ok(result);
-        }
-
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegisterResource userRegisterResource)
         {
             if (!ModelState.IsValid)
@@ -111,9 +54,75 @@ namespace SystemSupportingMSE.Controllers
             return Ok(result);
         }
 
+        //Do AuthController /api/auth
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] UserAuthResource userResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            if (String.IsNullOrWhiteSpace(userResource.Email) || String.IsNullOrWhiteSpace(userResource.Password))
+                return BadRequest();
+
+            var user = await userRepository.AuthenticateUser(userResource.Email, userResource.Password);
+            if (user == null)
+                return Unauthorized();
+
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
+            var claims = new List<Claim>();
+
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+            claims.Add(new Claim(ClaimTypes.Name, user.Name.ToString()));
+            foreach (var role in user.Roles)
+                claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
+            
+            var tokeOptions = new JwtSecurityToken(
+                issuer: authSettings.Domain,
+                audience: authSettings.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: signinCredentials
+            );
+
+            user.LastLogin = DateTime.Now;
+            await unitOfWork.Complete();
+
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return Ok(new { Token = tokenString });
+        }
+
+        [HttpGet]
+        [Authorize(Roles="Moderator")]
+        public async Task<IEnumerable<UserProfileResource>> GetUsers()
+        {
+            var users = await userRepository.GetUsers();
+            var result = mapper.Map<IEnumerable<User>, IEnumerable<UserProfileResource>>(users);
+
+            return result;
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles="User")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            var user = await userRepository.GetUser(id);
+            if (user == null)
+                return NotFound();
+
+            if(!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any())
+                if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+                    return Unauthorized();
+            
+
+            var result = mapper.Map<User, UserProfileResource>(user);
+
+            return Ok(result);
+        }
 
         [HttpPut("{id}")]
+        [Authorize(Roles="User")]
         public async Task<IActionResult> UpdateUserProfile([FromBody] UserSaveProfileResource userResource, int id)
         {
             if (!ModelState.IsValid)
@@ -122,6 +131,10 @@ namespace SystemSupportingMSE.Controllers
             var user = await userRepository.GetUser(id);
             if (user == null)
                 return NotFound();
+            
+            if(!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any())
+                if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+                    return Unauthorized();
 
             mapper.Map<UserSaveProfileResource, User>(userResource, user);
             await unitOfWork.Complete();
@@ -132,6 +145,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles="Administrator")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await userRepository.GetUser(id);
@@ -144,19 +158,47 @@ namespace SystemSupportingMSE.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}/password")]
-        public async Task<IActionResult> UpdateUserPassword([FromBody] UserNewPasswordResource userResource, int id)
+        [HttpPut("changeEmail/{id}")]
+        [Authorize(Roles="User")]
+        public async Task<IActionResult> ChangeUserEmail([FromBody] UserNewEmailResource userResource, int id)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(String.IsNullOrWhiteSpace(userResource.Email)
+            || String.IsNullOrWhiteSpace(userResource.NewEmail))
+                return BadRequest("Email fields can not be empty.");
+
+            var user = await userRepository.GetUser(id);
+            if(user == null)
+                return NotFound();
+
+            if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+                return Unauthorized();
+
+            if(userResource.Email != user.Email)
+                return BadRequest("Invalid email.");
+
+            mapper.Map<UserNewEmailResource, User>(userResource, user);
+            await unitOfWork.Complete();
+
+            return Ok();
+        }
+
+        [HttpPut("changePassword/{id}")]
+        [Authorize(Roles="User")]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] UserNewPasswordResource userResource, int id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (String.IsNullOrWhiteSpace(userResource.Email))
-                return BadRequest("Email field can not be empty");
+                return BadRequest("Email field can not be empty.");
 
             if (String.IsNullOrWhiteSpace(userResource.Password)
             || String.IsNullOrWhiteSpace(userResource.NewPassword)
             || String.IsNullOrWhiteSpace(userResource.NewPasswordRepeat))
-                return BadRequest("Password field can not be empty.");
+                return BadRequest("Password fields can not be empty.");
 
             if (userResource.NewPassword != userResource.NewPasswordRepeat)
                 return BadRequest("New password must be equal in two fileds.");
@@ -164,6 +206,9 @@ namespace SystemSupportingMSE.Controllers
             var user = await userRepository.GetUser(id);
             if (user == null)
                 return NotFound();
+
+            if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+                return Unauthorized();
 
             if (user.Email != userResource.Email)
                 return BadRequest("Invalid email.");

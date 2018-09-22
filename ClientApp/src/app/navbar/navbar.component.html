@@ -1,20 +1,27 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-expand-md">
-  <div class="navbar-brand d-flex align-items-center justify-content-between col-sm-12 col-md-2 mr-0">
+  <div class="navbar-brand d-flex align-items-center justify-content-between col-sm-12 col-md-3 col-lg-2 mr-0">
     <a class="mr-1 d-md-none text-light" href="#sidenav" data-toggle="collapse" data-target="#sidenav">
       <span data-feather="menu" class="my-1"></span>
     </a>
-    <a class="text-light" href="">Company</a>
+    <a class="text-light" href=""><span data-feather="cpu"></span><strong> SystemSupportingMSE</strong></a>
     <a class="navbar-toggler border-0 p-0" href="#topnav" data-toggle="collapse" data-target="#topnav">
       <span data-feather="menu" class="my-1"></span>
     </a>
   </div>
   <div class="navbar-collapse collapse" id="topnav">
-    <ul class="navbar-nav px-3 py-2">
+    <ul class="navbar-nav px-3 py-2 mr-auto">
       <li class="nav-item text-nowrap">
         <a class="nav-link" (click)='profile()'>Profile</a>
       </li>
       <li class="nav-item text-nowrap">
         <a class="nav-link" (click)='messages()'>Messages</a>
+      </li>
+      <li class="nav-item text-nowrap">
+        <span class="nav-link">Last Visit: 20/09/2018 20:14:24</span>
+      </li>
+    </ul><ul class="navbar-nav px-3 py-2">
+      <li class="nav-item text-nowrap">
+        <span class="nav-link">Hello, {{auth.getUserName()}}</span>
       </li>
       <li class="nav-item text-nowrap">
         <a class="nav-link" (click)='logout()'>Sign out</a>

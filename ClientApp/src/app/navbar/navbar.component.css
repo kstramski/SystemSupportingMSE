@@ -1,4 +1,5 @@
 
+
 .navbar-brand {
     padding-top: .75rem;
     padding-bottom: .75rem;
@@ -22,4 +23,9 @@
 .form-control-dark:focus {
     border-color: transparent;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.nav-item .user {
+    display: block;
+    padding: .5rem;
 }

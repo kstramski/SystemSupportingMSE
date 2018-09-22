@@ -16,7 +16,6 @@ export class AuthService {
 
     login(credencials) {
         var body = JSON.stringify(credencials);
-        console.log(body);
         return this.http.post("/api/users/login", body, httpOptions);
     }
 
@@ -30,8 +29,12 @@ export class AuthService {
     }
 
     getUserId() {
-        var token = this.getToken();
-        var decodedToken = this.jwtHelper.decodeToken(token);
+        var decodedToken = this.jwtHelper.decodeToken(this.getToken());
+        return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+    }
+
+    getUserName() {
+        var decodedToken = this.jwtHelper.decodeToken(this.getToken());
         return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
     }
 

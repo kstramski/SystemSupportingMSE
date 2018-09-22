@@ -23,7 +23,10 @@ namespace SystemSupportingMSE.Helpers
             CreateMap<RoleResource, Role>()
                 .ForMember(r => r.Id, opt => opt.Ignore())
                 .ForMember(r => r.Name, opt => opt.Ignore());
+
             CreateMap<UserAuthResource, User>();
+            CreateMap<UserNewEmailResource, User>()
+                .ForMember(u => u.Id, opt => opt.Ignore());
             CreateMap<UserProfileResource, User>();
             CreateMap<UserRegisterResource, User>();
             CreateMap<UserSaveProfileResource, User>()

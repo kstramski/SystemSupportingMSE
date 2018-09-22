@@ -1,9 +1,12 @@
 import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AppErrorHandler implements ErrorHandler {
   private toastr: ToastrService;
+  private router: Router;
+
   errorMessage: string = "test";
   errMsg: boolean = false;
   codeErrors: Array<any> = [
@@ -16,11 +19,12 @@ export class AppErrorHandler implements ErrorHandler {
 
   constructor(
     private injector: Injector,
-    private ngZone: NgZone
+    private ngZone: NgZone,
   ) { }
 
   handleError(error: any) {
     this.toastr = this.injector.get(ToastrService);
+    this.router = this.injector.get(Router);
 
     this.setErrorMessage(error.status);
     this.ngZone.run(() => {
@@ -28,7 +32,10 @@ export class AppErrorHandler implements ErrorHandler {
       this.errorMessage = null;
     });
 
-    throw error;
+    console.error(error);
+    this.router.navigate(['']);
+    
+    //throw error;
   }
 
   setErrorMessage(code: number) {
