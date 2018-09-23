@@ -37,6 +37,8 @@ import { CollapseModule } from 'ngx-bootstrap';
 import { AuthGuard } from './../services/guards/auth-guard.service';
 import { AuthService } from '../services/auth.service';
 import { NavbarService } from './../services/navbar.service';
+
+import { RoleService } from './../services/role.service';
 import { UserService } from './../services/user.service';
 
 //****************************/
@@ -63,6 +65,8 @@ import { LoginComponent } from './login/login.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { UsersListComponent } from './users-list/users-list.component';
+import { RolesListComponent } from './roles-list/roles-list.component';
+import { RoleEditComponent } from './role-edit/role-edit.component';
 
 
 export function tokenGetter() {
@@ -78,7 +82,9 @@ export function tokenGetter() {
     UsersListComponent,
     NavMenuComponent,
     NavbarComponent,
-    DashboardComponent
+    DashboardComponent,
+    RolesListComponent,
+    RoleEditComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -109,6 +115,7 @@ export function tokenGetter() {
     AuthGuard,
     AuthService,
     NavbarService,
+    RoleService,
     UserService
   ],
   bootstrap: [AppComponent]

@@ -1,0 +1,18 @@
+<h2>Roles</h2>
+<hr>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col" *ngFor="let col of columns">{{col.title}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let role of roles">
+      <th scope="row">{{role.id}}</th>
+      <td>{{role.name}}</td>
+      <td>{{role.description}}</td>
+      <td><a [routerLink]="['/roles/', role.id]" class="btn btn-primary">Edit Desctiprion</a></td>
+    </tr>
+  </tbody>
+</table>

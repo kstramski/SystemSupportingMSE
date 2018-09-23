@@ -23,11 +23,11 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<KeyValuePairResource>> GetRoles()
+        public async Task<IEnumerable<RoleResource>> GetRoles()
         {
             var roles = await roleRepository.GetRoles();
             
-            return mapper.Map<IEnumerable<Role>, IEnumerable<KeyValuePairResource>>(roles);
+            return mapper.Map<IEnumerable<Role>, IEnumerable<RoleResource>>(roles);
         }
 
         [HttpGet("{id}")]
@@ -43,7 +43,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDescription([FromBody] RoleResource roleResource, int id)
+        public async Task<IActionResult> EditDescription([FromBody] RoleResource roleResource, int id)
         {
             var role = await roleRepository.GetRole(id);
             if(role == null)

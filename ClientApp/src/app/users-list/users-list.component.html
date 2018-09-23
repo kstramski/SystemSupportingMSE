@@ -1,20 +1,18 @@
 <h2>Users</h2>
-
-<div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th *ngFor="let column of columns">{{column.title}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{user.id}}</td>
-        <td>{{user.name}}</td>
-        <td>{{user.surname}}</td>
-        <td>{{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-        <td><a class="btn btn-primary" [routerLink]="['/users/', user.id]">View</a></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<hr>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col" *ngFor="let column of columns">{{column.title}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <th scope="row">{{user.id}}</th>
+      <td>{{user.name}}</td>
+      <td>{{user.surname}}</td>
+      <td>{{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+      <td><a class="btn btn-primary" [routerLink]="['/users/', user.id]">View</a></td>
+    </tr>
+  </tbody>
+</table>
