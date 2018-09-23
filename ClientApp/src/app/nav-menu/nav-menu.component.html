@@ -1,23 +1,23 @@
-<nav class="col-md-3 col-lg-2 bg-light navbar-collapse collapse sidebar" id="sidenav">
+<nav class="col-md-3 col-lg-2 bg-light navbar-collapse collapse sidebar" id="sidenav" [collapse]="!navbar.isExpandedSidenav">
     <div class="sidebar-sticky flex-column w-100 mt-1">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" [routerLinkActiveOptions]='{ exact: true }'>
+                <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" (click)="navbar.collapse()">
                     <span data-feather="home"></span> Dashboard <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" [routerLink]="['/users']" routerLinkActive="active"  (click)="navbar.collapse()">
                     <span data-feather="list"></span> Events
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" [routerLink]='["/users"]' routerLinkActive="active">
+                <a class="nav-link" [routerLink]='["/users"]' routerLinkActive="active" (click)="navbar.collapse()">
                     <span data-feather="list"></span> Users
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" [routerLink]="['/roles']" routerLinkActive="active" (click)="navbar.collapse()">
                     <span data-feather="shield"></span> Roles
                 </a>
             </li>

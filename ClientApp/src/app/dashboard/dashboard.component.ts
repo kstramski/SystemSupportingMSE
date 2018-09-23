@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   emailLabels: string[] = ['Confirmed', 'Not Confirmed'];
   emailData: number[] = [25, 12];
 
-  registerLabels: string[] = ['2018-09-01', '2018-09-02', '2018-09-03', '2018-09-04', '2018-09-05', '2018-09-06', '2018-09-07'];
+  registerLabels: string[] = ['09-01', '09-02', '09-03', '09-04', '09-05', '09-06', '09-07'];
   registerData: number[] = [2,5,1,12,4,0,9];
 
   public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales', 'Test'];

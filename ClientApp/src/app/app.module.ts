@@ -28,6 +28,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CollapseModule } from 'ngx-bootstrap';
 
 
 //****************************/
@@ -35,6 +36,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 //****************************/
 import { AuthGuard } from './../services/guards/auth-guard.service';
 import { AuthService } from '../services/auth.service';
+import { NavbarService } from './../services/navbar.service';
 import { UserService } from './../services/user.service';
 
 //****************************/
@@ -99,12 +101,14 @@ export function tokenGetter() {
 
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
     AuthGuard,
     AuthService,
+    NavbarService,
     UserService
   ],
   bootstrap: [AppComponent]

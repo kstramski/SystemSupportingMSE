@@ -1,3 +1,4 @@
+import { NavbarService } from './../../services/navbar.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { AuthService } from './../../services/auth.service';
@@ -9,21 +10,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  isExpanded = false;
-  
+
   constructor(
     private auth: AuthService,
     private router: Router,
-    private toastr: ToastrService
-  ) {}
-
-  collapse() {
-    this.isExpanded = false;
-  }
-
-  toggle() {
-    this.isExpanded = !this.isExpanded;
-  }
+    private toastr: ToastrService,
+    private navbar: NavbarService
+  ) { }
 
   profile() {
     this.router.navigate(['/users/', this.auth.getUserId()]);
@@ -38,4 +31,6 @@ export class NavbarComponent {
     this.toastr.success("User has been successfully logged out.", "Success", { timeOut: 5000 });
     this.router.navigate(['/login']);
   }
+
+
 }
