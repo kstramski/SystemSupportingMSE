@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SystemSupportingMSE.Controllers.Resource
+namespace SystemSupportingMSE.Controllers.Resource.Users
 {
     public class UserSaveProfileResource
     {

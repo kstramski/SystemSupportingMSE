@@ -10,11 +10,21 @@ import { RoleService } from '../../services/role.service';
 
 export class RolesListComponent implements OnInit {
   roles: any;
-  columns: Array<any> = [
-    {title: "Id"},
-    {title: "Role"},
-    {title: "Description"},
-    {title: "Action"}
+  queryResults: any = {};
+  query: any = {};
+
+  rolesColumns: Array<any> = [
+    { title: "Id" },
+    { title: "Role" },
+    { title: "Description" },
+    { title: "Action" }
+  ];
+  usersColumns: Array<any> = [
+    { title: "Id" },
+    { title: "Name" },
+    { title: "Surname" },
+    { title: "Email" },
+    { title: "Action" }
   ]
 
   constructor(
@@ -26,6 +36,10 @@ export class RolesListComponent implements OnInit {
     this.roleService.getRoles()
       .subscribe(r => {
         this.roles = r;
+      });
+    this.roleService.getUsers(this.query)
+      .subscribe(u => {
+        this.queryResults = u;
       });
   }
 }

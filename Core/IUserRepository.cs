@@ -6,7 +6,7 @@ namespace SystemSupportingMSE.Core
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetUsers();
+        Task<QueryResult<User>> GetUsers(UserQuery queryObj);
         Task<User> GetUser(int id);
         Task<User> AuthenticateUser(string email, string password);
         void Add(User user, string password);

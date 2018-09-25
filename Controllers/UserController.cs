@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SystemSupportingMSE.Controllers.Resource;
+using SystemSupportingMSE.Controllers.Resource.Users;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
 using SystemSupportingMSE.Helpers;
@@ -95,12 +96,12 @@ namespace SystemSupportingMSE.Controllers
 
         [HttpGet]
         [Authorize(Roles="Moderator")]
-        public async Task<IEnumerable<UserProfileResource>> GetUsers()
+        public async Task<QueryResultResource<UserProfileResource>> GetUsers(UserQueryResource filterResource)
         {
-            var users = await userRepository.GetUsers();
-            var result = mapper.Map<IEnumerable<User>, IEnumerable<UserProfileResource>>(users);
-
-            return result;
+            var filter = mapper.Map<UserQueryResource, UserQuery>(filterResource); 
+            var queryResult = await userRepository.GetUsers(filter);
+            
+            return  mapper.Map<QueryResult<User>, QueryResultResource<UserProfileResource>>(queryResult);
         }
 
         [HttpGet("{id}")]
@@ -111,9 +112,9 @@ namespace SystemSupportingMSE.Controllers
             if (user == null)
                 return NotFound();
 
-            if(!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any())
-                if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
-                    return Unauthorized();
+            if(!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any()
+            && User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+                return Unauthorized();
             
 
             var result = mapper.Map<User, UserProfileResource>(user);

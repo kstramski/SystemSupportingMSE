@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SystemSupportingMSE.Controllers.Resource;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Extensions;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Services
@@ -20,12 +22,31 @@ namespace SystemSupportingMSE.Services
             this.context = context;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<QueryResult<User>> GetUsers(UserQuery queryObj)
         {
-            return await context.Users
+            var result = new QueryResult<User>();
+            var query = context.Users
                 .Include(r => r.Roles)
                     .ThenInclude(ur => ur.Role)
-                .ToListAsync();
+                .AsQueryable();
+
+            if(queryObj.RoleId.HasValue)
+                query.Where(q => q.Roles.Any(r => r.RoleId == queryObj.RoleId));
+
+            var columnMap = new Dictionary<string, Expression<Func<User, object>>>
+            {
+                ["name"] = u => u.Name,
+                ["surname"] = u => u.Surname,
+                ["email"] = u => u.Email,
+            };
+
+            query = query.ApplyOrderBy(queryObj, columnMap);
+            result.TotalItems = query.Count();
+
+            query = query.ApplyPaging(queryObj);
+            result.Items = await query.ToListAsync();
+
+            return result;
         }
 
         public async Task<User> GetUser(int id)

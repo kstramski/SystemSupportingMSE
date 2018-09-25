@@ -1,17 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SystemSupportingMSE.Controllers.Resource
+namespace SystemSupportingMSE.Controllers.Resource.Users
 {
-    public class UserNewEmailResource
-    {
-         public int Id { get; set; }
+//Na później
 
+    public class UserAuthResource
+    {
         [Required]
         [StringLength(255)]
         public string Email { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string NewEmail { get; set; }
+        public string Password { get; set; }
+
     }
 }

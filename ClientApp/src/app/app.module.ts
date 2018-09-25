@@ -26,10 +26,11 @@ import { ToastrModule } from 'ngx-toastr';
 
 //Bootstrap
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { CollapseModule } from 'ngx-bootstrap';
-
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 //****************************/
 //Services
@@ -48,6 +49,7 @@ import { UserService } from './../services/user.service';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { PaginationComponent } from './shared/pagination.component';
 
 //Dashboard
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -67,6 +69,7 @@ import { UserViewComponent } from './user-view/user-view.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { RoleEditComponent } from './role-edit/role-edit.component';
+import { RoleEditUserComponent } from './role-edit-user/role-edit-user.component';
 
 
 export function tokenGetter() {
@@ -83,8 +86,10 @@ export function tokenGetter() {
     NavMenuComponent,
     NavbarComponent,
     DashboardComponent,
+    PaginationComponent,
     RolesListComponent,
-    RoleEditComponent
+    RoleEditComponent,
+    RoleEditUserComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -106,9 +111,11 @@ export function tokenGetter() {
     ToastrModule.forRoot(),
 
     BsDropdownModule.forRoot(),
-    TooltipModule.forRoot(),
+    CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    CollapseModule.forRoot()
+    PaginationModule.forRoot(),
+    TabsModule.forRoot(),
+    TooltipModule.forRoot(),
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },

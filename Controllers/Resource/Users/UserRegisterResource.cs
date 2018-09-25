@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SystemSupportingMSE.Controllers.Resource
+namespace SystemSupportingMSE.Controllers.Resource.Users
 {
     public class UserRegisterResource
     {

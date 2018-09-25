@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace SystemSupportingMSE.Controllers.Resource
+namespace SystemSupportingMSE.Controllers.Resource.Roles
 {
     public class RoleResource
     {

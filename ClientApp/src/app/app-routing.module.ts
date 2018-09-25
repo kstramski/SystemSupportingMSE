@@ -8,6 +8,7 @@ import { AuthGuard } from '../services/guards/auth-guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { RoleEditComponent } from './role-edit/role-edit.component';
+import { RoleEditUserComponent } from './role-edit-user/role-edit-user.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, canActivate: [AuthGuard], pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
 
   { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard] },
   { path: 'roles/:id', component: RoleEditComponent, canActivate: [AuthGuard] },
+  { path: 'roles/users/:id', component: RoleEditUserComponent, canActivate: [AuthGuard] },
 
   { path: 'users', component: UsersListComponent, canActivate: [AuthGuard] },
   { path: 'users/edit/:id', component: UserEditComponent, canActivate: [AuthGuard]},

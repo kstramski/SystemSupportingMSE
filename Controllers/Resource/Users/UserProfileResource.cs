@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using SystemSupportingMSE.Core.Models;
 
-namespace SystemSupportingMSE.Controllers.Resource
+namespace SystemSupportingMSE.Controllers.Resource.Users
 {
     public class UserProfileResource
     {

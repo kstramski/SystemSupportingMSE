@@ -24,11 +24,22 @@ export class UserService {
         return this.http.delete("/api/users/" + id);
     }
 
-    getUsers() {
-        return this.http.get("/api/users");
+    getUsers(filter) {
+        return this.http.get("/api/users?" + this.toQueryString(filter));
     }
 
     getUser(id) {
         return this.http.get("/api/users/" + id);
+    }
+
+    toQueryString(obj) {
+        var parts = [];
+        for(var prop in obj) {
+            var value = obj[prop];
+            if(value != null && value != undefined)
+                parts.push(encodeURIComponent(prop) + '=' + encodeURIComponent(value));
+        }
+        console.log(parts.join('&'));
+        return parts.join('&');
     }
 }
