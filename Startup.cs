@@ -57,6 +57,7 @@ namespace SystemSupportingMSE
                 });
             });
 
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

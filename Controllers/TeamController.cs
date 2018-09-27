@@ -15,13 +15,15 @@ namespace SystemSupportingMSE.Controllers
     public class TeamController : Controller
     {
         private readonly IMapper mapper;
+        private readonly IAuthRepository authRepository;
         private readonly ITeamRepository teamRepository;
         private readonly IUserRepository userRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public TeamController(IMapper mapper, ITeamRepository teamRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public TeamController(IMapper mapper, IAuthRepository authRepository, ITeamRepository teamRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
+            this.authRepository = authRepository;
             this.teamRepository = teamRepository;
             this.userRepository = userRepository;
             this.unitOfWork = unitOfWork;
@@ -78,8 +80,8 @@ namespace SystemSupportingMSE.Controllers
             if (team == null)
                 return NotFound();
 
-            if (!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any()
-            && User.FindFirst(ClaimTypes.NameIdentifier).Value != team.Captain.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, team.Captain))
                 return Unauthorized();
 
             if (string.IsNullOrWhiteSpace(teamResource.Email))
@@ -111,9 +113,9 @@ namespace SystemSupportingMSE.Controllers
             if (team == null)
                 return NotFound();
 
-            if (!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any()
-            && User.FindFirst(ClaimTypes.NameIdentifier).Value != team.Captain.ToString()
-            && User.FindFirst(ClaimTypes.NameIdentifier).Value != teamResource.UserId.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, team.Captain)
+            && !authRepository.IsAuthorizedById(User, teamResource.UserId))
                 return Unauthorized();
 
             if (teamResource.UserId == team.Captain)
@@ -142,8 +144,8 @@ namespace SystemSupportingMSE.Controllers
             if (team == null)
                 return NotFound();
 
-            if (!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any()
-            && User.FindFirst(ClaimTypes.NameIdentifier).Value != teamResource.UserId.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, teamResource.UserId))
                 return Unauthorized();
 
             var user = teamRepository.GetUserTeam(team, teamResource.UserId);
@@ -168,8 +170,8 @@ namespace SystemSupportingMSE.Controllers
             if (team == null)
                 return NotFound();
 
-            if (!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any()
-            && User.FindFirst(ClaimTypes.NameIdentifier).Value != team.Captain.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, team.Captain))
                 return Unauthorized();
 
             if (team.Users.Where(ut => ut.Status == true).Count() > 1)

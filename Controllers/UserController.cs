@@ -22,14 +22,16 @@ namespace SystemSupportingMSE.Controllers
     public class UserController : Controller
     {
         private readonly IMapper mapper;
+        private readonly IAuthRepository authRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserRepository userRepository;
         private readonly AuthSettings authSettings;
 
-        public UserController(IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository, IOptions<AuthSettings> authSettings)
+        public UserController(IMapper mapper, IAuthRepository authRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IOptions<AuthSettings> authSettings)
         {
             this.authSettings = authSettings.Value;
             this.mapper = mapper;
+            this.authRepository = authRepository;
             this.unitOfWork = unitOfWork;
             this.userRepository = userRepository;
         }
@@ -112,8 +114,8 @@ namespace SystemSupportingMSE.Controllers
             if (user == null)
                 return NotFound();
 
-            if(!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any()
-            && User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, id))
                 return Unauthorized();
             
 
@@ -133,8 +135,8 @@ namespace SystemSupportingMSE.Controllers
             if (user == null)
                 return NotFound();
             
-            if(!User.Claims.Where(c => c.Type == ClaimTypes.Role).Where(r => r.Value == "Moderator").Any())
-                if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, id))
                     return Unauthorized();
 
             mapper.Map<UserSaveProfileResource, User>(userResource, user);
@@ -174,7 +176,8 @@ namespace SystemSupportingMSE.Controllers
             if(user == null)
                 return NotFound();
 
-            if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, id))
                 return Unauthorized();
 
             if(userResource.Email != user.Email)
@@ -202,13 +205,13 @@ namespace SystemSupportingMSE.Controllers
                 return BadRequest("Password fields can not be empty.");
 
             if (userResource.NewPassword != userResource.NewPasswordRepeat)
-                return BadRequest("New password must be equal in two fileds.");
+                return BadRequest("New password and repeated password must be equal.");
 
             var user = await userRepository.GetUser(id);
             if (user == null)
                 return NotFound();
 
-            if(User.FindFirst(ClaimTypes.NameIdentifier).Value != id.ToString())
+           if (!authRepository.IsAuthorizedById(User, id))
                 return Unauthorized();
 
             if (user.Email != userResource.Email)
