@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Helpers;
 using SystemSupportingMSE.Services;
@@ -27,7 +28,7 @@ namespace SystemSupportingMSE
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {   
+        {
             var authSettingsSection = Configuration.GetSection("AuthSettings");
             services.Configure<AuthSettings>(authSettingsSection);
 
@@ -41,7 +42,7 @@ namespace SystemSupportingMSE
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-        
+
                     ValidIssuer = authSettings.Domain,
                     ValidAudience = authSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.Secret))
@@ -52,7 +53,7 @@ namespace SystemSupportingMSE
             {
                 options.AddPolicy("EnableCORS", builder =>
                 {
-                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
                 });
             });
 
@@ -62,8 +63,11 @@ namespace SystemSupportingMSE
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper();
-            services.AddDbContext<SportEventsDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<SportEventsDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")).EnableSensitiveDataLogging());
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

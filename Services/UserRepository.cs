@@ -30,7 +30,7 @@ namespace SystemSupportingMSE.Services
                     .ThenInclude(ur => ur.Role)
                 .AsQueryable();
 
-            if(queryObj.RoleId.HasValue)
+            if (queryObj.RoleId.HasValue)
                 query.Where(q => q.Roles.Any(r => r.RoleId == queryObj.RoleId));
 
             var columnMap = new Dictionary<string, Expression<Func<User, object>>>
@@ -49,9 +49,14 @@ namespace SystemSupportingMSE.Services
             return result;
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(int id, string email)
         {
-            return await context.Users
+            var user = context.Users.AsQueryable();
+
+            if (id == 0 && !String.IsNullOrWhiteSpace(email))
+                return await user.SingleOrDefaultAsync(u => u.Email == email);
+
+            return await user
                 .Include(t => t.Teams)
                     .ThenInclude(ut => ut.Team)
                 .Include(r => r.Roles)
@@ -65,12 +70,11 @@ namespace SystemSupportingMSE.Services
                 .Include(r => r.Roles)
                     .ThenInclude(ur => ur.Role)
                 .SingleOrDefaultAsync(u => u.Email == email);
-            if(user == null)
-                return user; //throw new HttpResponseException("Invalid email."); //change to Invalid email or password
-                
+            if (user == null)
+                return user;
 
-            if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return user = null; //throw new ArgumentException("Invalid password.");
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                return user = null;
 
             return user;
         }
@@ -93,7 +97,7 @@ namespace SystemSupportingMSE.Services
 
         public void SetNewPassword(User user, string password, string newPassword)
         {
-            if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 throw new ArgumentException("Invalid password");
 
             byte[] passwordHash, passwordSalt;
@@ -105,7 +109,7 @@ namespace SystemSupportingMSE.Services
 
         private static void CreatePaswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using(var hmac = new System.Security.Cryptography.HMACSHA512())
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -117,13 +121,13 @@ namespace SystemSupportingMSE.Services
             if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
             if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
 
-            using(var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {
                 var passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 
                 for (int i = 0; i < passwordHash.Length; i++)
                 {
-                    if(passwordHash[i] != storedHash[i])
+                    if (passwordHash[i] != storedHash[i])
                         return false;
                 }
             }
@@ -131,6 +135,6 @@ namespace SystemSupportingMSE.Services
             return true;
         }
 
-        
+
     }
 }

@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SystemSupportingMSE.Core.Models
+namespace SystemSupportingMSE.Controllers.Resource.Teams
 {
-    [Table("Teams")]
-    public class Team
+    public class TeamSaveResource
     {
         public int Id { get; set; }
 
@@ -15,12 +13,5 @@ namespace SystemSupportingMSE.Core.Models
         public string Name { get; set; }
 
         public int Captain { get; set; }
-
-        public ICollection<UserTeam> Users { get; set; }
-
-        public Team()
-        {
-            this.Users = new Collection<UserTeam>();
-        }
     }
 }

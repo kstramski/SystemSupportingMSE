@@ -10,5 +10,6 @@ namespace SystemSupportingMSE.Core.Models
 
         public User User { get; set; }
         public Team Team { get; set; }
+        public bool Status { get; set; }
     }
 }
