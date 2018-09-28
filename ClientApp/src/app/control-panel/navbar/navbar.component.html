@@ -1,0 +1,31 @@
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-expand-md">
+  <div class="navbar-brand d-flex align-items-center justify-content-between col-sm-12 col-md-3 col-lg-2 mr-0">
+    <button class="navbar-toggler text-light" type="button" aria-controls="sidenav" [attr.aria-expanded]="navbar.isExpandedSidenav" (click)="navbar.toggleSidenav()">
+      <span data-feather="menu" class="my-1"></span>
+    </button>
+    <a class="text-light" href=""><span data-feather="cpu"></span><strong> System</strong></a>
+    <button class="navbar-toggler text-light" type="button" href="#topnav" aria-controls="topnav" [attr.aria-expanded]='navbar.isExpandedNav' (click)='navbar.toggleNav()'>
+      <span data-feather="menu" class="my-1"></span>
+    </button>
+  </div>
+  <div class="navbar-collapse collapse" id="topnav" [collapse]="!navbar.isExpandedNav">
+    <ul class="navbar-nav px-3 py-2 mr-auto">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" (click)=' profile(); navbar.collapse();'>Profile</a>
+      </li>
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" (click)='messages(); navbar.collapse();'>Messages</a>
+      </li>
+      <li class="nav-item text-nowrap">
+        <span class="nav-link">Last Visit: 20/09/2018 20:14:24</span>
+      </li>
+    </ul><ul class="navbar-nav px-3 py-2">
+      <li class="nav-item text-nowrap">
+        <span class="nav-link">Hello, {{auth.getUserName()}}</span>
+      </li>
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" (click)='logout(); navbar.collapse();'>Sign out</a>
+      </li>
+    </ul>
+  </div>
+</nav>

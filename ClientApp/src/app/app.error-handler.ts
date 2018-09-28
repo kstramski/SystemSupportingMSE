@@ -33,7 +33,7 @@ export class AppErrorHandler implements ErrorHandler {
     });
 
     console.error(error);
-    this.router.navigate(['']);
+    this.router.navigate(['/panel']);
     
     //throw error;
   }
