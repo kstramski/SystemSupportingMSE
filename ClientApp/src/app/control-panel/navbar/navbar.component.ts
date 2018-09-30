@@ -19,7 +19,7 @@ export class NavbarComponent {
   ) { }
 
   profile() {
-    this.router.navigate(['/users/', this.auth.getUserId()]);
+    this.router.navigate(['/panel/users/', this.auth.getUserId()]);
   }
 
   messages() {

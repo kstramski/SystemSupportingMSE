@@ -1,36 +1,70 @@
 <div class="container-fluid">
-  <h2>Users and Accounts Information Charts</h2>
-  <hr>
   <div class="row">
-    <div class="chart col-md-4 col-sm-12">
-      <div class="legend">Users Gender</div>
-      <canvas baseChart [data]="genderData" [labels]="genderLabels" [chartType]="circleChart" [colors]="circleColors"
-        [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-    </div>
-    <div class="chart col-md-4 col-sm-12">
-      <div class="legend">zzz</div>
-      <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="circleChart" [legend]="legendDisplay"
-        [colors]="circleColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-    </div>
-    <div class="chart col-md-4 col-sm-12">
-      <div class="legend">Emails Confirmed</div>
-      <canvas baseChart [data]="emailData" [labels]="emailLabels" [chartType]="circleChart" [colors]="circleColors"
-        [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    <div class="chart col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"><span data-feather="activity"></span> Users and Accounts Information Charts</h4>
+        </div>
+      </div>
     </div>
   </div>
-  <hr>
   <div class="row">
-    <div class="chart col-md-6 col-sm-12">
-      <div class="legend">Users Age</div>
-      <canvas baseChart [data]="ageData" [labels]="ageLabels" [chartType]="rectangleChart" [options]="rectangleOptions"
-        [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    <div class="chart col-md-4 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Users Gender</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart [data]="genderData" [labels]="genderLabels" [chartType]="circleChart" [colors]="circleColors"
+            [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
     </div>
-    <div class="chart col-md-6 col-sm-12">
-      <div class="legend">Accounts Registred per Day</div>
-      <canvas baseChart [data]="registerData" [labels]="registerLabels" [chartType]="lineChart"
-         [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)"
-        (chartClick)="chartClicked($event)"></canvas>
+    <div class="chart col-md-4 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Users Gender</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="circleChart"
+            [legend]="legendDisplay" [colors]="circleColors" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="chart col-md-4 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Emails Confirmed</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart [data]="emailData" [labels]="emailLabels" [chartType]="circleChart" [colors]="circleColors"
+            [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
     </div>
   </div>
-  <hr>
+  <div class="row">
+    <div class="chart col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Users Age</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart [data]="ageData" [labels]="ageLabels" [chartType]="rectangleChart" [options]="rectangleOptions"
+            [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="chart col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Accounts Registered</h5>
+        </div>
+        <div class="card-body">
+          <canvas baseChart [data]="registerData" [labels]="registerLabels" [chartType]="lineChart" [colors]="rectangleColors"
+            [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

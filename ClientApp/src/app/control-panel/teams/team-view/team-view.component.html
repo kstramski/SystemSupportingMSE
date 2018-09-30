@@ -1,0 +1,31 @@
+<div class="container-fluid" *ngIf="team">
+  <h2>{{team.name}}</h2>
+  <hr>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Team Members</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <tr *ngFor="let user of team.users">
+              <th></th>
+              <td>{{user.name}} {{user.surname}}</td>
+              <td><a class="btn btn-primary" [routerLink]="['/panel/users', user.id]">View</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Team History</h5>
+        </div>
+        <div class="card-body">
+
+        </div>
+      </div>
+    </div>
+  </div>

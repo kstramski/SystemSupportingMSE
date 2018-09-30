@@ -1,0 +1,67 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Roles</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th scope="col" *ngFor="let col of rolesColumns" class="col-md-{{col.size}}">{{col.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let role of roles">
+                <th class="col-md-1" scope="row">{{role.id}}</th>
+                <td class="col-md-3">{{role.name}}</td>
+                <td class="col-md-6">{{role.description}}</td>
+                <td class="col-md-2"><a [routerLink]="['/panel/roles/', role.id]" class="btn btn-primary">Edit Desctiprion</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<tabset>
+  <tab heading="Users">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" *ngFor="let col of usersColumns">{{col.title}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of queryResults.items">
+          <th scope="row">{{user.id}}</th>
+          <td>{{user.name}}</td>
+          <td>{{user.surname}}</td>
+          <td>{{user.email}}</td>
+          <td><a [routerLink]="['/panel/roles/users/', user.id]" class="btn btn-primary">Edit Role</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </tab>
+  <tab heading="Roles">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" *ngFor="let col of rolesColumns">{{col.title}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles">
+          <th scope="row">{{role.id}}</th>
+          <td>{{role.name}}</td>
+          <td>{{role.description}}</td>
+          <td><a [routerLink]="['/panel/roles/', role.id]" class="btn btn-primary">Edit Desctiprion</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </tab>
+
+</tabset>

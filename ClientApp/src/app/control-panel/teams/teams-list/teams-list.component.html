@@ -1,0 +1,17 @@
+<h2>Teams</h2>
+<hr>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col" *ngFor="let col of columns">{{col.title}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let team of queryResult">
+      <th scope="row">{{team.id}}</th>
+      <td>{{team.name}}</td>
+      <td><a [routerLink]="['/panel/teams/', team.id]" class="btn btn-primary">View Team</a></td>
+    </tr>
+  </tbody>
+</table>

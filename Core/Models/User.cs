@@ -29,6 +29,8 @@ namespace SystemSupportingMSE.Core.Models
 
         public byte[] PasswordSalt { get; set; }
 
+        public bool Gender { get; set; }
+
         public DateTime BirthDate { get; set; }
 
         [StringLength(50)]
@@ -42,10 +44,13 @@ namespace SystemSupportingMSE.Core.Models
 
         public ICollection<UserRole> Roles { get; set; }
 
+        public ICollection<UserEvent> Events { get; set; }
+
         public User()
         {
             this.Roles = new Collection<UserRole>();
             this.Teams = new Collection<UserTeam>();
+            this.Events = new Collection<UserEvent>();
         }
     }
 }

@@ -74,7 +74,7 @@ namespace SystemSupportingMSE.Controllers
 
         [HttpPut("add/{id}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddUserToTeam([FromBody] TeamSaveUserResource teamResource, int id)
+        public async Task<IActionResult> AddUserToTeam([FromBody] TeamSaveUserResource userResource, int id)
         {
             var team = await teamRepository.GetTeam(id);
             if (team == null)
@@ -84,10 +84,10 @@ namespace SystemSupportingMSE.Controllers
             && !authRepository.IsAuthorizedById(User, team.Captain))
                 return Unauthorized();
 
-            if (string.IsNullOrWhiteSpace(teamResource.Email))
+            if (string.IsNullOrWhiteSpace(userResource.Email))
                 return BadRequest("Email field can not be empty.");
 
-            var user = await userRepository.GetUser(0, teamResource.Email);
+            var user = await userRepository.GetUser(0, userResource.Email);
             if (user == null)
                 return BadRequest("Invalid email.");
 
@@ -104,9 +104,9 @@ namespace SystemSupportingMSE.Controllers
 
         [HttpPut("remove/{id}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> RemoveUserFromTeam([FromBody] TeamUserIdResource teamResource, int id)
+        public async Task<IActionResult> RemoveUserFromTeam([FromBody] int userId, int id)
         {
-            if (teamResource.UserId == 0)
+            if (userId == 0)
                 return BadRequest("Invalid UserId.");
 
             var team = await teamRepository.GetTeam(id);
@@ -115,13 +115,13 @@ namespace SystemSupportingMSE.Controllers
 
             if (!authRepository.IsModerator(User)
             && !authRepository.IsAuthorizedById(User, team.Captain)
-            && !authRepository.IsAuthorizedById(User, teamResource.UserId))
+            && !authRepository.IsAuthorizedById(User, userId))
                 return Unauthorized();
 
-            if (teamResource.UserId == team.Captain)
+            if (userId == team.Captain)
                 return BadRequest("Captain can not be removed.");
 
-            var user = teamRepository.GetUserTeam(team, teamResource.UserId);
+            var user = teamRepository.GetUserTeam(team, userId);
             if (user == null)
                 return BadRequest("User is not belong to this team.");
 
@@ -135,9 +135,9 @@ namespace SystemSupportingMSE.Controllers
 
         [HttpPut("status/{id}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> ChangeUserStatus([FromBody] TeamUserIdResource teamResource, int id)
+        public async Task<IActionResult> ChangeUserStatus([FromBody] int userId, int id)
         {
-            if (teamResource.UserId == 0)
+            if (userId == 0)
                 return BadRequest("Invalid UserId.");
 
             var team = await teamRepository.GetTeam(id);
@@ -145,10 +145,10 @@ namespace SystemSupportingMSE.Controllers
                 return NotFound();
 
             if (!authRepository.IsModerator(User)
-            && !authRepository.IsAuthorizedById(User, teamResource.UserId))
+            && !authRepository.IsAuthorizedById(User, userId))
                 return Unauthorized();
 
-            var user = teamRepository.GetUserTeam(team, teamResource.UserId);
+            var user = teamRepository.GetUserTeam(team, userId);
             if (user == null)
                 return BadRequest("User is not belong to this team.");
 

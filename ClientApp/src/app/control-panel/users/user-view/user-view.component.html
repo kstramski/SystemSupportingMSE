@@ -1,0 +1,33 @@
+<div *ngIf="user">
+  <h3>User Informations</h3>
+  <ul>
+    <li>Name: {{user.name}}</li>
+    <li>Surname: {{user.surname}}</li>
+    <li>Birth Date: {{user.birthDate | date:'dd/MM/yyyy'}}</li>
+    <li>From: {{user.city}}</li>
+  </ul>
+  <hr>
+
+  <h3>Teams</h3>
+  <ol *ngIf="user.teams && user.teams.length > 0">
+    <li *ngFor="let team of user.teams">
+      <a [routerLink]="['/panel/teams/', team.id]">{{team.name}}</a>
+    </li>
+  </ol>
+  <ul *ngIf="user.teams && user.teams.length <= 0">
+    <li>User is not assigned to any team.</li>
+  </ul>
+  <hr>
+
+  <h3>Account Informations</h3>
+  <ul>
+    <li>Registered since: {{user.dateOfRegistration | date:'dd/MM/yyyy'}}</li>
+    <li>Last login: {{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</li>
+  </ul>
+  <hr>
+  <div class="btn-group">
+    <button class="btn btn-primary" [routerLink]="['/panel/users/edit/', user.id]">Edit</button>
+    <button class="btn btn-danger" type="button" *ngIf="user.id" (click)="delete()">Delete</button>
+    <button class="btn btn-secondary" [routerLink]="['/panel/users']">View All Users</button>
+  </div>
+</div>

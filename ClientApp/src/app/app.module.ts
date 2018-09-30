@@ -1,45 +1,21 @@
-import { AppComponent } from './app.component';
-//****************************/
-//Modules
-//****************************/
-//ErrorHandler
-import { AppErrorHandler } from './app.error-handler';
-
-//Angular
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule, ErrorHandler } from '@angular/core';
-
-//Custom Modules
+import { AppErrorHandler } from './app.error-handler';
 import { AppRoutingModule } from './app-routing.module';
-
-//Charts
-import { ChartsModule } from 'ng2-charts';
-
-//JWT
+import { SharedModule } from './shared/shared.module';
 import { JwtModule } from '@auth0/angular-jwt';
 
-//Toastr
-import { ToastrModule } from 'ngx-toastr';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ErrorHandler } from '@angular/core';
 
-//****************************/
-//Services
-//****************************/
 import { AuthGuard } from './../services/guards/auth-guard.service';
 import { AuthService } from '../services/auth.service';
 import { NavbarService } from './../services/navbar.service';
 
 import { RoleService } from './../services/role.service';
+import { TeamService } from '../services/team.service';
 import { UserService } from './../services/user.service';
 
-//****************************/
-//Components
-//****************************/
-
-
+import { AppComponent } from './app.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -47,17 +23,14 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
-   AppComponent
+    AppComponent
   ],
   imports: [
-    BrowserAnimationsModule,
     BrowserModule,
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
+    SharedModule,
 
-    ChartsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -65,7 +38,6 @@ export function tokenGetter() {
         blacklistedRoutes: ['localhost:5001/auth/']
       }
     }),
-    ToastrModule.forRoot(),
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
@@ -73,6 +45,7 @@ export function tokenGetter() {
     AuthService,
     NavbarService,
     RoleService,
+    TeamService,
     UserService
   ],
   bootstrap: [AppComponent]

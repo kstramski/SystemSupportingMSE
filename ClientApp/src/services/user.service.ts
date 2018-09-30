@@ -34,9 +34,9 @@ export class UserService {
 
     toQueryString(obj) {
         var parts = [];
-        for(var prop in obj) {
+        for (var prop in obj) {
             var value = obj[prop];
-            if(value != null && value != undefined)
+            if (value != null && value != undefined)
                 parts.push(encodeURIComponent(prop) + '=' + encodeURIComponent(value));
         }
         console.log(parts.join('&'));
