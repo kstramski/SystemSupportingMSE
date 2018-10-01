@@ -20,6 +20,8 @@ namespace SystemSupportingMSE.Controllers.Resource.Users
 
         public DateTime BirthDate { get; set; }
 
+        public KeyValuePairResource Gender { get; set; }
+
         [StringLength(50)]
         public string City { get; set; }
 

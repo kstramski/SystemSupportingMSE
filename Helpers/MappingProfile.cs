@@ -17,6 +17,7 @@ namespace SystemSupportingMSE.Helpers
             //Domain To API
             /*****************************************/
             CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>));
+            CreateMap<Gender, KeyValuePairResource>();
             CreateMap<Role, KeyValuePairResource>();
             CreateMap<Team, KeyValuePairResource>();
 
@@ -34,7 +35,8 @@ namespace SystemSupportingMSE.Helpers
             //Users
             CreateMap<User, UserProfileResource>()
                 .ForMember(up => up.Roles, opt => opt.MapFrom(u => u.Roles.Select(ur => new Role { Id = ur.Role.Id, Name = ur.Role.Name })))
-                .ForMember(up => up.Teams, opt => opt.MapFrom(u => u.Teams.Select(ut => new Team { Id = ut.Team.Id, Name = ut.Team.Name })));
+                .ForMember(up => up.Teams, opt => opt.MapFrom(u => u.Teams.Select(ut => new Team { Id = ut.Team.Id, Name = ut.Team.Name })))
+                .ForMember(up => up.Gender, opt => opt.MapFrom(u => u.Gender));
 
             /*****************************************/
             //API to Domain

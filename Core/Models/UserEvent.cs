@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace SystemSupportingMSE.Core.Models
 {
+    [Table("UserEvents")]
     public class UserEvent
     {
         public int UserId { get; set; }

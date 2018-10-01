@@ -29,20 +29,22 @@ namespace SystemSupportingMSE.Core.Models
 
         public byte[] PasswordSalt { get; set; }
 
-        public bool Gender { get; set; }
+        public byte GenderId { get; set; }
 
         public DateTime BirthDate { get; set; }
 
         [StringLength(50)]
         public string City { get; set; }
 
-        public ICollection<UserTeam> Teams { get; set; }
-
         public DateTime DateOfRegistration { get; set; }
 
         public DateTime? LastLogin { get; set; }
 
+        public Gender Gender { get; set; }
+
         public ICollection<UserRole> Roles { get; set; }
+
+        public ICollection<UserTeam> Teams { get; set; }
 
         public ICollection<UserEvent> Events { get; set; }
 

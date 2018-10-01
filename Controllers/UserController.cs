@@ -223,5 +223,17 @@ namespace SystemSupportingMSE.Controllers
             return Ok();
         }
 
+        [HttpGet("dashboard")]
+        [Authorize(Roles="Moderator")]
+        public async Task<IActionResult> GetChartsData()
+        {
+            var filter = new UserQuery();
+            var users = await userRepository.GetUsers(filter, false);
+
+            var dashboardData = userRepository.ChartsData(users.Items);
+
+            return Ok(dashboardData);
+        }
+
     }
 }

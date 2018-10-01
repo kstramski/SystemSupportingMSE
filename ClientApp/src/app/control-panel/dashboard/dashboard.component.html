@@ -14,7 +14,7 @@
         <div class="card-header">
           <h5 class="card-title">Users Gender</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="genderData">
           <canvas baseChart [data]="genderData" [labels]="genderLabels" [chartType]="circleChart" [colors]="circleColors"
             [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
@@ -23,7 +23,7 @@
     <div class="chart col-md-4 col-sm-12">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Users Gender</h5>
+          <h5 class="card-title">Test</h5>
         </div>
         <div class="card-body">
           <canvas baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels" [chartType]="circleChart"
@@ -36,7 +36,7 @@
         <div class="card-header">
           <h5 class="card-title">Emails Confirmed</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="emailData">
           <canvas baseChart [data]="emailData" [labels]="emailLabels" [chartType]="circleChart" [colors]="circleColors"
             [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
@@ -49,7 +49,7 @@
         <div class="card-header">
           <h5 class="card-title">Users Age</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="ageData">
           <canvas baseChart [data]="ageData" [labels]="ageLabels" [chartType]="rectangleChart" [options]="rectangleOptions"
             [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
@@ -60,7 +60,7 @@
         <div class="card-header">
           <h5 class="card-title">Accounts Registered</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="registerData">
           <canvas baseChart [data]="registerData" [labels]="registerLabels" [chartType]="lineChart" [colors]="rectangleColors"
             [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>

@@ -32,6 +32,10 @@ export class UserService {
         return this.http.get("/api/users/" + id);
     }
 
+    getDashboardData() {
+        return this.http.get("/api/users/dashboard");
+    }
+
     toQueryString(obj) {
         var parts = [];
         for (var prop in obj) {

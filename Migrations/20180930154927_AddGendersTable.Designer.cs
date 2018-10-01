@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Migrations
 {
     [DbContext(typeof(SportEventsDbContext))]
-    partial class SportEventsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180930154927_AddGendersTable")]
+    partial class AddGendersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,7 +105,7 @@ namespace SystemSupportingMSE.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<byte>("GenderId");
+                    b.Property<byte?>("GenderId");
 
                     b.Property<DateTime?>("LastLogin");
 
@@ -171,8 +173,7 @@ namespace SystemSupportingMSE.Migrations
                 {
                     b.HasOne("SystemSupportingMSE.Core.Models.Gender", "Gender")
                         .WithMany()
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GenderId");
                 });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.UserEvent", b =>

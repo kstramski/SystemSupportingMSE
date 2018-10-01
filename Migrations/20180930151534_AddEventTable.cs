@@ -4,16 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SystemSupportingMSE.Migrations
 {
-    public partial class AddEventsTable : Migration
+    public partial class AddEventTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Gender",
-                table: "Users",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
@@ -32,7 +26,7 @@ namespace SystemSupportingMSE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserEvent",
+                name: "UserEvents",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
@@ -40,15 +34,15 @@ namespace SystemSupportingMSE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserEvent", x => new { x.UserId, x.EventId });
+                    table.PrimaryKey("PK_UserEvents", x => new { x.UserId, x.EventId });
                     table.ForeignKey(
-                        name: "FK_UserEvent_Events_EventId",
+                        name: "FK_UserEvents_Events_EventId",
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserEvent_Users_UserId",
+                        name: "FK_UserEvents_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -56,22 +50,18 @@ namespace SystemSupportingMSE.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserEvent_EventId",
-                table: "UserEvent",
+                name: "IX_UserEvents_EventId",
+                table: "UserEvents",
                 column: "EventId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserEvent");
+                name: "UserEvents");
 
             migrationBuilder.DropTable(
                 name: "Events");
-
-            migrationBuilder.DropColumn(
-                name: "Gender",
-                table: "Users");
         }
     }
 }

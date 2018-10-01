@@ -9,8 +9,8 @@ using SystemSupportingMSE.Helpers;
 namespace SystemSupportingMSE.Migrations
 {
     [DbContext(typeof(SportEventsDbContext))]
-    [Migration("20180930131430_AddEventsTable")]
-    partial class AddEventsTable
+    [Migration("20180930155930_ApplyNotNullableToGenderIdUsersTable")]
+    partial class ApplyNotNullableToGenderIdUsersTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,19 @@ namespace SystemSupportingMSE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Gender", b =>
+                {
+                    b.Property<byte>("Id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(6);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genders");
                 });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.Role", b =>
@@ -92,7 +105,7 @@ namespace SystemSupportingMSE.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<bool>("Gender");
+                    b.Property<byte>("GenderId");
 
                     b.Property<DateTime?>("LastLogin");
 
@@ -110,6 +123,8 @@ namespace SystemSupportingMSE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GenderId");
+
                     b.ToTable("Users");
                 });
 
@@ -123,7 +138,7 @@ namespace SystemSupportingMSE.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("UserEvent");
+                    b.ToTable("UserEvents");
                 });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.UserRole", b =>
@@ -152,6 +167,14 @@ namespace SystemSupportingMSE.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("UserTeams");
+                });
+
+            modelBuilder.Entity("SystemSupportingMSE.Core.Models.User", b =>
+                {
+                    b.HasOne("SystemSupportingMSE.Core.Models.Gender", "Gender")
+                        .WithMany()
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.UserEvent", b =>

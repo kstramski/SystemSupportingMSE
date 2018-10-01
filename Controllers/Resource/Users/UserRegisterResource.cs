@@ -23,6 +23,8 @@ namespace SystemSupportingMSE.Controllers.Resource.Users
 
         public DateTime BirthDate { get; set; }
 
+        public byte GenderId { get; set; }
+
         public string City { get; set; }
 
     }
