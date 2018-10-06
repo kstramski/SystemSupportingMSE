@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Events;
 
 namespace SystemSupportingMSE.Helpers
 {
     public class SportEventsDbContext : DbContext
     {
         public DbSet<Event> Events { get; set; }
+        public DbSet<Competition> Competitions { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
@@ -17,19 +19,19 @@ namespace SystemSupportingMSE.Helpers
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //User Events
-            modelBuilder.Entity<UserEvent>()
-                .HasKey(ue => new { ue.UserId, ue.EventId});
-            modelBuilder.Entity<UserEvent>()
-                .HasOne(ue => ue.Event)
-                .WithMany(e => e.Users)
-                .HasForeignKey(ue => ue.EventId);
-            modelBuilder.Entity<UserEvent>()
-                .HasOne(ue => ue.User)
-                .WithMany(u => u.Events)
-                .HasForeignKey(ue => ue.UserId);  
+            //EventsCompetitions
+            modelBuilder.Entity<EventCompetition>()
+                .HasKey(ec => new { ec.CompetitionId, ec.EventId});
+            modelBuilder.Entity<EventCompetition>()
+                .HasOne(ec => ec.Event)
+                .WithMany(e => e.Competitions)
+                .HasForeignKey(ec => ec.EventId);
+            modelBuilder.Entity<EventCompetition>()
+                .HasOne(ec => ec.Competition)
+                .WithMany(c => c.Events)
+                .HasForeignKey(ec => ec.CompetitionId);  
 
-            //User Roles
+            //UsersRoles
             modelBuilder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
             modelBuilder.Entity<UserRole>()
@@ -41,7 +43,7 @@ namespace SystemSupportingMSE.Helpers
                 .WithMany(r => r.Users)
                 .HasForeignKey(ur => ur.RoleId);
 
-            //User Teams
+            //UsersTeams
             modelBuilder.Entity<UserTeam>()
                 .HasKey(ut => new { ut.UserId, ut.TeamId });
             modelBuilder.Entity<UserTeam>()

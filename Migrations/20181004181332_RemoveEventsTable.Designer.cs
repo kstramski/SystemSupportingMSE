@@ -2,75 +2,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Migrations
 {
     [DbContext(typeof(SportEventsDbContext))]
-    partial class SportEventsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181004181332_RemoveEventsTable")]
+    partial class RemoveEventsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.Competition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<int?>("GroupSize");
-
-                    b.Property<bool>("GroupsRequired");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Competitions");
-                });
-
-            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.Event", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<DateTime>("EventEnds");
-
-                    b.Property<DateTime>("EventStarts");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.EventCompetition", b =>
-                {
-                    b.Property<int>("CompetitionId");
-
-                    b.Property<int>("EventId");
-
-                    b.HasKey("CompetitionId", "EventId");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("EventsCompetitions");
-                });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.Gender", b =>
                 {
@@ -185,19 +132,6 @@ namespace SystemSupportingMSE.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("UserTeams");
-                });
-
-            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.EventCompetition", b =>
-                {
-                    b.HasOne("SystemSupportingMSE.Core.Models.Events.Competition", "Competition")
-                        .WithMany("Events")
-                        .HasForeignKey("CompetitionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SystemSupportingMSE.Core.Models.Events.Event", "Event")
-                        .WithMany("Competitions")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.User", b =>

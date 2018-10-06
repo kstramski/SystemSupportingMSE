@@ -58,13 +58,15 @@ namespace SystemSupportingMSE
             });
 
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ICompetitionRepository, CompetitionRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper();
-            services.AddDbContext<SportEventsDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")).EnableSensitiveDataLogging());
+            services.AddDbContext<SportEventsDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")).EnableSensitiveDataLogging()); //usunac .EnableSensitiveDataLogging()
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
