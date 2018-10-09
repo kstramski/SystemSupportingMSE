@@ -1,0 +1,66 @@
+<div class="container-fluid" *ngIf="competitionInfo">
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Competition Info</h5>
+        </div>
+        <div class="card-body">
+          <p>Event: {{competitionInfo.event.name}}</p>
+          <p>Competition: {{competitionInfo.competition.name}}</p>
+          <p>Competition Starts: {{competitionInfo.competitionDate | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+          <p *ngIf="timePerGroup != null">Time per Group: {{competitionInfo.timePerGroup | date:'HH:mm:ss'}}</p>
+          <hr>
+          <div class="btn-group">
+            <button class="btn btn-primary" [routerLink]="['/panel/events/', competitionInfo.event.id, 'competitions', competitionInfo.competition.id, 'edit']">Edit</button>
+            <button class="btn btn-secondary" [routerLink]="['/panel/events', competitionInfo.event.id]">Back to Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Participants List</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="stage">Stage</label>
+              <select id="stage" class="form-control" [(ngModel)]="query.stage" (change)="onStageChange()">
+                <option value=""></option>
+                <option value="1">1</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6" *ngIf="query.stage">
+              <label for="group">Group</label>
+              <select id="group" class="form-control" [(ngModel)]="query.group" (change)="onGroupChange()">
+                <option value=""></option>
+                <option value="1">1</option>
+              </select>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}" [ngClass]="{coltext: col.center}">{{col.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let user of competitionInfo.usersCompetitions">
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}">{{user.user.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}">{{user.user.surname}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}">test</td>
+                <td class="col-md-{{columns[4].size}}" [ngClass]="{coltext: columns[4].center}">
+                  <a [routerLink]="['/panel/events/', competitionInfo.event.id, 'competitions', competitionInfo.competition.id, 'users', user.user.id]"
+                    class="btn btn-primary">View</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

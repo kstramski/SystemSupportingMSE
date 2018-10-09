@@ -65,11 +65,35 @@ namespace SystemSupportingMSE.Migrations
 
                     b.Property<int>("EventId");
 
+                    b.Property<DateTime>("CompetitionDate");
+
+                    b.Property<TimeSpan?>("TimePerGroup");
+
                     b.HasKey("CompetitionId", "EventId");
 
                     b.HasIndex("EventId");
 
                     b.ToTable("EventsCompetitions");
+                });
+
+            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.UserCompetition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CompetitionId");
+
+                    b.Property<int>("EventId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("CompetitionId", "EventId");
+
+                    b.ToTable("UsersCompetitions");
                 });
 
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.Gender", b =>
@@ -197,6 +221,19 @@ namespace SystemSupportingMSE.Migrations
                     b.HasOne("SystemSupportingMSE.Core.Models.Events.Event", "Event")
                         .WithMany("Competitions")
                         .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.UserCompetition", b =>
+                {
+                    b.HasOne("SystemSupportingMSE.Core.Models.User", "User")
+                        .WithMany("Competitions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SystemSupportingMSE.Core.Models.Events.EventCompetition", "EventCompetition")
+                        .WithMany("UsersCompetitions")
+                        .HasForeignKey("CompetitionId", "EventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

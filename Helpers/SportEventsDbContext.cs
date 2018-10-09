@@ -8,6 +8,8 @@ namespace SystemSupportingMSE.Helpers
     {
         public DbSet<Event> Events { get; set; }
         public DbSet<Competition> Competitions { get; set; }
+        public DbSet<EventCompetition> EventsCompetitions { get; set; }
+        public DbSet<UserCompetition> UsersCompetitions { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }

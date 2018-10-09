@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Events</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}">{{col.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let e of events">
+                <th class="col-md-{{columns[0].size}}" scope="row">{{e.id}}</th>
+                <td class="col-md-{{columns[1].size}}">{{e.name}}</td>
+                <td class="col-md-{{columns[2].size}}">{{e.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="col-md-{{columns[3].size}}">{{e.eventEnds | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="col-md-{{columns[4].size}}">{{e.competitions.length}}</td>
+                <td class="col-md-{{columns[5].size}}"><a [routerLink]="['/panel/events/', e.id]" class="btn btn-primary">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

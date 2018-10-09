@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Competitions</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}">{{col.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let competition of competitions">
+                <th class="col-md-1" scope="row">{{competition.id}}</th>
+                <td class="col-md-5">{{competition.name}}</td>
+                <td class="col-md-2">{{competition.groupsRequired}}</td>
+                <td class="col-md-2">{{competition.groupSize}}</td>
+                <td class="col-md-2"><a [routerLink]="['/panel/competitions/', competition.id]" class="btn btn-primary">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

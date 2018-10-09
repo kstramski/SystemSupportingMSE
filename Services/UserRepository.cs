@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SystemSupportingMSE.Controllers.Resource;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Events;
 using SystemSupportingMSE.Extensions;
 using SystemSupportingMSE.Helpers;
 
@@ -53,7 +54,7 @@ namespace SystemSupportingMSE.Services
 
         public async Task<User> GetUser(int id, string email)
         {
-            var user = context.Users.AsQueryable();
+            var user = context.Users.AsQueryable();//do zmiany
 
             if (id == 0 && !String.IsNullOrWhiteSpace(email))
                 return await user.SingleOrDefaultAsync(u => u.Email == email);
@@ -138,7 +139,8 @@ namespace SystemSupportingMSE.Services
             return true;
         }
 
-        public Dashboard ChartsData(IEnumerable<User> users)
+        //Dashboard
+        public Dashboard ChartsData(IEnumerable<User> users) // do zmiany
         {
             var data = new Dashboard();
             var today = DateTime.Now;
@@ -201,7 +203,5 @@ namespace SystemSupportingMSE.Services
         {
             return usersAge.Count(a => a >= age1 && a <= age2);
         }
-
-
     }
 }

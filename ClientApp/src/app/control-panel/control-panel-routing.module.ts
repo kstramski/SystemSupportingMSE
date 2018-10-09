@@ -11,6 +11,8 @@ export const panelRoutes: Routes = [
     { path: '', component: DashboardComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'competitions', loadChildren: './competitions/competitions.module#CompetitionsModule', canActivate: [AuthGuard] },
+    { path: 'events', loadChildren: './events/events.module#EventsModule', canActivate: [AuthGuard] },
     { path: 'roles', loadChildren: './roles/roles.module#RolesModule', canActivate: [AuthGuard] },
     { path: 'teams', loadChildren: './teams/teams.module#TeamsModule', canActivate: [AuthGuard] },
     { path: 'users', loadChildren: './users/users.module#UsersModule', canActivate: [AuthGuard] },

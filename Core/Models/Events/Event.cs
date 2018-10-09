@@ -22,6 +22,10 @@ namespace SystemSupportingMSE.Core.Models.Events
 
         public DateTime EventEnds { get; set; }
 
+        // public DateTime RegistrationStarts { get; set; }
+
+        // public DateTime RegistrationEnds { get; set; }
+
         public ICollection<EventCompetition> Competitions { get; set; }
 
         public Event()

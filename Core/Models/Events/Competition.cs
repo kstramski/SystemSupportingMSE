@@ -19,7 +19,7 @@ namespace SystemSupportingMSE.Core.Models.Events
 
         public bool GroupsRequired { get; set; }
 
-        public int? GroupSize { get; set; } //byte
+        public int? GroupSize { get; set; }
 
         // public bool TeamRequired { get; set; }
 

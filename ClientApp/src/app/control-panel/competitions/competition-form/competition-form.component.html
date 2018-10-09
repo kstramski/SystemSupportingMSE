@@ -1,0 +1,42 @@
+<h2>{{title}}</h2>
+<hr>
+<p>
+  {{ competition | json }}
+</p>
+<form #f="ngForm" (ngSubmit)=submit()>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" class="form-control" [(ngModel)]="competition.name" required #name="ngModel">
+    <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please enter competition name.</div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input type="text" id="description" name="description" class="form-control" [(ngModel)]="competition.description"
+      required #description="ngModel">
+    <div class="alert alert-danger" *ngIf="description.touched && !description.valid">Please enter description for
+      competition</div>
+  </div>
+  <div class="form-group">
+    <legend class="col-form-label">Groups Required?</legend>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="groupsRequired" id="groupsRequired" [value]="true" [(ngModel)]="competition.groupsRequired">
+      <label class="form-check-label" for="groupsRequired"> Yes </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="groupsRequired" id="notGroupsRequired" [value]="false"
+        [(ngModel)]="competition.groupsRequired">
+      <label class="form-check-label" for="notGroupsRequired"> No </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="groupSize">Group Size</label>
+    <input type="text" id="groupSize" name="groupSize" class="form-control" [(ngModel)]="competition.groupSize"
+      [disabled]="!competition.groupsRequired" [required]="competition.groupsRequired" #groupSize="ngModel">
+    <div class="alert alert-danger" *ngIf="groupSize.touched && !groupSize.valid && competition.groupsRequired">Please enter size of group.</div>
+    <div class="alert alert-danger" *ngIf="competition.groupSize < 2 && competition.groupsRequired">Group size can not be smaller than 2.</div>
+  </div>
+  <hr>
+
+  <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
+  <a class="btn btn-default" [routerLink]="['/panel/competitions/', competition.id]">Cancel</a>
+</form>

@@ -16,6 +16,8 @@ import { TeamService } from '../services/team.service';
 import { UserService } from './../services/user.service';
 
 import { AppComponent } from './app.component';
+import { CompetitionService } from '../services/competition.service';
+import { EventService } from '../services/event.service';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -43,6 +45,8 @@ export function tokenGetter() {
     { provide: ErrorHandler, useClass: AppErrorHandler },
     AuthGuard,
     AuthService,
+    CompetitionService,
+    EventService,
     NavbarService,
     RoleService,
     TeamService,

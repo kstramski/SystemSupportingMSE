@@ -24,7 +24,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<CompetitionResource>> GetEvents()
+        public async Task<IEnumerable<CompetitionResource>> GetCompetitions()
         {
             var events = await competitionRepository.GetCompetitions();
 
@@ -32,7 +32,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEvent(int id)
+        public async Task<IActionResult> GetCompetition(int id)
         {
             var e = await competitionRepository.GetCompetition(id);
             if (e == null)
@@ -84,7 +84,7 @@ namespace SystemSupportingMSE.Controllers
 
             var competition = await competitionRepository.GetCompetition(id);
             if (competition == null)
-                return BadRequest("Invalid competition id.");
+                return NotFound();
 
             if (competitionResource.GroupsRequired == false && competitionResource.GroupSize != null)
                 competitionResource.GroupSize = null;
@@ -102,7 +102,7 @@ namespace SystemSupportingMSE.Controllers
         {
             var competition = await competitionRepository.GetCompetition(id);
             if (competition == null)
-                return BadRequest("Invalid id.");
+                return NotFound();
 
             competitionRepository.Remove(competition);
             await unitOfWork.Complete();

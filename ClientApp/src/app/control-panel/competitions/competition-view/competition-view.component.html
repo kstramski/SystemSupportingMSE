@@ -1,0 +1,38 @@
+<div class="container-fluid" *ngIf="competition">
+  <div class="row">
+    <div class="col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Competition: {{competition.name}}</h5>
+        </div>
+        <div class="card-body">
+          <p>Descritpion: {{competition.description}}</p>
+          <p>Group Required: {{competition.groupsRequired}}</p>
+          <p *ngIf="competition.groupsRequired">Group Size: {{competition.groupSize}}</p>
+          <ul>
+            <li>Descritpion: {{competition.description}}</li>
+            <li>Group Required: {{competition.groupsRequired}}</li>
+            <li *ngIf="competition.groupsRequired">Group Size: {{competition.groupSize}}</li>
+          </ul>
+          <div class="btn-group">
+            <button class="btn btn-primary" [routerLink]="['/panel/competitions/edit/', competition.id]">Edit</button>
+            <button class="btn btn-danger" type="button" *ngIf="competition.id" (click)="delete()">Delete</button>
+            <button class="btn btn-secondary" [routerLink]="['/panel/competitions']">View All Competitions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">List of Events</h5>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li *ngFor="let event of competition.events">{{event.name}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

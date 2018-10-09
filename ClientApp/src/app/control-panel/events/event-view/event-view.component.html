@@ -1,0 +1,46 @@
+<div class="container-fluid" *ngIf="event">
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Event: {{event.name}}</h5>
+        </div>
+        <div class="card-body">
+          <p>Descritpion: {{event.description}}</p>
+          <p>Event Starts: {{event.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+          <p>Event Ends: {{event.eventEnds | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+          <hr>
+          <div class="btn-group">
+            <button class="btn btn-primary" [routerLink]="['/panel/events/edit/', event.id]">Edit</button>
+            <button class="btn btn-danger" type="button" *ngIf="event.id" (click)="delete()">Delete</button>
+            <button class="btn btn-secondary" [routerLink]="['/panel/events']">View All Competitions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Competitions List</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}" [ngClass]="{coltext: col.center}">{{col.title}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let competition of event.competitions">
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}" >{{competition.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}" >{{competition.users.length}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}" ><a [routerLink]="['/panel/events/', event.id, 'competitions', competition.id]" class="btn btn-primary">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

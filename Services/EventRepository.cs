@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SystemSupportingMSE.Core;
@@ -28,6 +29,9 @@ namespace SystemSupportingMSE.Services
             return await context.Events
                 .Include(e => e.Competitions)
                     .ThenInclude(ec => ec.Competition)
+                .Include(e => e.Competitions)
+                    .ThenInclude(ec => ec.UsersCompetitions)
+                        .ThenInclude(uc => uc.User)
                 .SingleOrDefaultAsync(e => e.Id == id);
         }
 
@@ -39,6 +43,36 @@ namespace SystemSupportingMSE.Services
         public void Remove(Event e)
         {
             context.Remove(e);
+        }
+
+        public bool CompetitionExist(Event e, int competitionId)
+        {
+            return e.Competitions.Any(ec => ec.CompetitionId == competitionId);
+        }
+
+        public Task<EventCompetition> GetEventCompetition(int eventId, int competitionId)
+        {
+            return context.EventsCompetitions
+                .Include(ec => ec.Event)
+                .Include(ec => ec.Competition)
+                .Include(ec => ec.UsersCompetitions)
+                    .ThenInclude(uc => uc.User)
+                .SingleOrDefaultAsync(ec => ec.EventId == eventId && ec.CompetitionId == competitionId);
+        }
+
+        public async Task<UserCompetition> FindUserCompetition(int userId, int eventId, int competitionId)
+        {
+            return await context.UsersCompetitions.SingleOrDefaultAsync(uc => uc.CompetitionId == competitionId && uc.EventId == eventId && uc.UserId == userId);
+        }
+
+        public void AddUserToCompetition(int userId, int eventId, int competitionId)
+        {
+            context.UsersCompetitions.Add(new UserCompetition { EventId = eventId, CompetitionId = competitionId, UserId = userId });
+        }
+
+        public void RemoveUserFromEvent(UserCompetition userCompetition)
+        {
+            context.Remove(userCompetition);
         }
     }
 }

@@ -14,11 +14,11 @@ export class UsersListComponent implements OnInit {
     pageSize: this.PAGE_SIZE
   };
   columns: any = [
-    { title: 'Id', size: 1 },
+    { title: 'Id', size: 1, center: true },
     { title: 'Name', key: 'name', isSortable: true, size: 2 },
     { title: 'Surname', key: 'surname', isSortable: true, size: 3 },
-    { title: 'Last Login', key: 'lastLogin', isSortable: true, size: 5 },
-    { title: 'Action', size: 1 }
+    { title: 'Last Login', key: 'lastLogin', isSortable: true, size: 4 },
+    { title: 'Action', size: 2, center: true }
   ];
 
   constructor(private userService: UserService) { }

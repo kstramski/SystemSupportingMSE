@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SystemSupportingMSE.Core.Models.Events;
 
 namespace SystemSupportingMSE.Core.Models
 {
@@ -46,13 +47,13 @@ namespace SystemSupportingMSE.Core.Models
 
         public ICollection<UserTeam> Teams { get; set; }
 
-        //public ICollection<UserEvent> Events { get; set; }
+        public ICollection<UserCompetition> Competitions { get; set; }
 
         public User()
         {
             this.Roles = new Collection<UserRole>();
             this.Teams = new Collection<UserTeam>();
-            //this.Events = new Collection<UserEvent>();
+            this.Competitions = new Collection<UserCompetition>();
         }
     }
 }
