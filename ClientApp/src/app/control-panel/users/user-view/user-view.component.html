@@ -23,7 +23,8 @@
   <h3>Account Informations</h3>
   <ul>
     <li>Registered since: {{user.dateOfRegistration | date:'dd/MM/yyyy'}}</li>
-    <li>Last login: {{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</li>
+    <li *ngIf="user.lastLogin">Last login: {{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</li>
+    <li *ngIf="!user.lastLogin">Last login: Never</li>
   </ul>
   <hr>
   <div class="btn-group">

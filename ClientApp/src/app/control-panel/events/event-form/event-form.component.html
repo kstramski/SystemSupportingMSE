@@ -22,19 +22,37 @@
               <div class="alert alert-danger" *ngIf="description.touched && !description.valid">Please enter
                 description for event</div>
             </div>
-            <div class="form-group">
-              <label for="eventStarts">Event Starts</label>
-              <input type="text" id="eventStarts" name="eventStarts" class="form-control" [(ngModel)]="event.eventStarts"
-                required #eventStarts="ngModel">
-              <div class="alert alert-danger" *ngIf="eventStarts.touched && !eventStarts.valid">Please enter the start
-                date of the event.</div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="eventStartsDate">Event Starts Date</label>
+                <input type="date" id="eventStartsDate" name="eventStartsDate" class="form-control" [(ngModel)]="eventStarts[0]"
+                  #eventStartsDate="ngModel" required>
+                <div class="alert alert-danger" *ngIf="eventStartsDate.touched && !eventStartsDate.valid">Please enter
+                  event start date</div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="eventStartsTime">Time</label>
+                <input type="time" id="eventStartsTime" name="eventStartsTime" class="form-control" [(ngModel)]="eventStarts[1]"
+                  #eventStartsTime="ngModel" required>
+                <div class="alert alert-danger" *ngIf="eventStartsTime.touched && !eventStartsTime.valid">Please enter
+                  event start time</div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="eventEnds">Event Ends</label>
-              <input type="text" id="eventEnds" name="eventEnds" class="form-control" [(ngModel)]="event.eventEnds"
-                required #eventEnds="ngModel">
-              <div class="alert alert-danger" *ngIf="eventEnds.touched && !eventEnds.valid">Please enter the end date
-                of the event.</div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="eventEndsDate">Event Starts Date</label>
+                <input type="date" id="eventEndsDate" name="eventEndsDate" class="form-control" [(ngModel)]="eventEnds[0]"
+                  #eventEndsDate="ngModel" required>
+                <div class="alert alert-danger" *ngIf="eventEndsDate.touched && !eventEndsDate.valid">Please enter
+                  event end date</div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="eventEndsTime">Time</label>
+                <input type="time" id="eventEndsTime" name="eventEndsTime" class="form-control" [(ngModel)]="eventEnds[1]"
+                  #eventEndsTime="ngModel" required>
+                <div class="alert alert-danger" *ngIf="eventEndsTime.touched && !eventEndsTime.valid">Please enter
+                  event end date</div>
+              </div>
             </div>
             <div class="form-group">
               <label for="competitions">Competitions</label>

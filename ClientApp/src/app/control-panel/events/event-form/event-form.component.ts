@@ -11,7 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EventFormComponent implements OnInit {
   title: string = "New Event"
-
+  eventStarts: Array<string> = [];
+  eventEnds: Array<string> = [];
   event: SaveEvent = {
     id: 0,
     name: "",
@@ -53,14 +54,18 @@ export class EventFormComponent implements OnInit {
     this.event.id = e.id,
       this.event.name = e.name,
       this.event.description = e.description,
-      this.event.eventStarts = e.eventStarts,
-      this.event.eventEnds = e.eventEnds,
       e.competitions.forEach(c => {
         this.event.competitions.push(c.id)
       });
+
+    this.eventStarts = e.eventStarts.split('T');
+    this.eventEnds = e.eventEnds.split('T');
   }
 
   submit() {
+    this.event.eventStarts = this.eventStarts.join('T');
+    this.event.eventEnds = this.eventEnds.join('T');
+
     if (this.event.id) {
       this.eventService.update(this.event)
         .subscribe(e => {
@@ -91,7 +96,6 @@ export class EventFormComponent implements OnInit {
   }
 
   removeCompetition(id) {
-    console.log(id);
     var index = this.event.competitions.indexOf(id);
     this.event.competitions.splice(index, 1);
   }

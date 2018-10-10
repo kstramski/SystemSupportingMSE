@@ -31,7 +31,7 @@ namespace SystemSupportingMSE.Controllers.Resource.Users
 
         public DateTime DateOfRegistration { get; set; }
 
-        public DateTime LastLogin { get; set; }
+        public DateTime? LastLogin { get; set; }
 
         public UserProfileResource()
         {

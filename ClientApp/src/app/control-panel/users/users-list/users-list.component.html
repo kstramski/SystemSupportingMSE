@@ -36,7 +36,8 @@
                 <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row">{{user.id}}</th>
                 <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}">{{user.name}}</td>
                 <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}">{{user.surname}}</td>
-                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}">{{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td *ngIf="user.lastLogin" class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}">{{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td *ngIf="!user.lastLogin" class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}">Never</td>
                 <td class="col-md-{{columns[4].size}}" [ngClass]="{coltext: columns[4].center}"><a class="btn btn-primary" [routerLink]="['/panel/users/', user.id]">View</a></td>
               </tr>
             </tbody>
