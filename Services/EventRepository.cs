@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +49,26 @@ namespace SystemSupportingMSE.Services
         public bool CompetitionExist(Event e, int competitionId)
         {
             return e.Competitions.Any(ec => ec.CompetitionId == competitionId);
+        }
+
+        public void AddDatesToCompetitions(Event e)
+        {
+            foreach (var competition in e.Competitions)
+            {
+                var def = new DateTime(1, 1, 1, 0, 0, 0);
+
+                if (competition.CompetitionDate <= def)
+                    competition.CompetitionDate = e.EventStarts;
+
+                if (competition.RegistrationStarts <= def)
+                    competition.RegistrationStarts = DateTime.Now;
+
+                if (competition.RegistrationEnds <= def)
+                    competition.RegistrationEnds = e.EventStarts;
+
+                if (competition.Competition.GroupsRequired)
+                    competition.TimePerGroup = new TimeSpan(0, 15, 0);
+            }
         }
 
         public Task<EventCompetition> GetEventCompetition(int eventId, int competitionId)

@@ -35,4 +35,9 @@ export class EventService {
     getEventCompetition(eventId, competitionId) {
         return this.http.get("/api/events/" + eventId + "/competitions/" + competitionId);
     }
+
+    updateEventCompetition(e) {
+        var body = JSON.stringify(e);
+        return this.http.put("/api/events/" + e.eventId + "/competitions/" + e.competitionId, body, httpOptions);
+    }
 }

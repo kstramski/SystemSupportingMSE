@@ -9,6 +9,8 @@
           <p>Descritpion: {{event.description}}</p>
           <p>Event Starts: {{event.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</p>
           <p>Event Ends: {{event.eventEnds | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+          <p *ngIf="event.isActive">Event is Active: Yes</p>
+          <p *ngIf="!event.isActive">Event is Active: No</p>
           <hr>
           <div class="btn-group">
             <button class="btn btn-primary" [routerLink]="['/panel/events/edit/', event.id]">Edit</button>
@@ -27,7 +29,7 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}" [ngClass]="{coltext: col.center}">{{col.title}}</th>
+                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}" [ngClass]="{'coltext': col.center}">{{col.title}}</th>
               </tr>
             </thead>
             <tbody>

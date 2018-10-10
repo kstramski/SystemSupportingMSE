@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -48,7 +49,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles="Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> CreateEvent([FromBody] EventSaveResource eventResource)
         {
             if (!ModelState.IsValid)
@@ -57,6 +58,7 @@ namespace SystemSupportingMSE.Controllers
             var e = mapper.Map<EventSaveResource, Event>(eventResource);
 
             eventRepository.Add(e);
+            eventRepository.AddDatesToCompetitions(e);
             await unitOfWork.Complete();
 
             e = await eventRepository.GetEvent(e.Id);
@@ -67,7 +69,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles="Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> EditEvent([FromBody] EventSaveResource eventResource, int id)
         {
             if (!ModelState.IsValid)
@@ -78,6 +80,7 @@ namespace SystemSupportingMSE.Controllers
                 return NotFound();
 
             mapper.Map<EventSaveResource, Event>(eventResource, e);
+            eventRepository.AddDatesToCompetitions(e);
             await unitOfWork.Complete();
 
             e = await eventRepository.GetEvent(e.Id);
@@ -88,7 +91,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles="Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> RemoveEvent(int id)
         {
             var e = await eventRepository.GetEvent(id);
@@ -100,25 +103,41 @@ namespace SystemSupportingMSE.Controllers
 
             return Ok();
         }
-        
+
         //Event Competition information
         [HttpGet("{eventId}/competitions/{competitionId}")]
         public async Task<IActionResult> GetEventCompetition(int eventId, int competitionId)
         {
             var eventCompetition = await eventRepository.GetEventCompetition(eventId, competitionId);
-            if(eventCompetition == null)
+            if (eventCompetition == null)
                 return NotFound();
 
             var result = mapper.Map<EventCompetition, EventCompetitionResource>(eventCompetition);
 
             return Ok(result);
         }
-        
+
+        //Event Competition information
+        [HttpPut("{eventId}/competitions/{competitionId}")]
+        public async Task<IActionResult> EditEventCompetition([FromBody] EventCompetitionSaveResource eventResource, int eventId, int competitionId)
+        {
+            var eventCompetition = await eventRepository.GetEventCompetition(eventId, competitionId);
+            if (eventCompetition == null)
+                return NotFound();
+
+            mapper.Map<EventCompetitionSaveResource, EventCompetition>(eventResource, eventCompetition);
+            await unitOfWork.Complete();
+
+            var result = mapper.Map<EventCompetition, EventCompetitionResource>(eventCompetition);
+
+            return Ok(result);
+        }
+
 
         // Assign user to event competition
         // UserCompetitionSaveResource - UserId, CompetitionID | id - EventId
         [HttpPost("{id}/users")]
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AssignUserToEvent([FromBody] UserCompetitionSaveResource eventResource, int id)
         {
             if (!ModelState.IsValid)
@@ -147,7 +166,7 @@ namespace SystemSupportingMSE.Controllers
         // Remove user from event competition
         // UserCompetitionSaveResource - UserId, CompetitionID | id - EventId
         [HttpDelete("{id}/users")]
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> RemoveUserFromEvent([FromBody] UserCompetitionSaveResource eventResource, int id)
         {
             if (!ModelState.IsValid)

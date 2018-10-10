@@ -13,7 +13,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let e of events">
+              <tr class="row" *ngFor="let e of events" [ngClass]="{'table-danger': !e.isActive}">
                 <th class="col-md-{{columns[0].size}}" scope="row">{{e.id}}</th>
                 <td class="col-md-{{columns[1].size}}">{{e.name}}</td>
                 <td class="col-md-{{columns[2].size}}">{{e.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</td>

@@ -8,8 +8,12 @@
         <div class="card-body">
           <p>Event: {{competitionInfo.event.name}}</p>
           <p>Competition: {{competitionInfo.competition.name}}</p>
+          <hr>
+          <p>Registration Starts: {{competitionInfo.registrationStarts | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+          <p>Registration Ends: {{competitionInfo.registrationEnds | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+          <hr>
           <p>Competition Starts: {{competitionInfo.competitionDate | date:'dd/MM/yyyy HH:mm:ss'}}</p>
-          <p *ngIf="timePerGroup != null">Time per Group: {{competitionInfo.timePerGroup | date:'HH:mm:ss'}}</p>
+          <p *ngIf="competitionInfo.timePerGroup">Time per Group: {{competitionInfo.timePerGroup}}</p>
           <hr>
           <div class="btn-group">
             <button class="btn btn-primary" [routerLink]="['/panel/events/', competitionInfo.event.id, 'competitions', competitionInfo.competition.id, 'edit']">Edit</button>

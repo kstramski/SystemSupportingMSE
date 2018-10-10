@@ -14,6 +14,9 @@ namespace SystemSupportingMSE.Core.Models.Events
         public Event Event { get; set; }
         public Competition Competition { get; set; }
 
+        public DateTime RegistrationStarts { get; set; }
+        public DateTime RegistrationEnds { get; set; }
+
         public DateTime CompetitionDate { get; set; }
         public TimeSpan? TimePerGroup { get; set; }
 

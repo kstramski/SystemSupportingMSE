@@ -19,6 +19,7 @@ export class EventFormComponent implements OnInit {
     description: "",
     eventStarts: "",
     eventEnds: "",
+    isActive: false,
     competitions: [],
   };
 
@@ -51,11 +52,12 @@ export class EventFormComponent implements OnInit {
   }
 
   setEvent(e) {
-    this.event.id = e.id,
-      this.event.name = e.name,
-      this.event.description = e.description,
+    this.event.id = e.id;
+      this.event.name = e.name;
+      this.event.description = e.description;
+      this.event.isActive = e.isActive;
       e.competitions.forEach(c => {
-        this.event.competitions.push(c.id)
+        this.event.competitions.push(c.id);
       });
 
     this.eventStarts = e.eventStarts.split('T');
@@ -108,5 +110,6 @@ export interface SaveEvent {
   description: string,
   eventStarts: string,
   eventEnds: string,
+  isActive: boolean,
   competitions: Array<number>,
 }

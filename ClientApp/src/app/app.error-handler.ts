@@ -30,11 +30,9 @@ export class AppErrorHandler implements ErrorHandler {
     this.ngZone.run(() => {
       this.toastr.error(this.errorMessage, "Error", { timeOut: 5000 });
       this.errorMessage = null;
+      console.error(error);
+      this.router.navigate(['/panel']);
     });
-
-    console.error(error);
-    this.router.navigate(['/panel']);
-    
     //throw error;
   }
 

@@ -7,6 +7,7 @@ import { EventFormComponent } from './event-form/event-form.component';
 import { EventViewComponent } from './event-view/event-view.component';
 import { AuthGuard } from '../../../services/guards/auth-guard.service';
 import { EventCompetitionViewComponent } from './event-competition-view/event-competition-view.component';
+import { EventCompetitionEditComponent } from './event-competition-edit/event-competition-edit.component';
 
 const routes: Routes = [
   { path: '', component: EventsComponent,
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'edit/:id', component: EventFormComponent, canActivate: [AuthGuard] },
     { path: ':id', component: EventViewComponent, canActivate: [AuthGuard] },
     { path: ':eventId/competitions/:competitionId', component: EventCompetitionViewComponent, canActivate: [AuthGuard] },
+    { path: ':eventId/competitions/:competitionId/edit', component: EventCompetitionEditComponent, canActivate: [AuthGuard] },
   ]
 },
 ];
@@ -32,4 +34,5 @@ export const eventsComponents = [
     EventFormComponent,
     EventViewComponent,
     EventCompetitionViewComponent,
+    EventCompetitionEditComponent,
 ];

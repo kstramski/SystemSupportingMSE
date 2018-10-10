@@ -44,9 +44,12 @@ namespace SystemSupportingMSE.Helpers
                             .Select(uc => new UserBasicsResource { Id = uc.User.Id, Name = uc.User.Name, Surname = uc.User.Surname })
                             .ToList()
                     })));
+
+            //EventCompetition
             CreateMap<EventCompetition, EventCompetitionResource>()
                 .ForMember(er => er.Event, opt => opt.MapFrom(ec => new Event { Id = ec.Event.Id, Name = ec.Event.Name }))
                 .ForMember(er => er.Competition, opt => opt.MapFrom(ec => new Competition { Id = ec.Competition.Id, Name = ec.Competition.Name }))
+                .ForMember(er => er.GroupRequired, opt => opt.MapFrom(ec => ec.Competition.GroupsRequired))
                 .ForMember(er => er.UsersCompetitions, opt => opt.MapFrom(ec => ec.UsersCompetitions
                     .Select(uc =>
                         new UserCompetitionResource
@@ -95,6 +98,12 @@ namespace SystemSupportingMSE.Helpers
                     foreach (var c in addCompetitions)
                         e.Competitions.Add(c);
                 });
+
+            //EventCompetition 
+            CreateMap<EventCompetitionSaveResource, EventCompetition>()
+                .ForMember(ec => ec.CompetitionId, opt => opt.Ignore())
+                .ForMember(ec => ec.EventId, opt => opt.Ignore());
+
 
             //Roles
             CreateMap<RoleResource, Role>()

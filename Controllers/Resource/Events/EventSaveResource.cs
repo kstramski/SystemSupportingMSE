@@ -20,6 +20,8 @@ namespace SystemSupportingMSE.Controllers.Resource.Events
 
         public DateTime EventEnds { get; set; }
 
+        public bool IsActive { get; set; }
+
         public ICollection<int> Competitions { get; set; }
 
         public EventSaveResource()

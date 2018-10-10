@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">{{title}}</h5>
+        </div>
+        <div class="card-body">
+          <p>
+            {{ event | json }}
+          </p>
+          <form #f="ngForm" (ngSubmit)=submit()>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="registrationStartsDate">Registration Starts Date</label>
+                <input type="date" id="registrationStartsDate" name="registrationStartsDate" class="form-control"
+                  [(ngModel)]="ecDate[0][0]" #registrationStartsDate="ngModel" required>
+                <div class="alert alert-danger" *ngIf="registrationStartsDate.touched && !registrationStartsDate.valid">Please
+                  enter registration start date</div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="registrationStartsTime">Time</label>
+                <input type="time" id="registrationStartsTime" name="registrationStartsTime" class="form-control"
+                  [(ngModel)]="ecDate[0][1]" #registrationStartsTime="ngModel" required>
+                <div class="alert alert-danger" *ngIf="registrationStartsTime.touched && !registrationStartsTime.valid">Please
+                  enter registration start time</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="registrationEndsDate">Registration Ends Date</label>
+                <input type="date" id="registrationEndsDate" name="registrationEndsDate" class="form-control"
+                  [(ngModel)]="ecDate[1][0]" #registrationEndsDate="ngModel" required>
+                <div class="alert alert-danger" *ngIf="registrationEndsDate.touched && !registrationEndsDate.valid">Please
+                  enter
+                  registration start date</div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="registrationEndsTime">Time</label>
+                <input type="time" id="registrationEndsTime" name="registrationEndsTime" class="form-control"
+                  [(ngModel)]="ecDate[1][1]" #registrationEndsTime="ngModel" required>
+                <div class="alert alert-danger" *ngIf="registrationEndsTime.touched && !registrationEndsTime.valid">Please
+                  enter registration start time</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="competitionDate">Competition Date</label>
+                <input type="date" id="competitionDate" name="competitionDate" class="form-control" [(ngModel)]="ecDate[2][0]"
+                  #competitionDate="ngModel" required>
+                <div class="alert alert-danger" *ngIf="competitionDate.touched && !competitionDate.valid">Please enter
+                  competition date</div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="competitionTime">Time</label>
+                <input type="time" id="competitionTime" name="competitionTime" class="form-control" [(ngModel)]="ecDate[2][1]"
+                  #competitionTime="ngModel" required>
+                <div class="alert alert-danger" *ngIf="competitionTime.touched && !competitionTime.valid">Please enter
+                  competition time</div>
+              </div>
+            </div>
+            <hr *ngIf="event.groupRequired">
+            <div class="row" *ngIf="event.groupRequired">
+              <div class="form-group col-md-6">
+                <label for="groupTime">Time For Every Group</label>
+                <input type="time" id="groupTime" name="groupTime" class="form-control" [(ngModel)]="event.timePerGroup"
+                  #groupTime="ngModel" required>
+                <div class="alert alert-danger" *ngIf="groupTime.touched && !groupTime.valid">Please enter
+                  time per group</div>
+              </div>
+            </div>
+            <hr>
+            <div class="btn-group">
+              <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
+              <a class="btn btn-secondary" [routerLink]="['/panel/events/', event.eventId, 'competitions', event.competitionId]">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

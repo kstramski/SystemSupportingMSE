@@ -11,6 +11,7 @@ namespace SystemSupportingMSE.Core
         void Add(Event e);
         void Remove(Event e);
         bool CompetitionExist(Event e, int competitionId);
+        void AddDatesToCompetitions(Event e);
         Task<EventCompetition> GetEventCompetition(int eventId, int competitionId);
         Task<UserCompetition> FindUserCompetition(int userId, int eventId, int competitionId);
         void AddUserToCompetition(int userId, int eventId, int competitionId);

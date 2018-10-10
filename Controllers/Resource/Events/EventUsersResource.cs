@@ -16,6 +16,8 @@ namespace SystemSupportingMSE.Controllers.Resource.Events
         public DateTime EventStarts { get; set; }
 
         public DateTime EventEnds { get; set; }
+        
+        public bool IsActive { get; set; }
 
         public ICollection<CompetitionUsersResource> Competitions { get; set; }
 
