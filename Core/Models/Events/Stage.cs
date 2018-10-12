@@ -6,6 +6,7 @@ namespace SystemSupportingMSE.Core.Models.Events
     [Table("Stages")]
     public class Stage
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public byte Id { get; set; }
 
         [Required]

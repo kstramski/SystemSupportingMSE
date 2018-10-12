@@ -8,6 +8,7 @@
         <div class="card-body">
           <p>Event: {{competitionInfo.event.name}}</p>
           <p>Competition: {{competitionInfo.competition.name}}</p>
+          <p>Participants: {{competitionInfo.usersCount}}/X</p>
           <hr>
           <p>Registration Starts: {{competitionInfo.registrationStarts | date:'dd/MM/yyyy HH:mm:ss'}}</p>
           <p>Registration Ends: {{competitionInfo.registrationEnds | date:'dd/MM/yyyy HH:mm:ss'}}</p>
@@ -33,7 +34,7 @@
               <label for="stage">Stage</label>
               <select id="stage" class="form-control" [(ngModel)]="query.stage" (change)="onStageChange()">
                 <option value=""></option>
-                <option value="1">1</option>
+                <option *ngFor="let stage of stages" value="{{stage.is}}">{{stage.name}}</option>
               </select>
             </div>
             <div class="form-group col-md-6" *ngIf="query.stage">
@@ -51,7 +52,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let user of competitionInfo.usersCompetitions">
+              <tr class="row" *ngFor="let user of participants">
                 <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
                 <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}">{{user.user.name}}</td>
                 <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}">{{user.user.surname}}</td>

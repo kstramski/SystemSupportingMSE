@@ -8,11 +8,7 @@ namespace SystemSupportingMSE.Controllers.Resource.UsersCompetitions
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<UserBasicsResource> Users { get; set; }
-
-        public CompetitionUsersResource()
-        {
-            Users = new Collection<UserBasicsResource>();
-        }
+        
+        public int UsersCount { get; set; }
     }
 }

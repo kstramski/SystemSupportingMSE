@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Migrations
 {
     [DbContext(typeof(SportEventsDbContext))]
-    partial class SportEventsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181012131351_AddStageAndGroupToUsersCompetitions")]
+    partial class AddStageAndGroupToUsersCompetitions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +109,7 @@ namespace SystemSupportingMSE.Migrations
 
                     b.Property<byte?>("GroupId");
 
-                    b.Property<byte>("StageId");
+                    b.Property<byte?>("StageId");
 
                     b.Property<int>("UserId");
 
@@ -254,8 +256,7 @@ namespace SystemSupportingMSE.Migrations
                 {
                     b.HasOne("SystemSupportingMSE.Core.Models.Events.Stage", "Stage")
                         .WithMany()
-                        .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StageId");
 
                     b.HasOne("SystemSupportingMSE.Core.Models.User", "User")
                         .WithMany("Competitions")

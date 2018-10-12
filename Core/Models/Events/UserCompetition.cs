@@ -14,10 +14,10 @@ namespace SystemSupportingMSE.Core.Models.Events
         public int CompetitionId { get; set; }
         public EventCompetition EventCompetition { get; set; }
 
-        // public byte? StageId { get; set; }
-        // public Stage Stage { get; set; }
+        public byte StageId { get; set; }
+        public Stage Stage { get; set; }
 
-        // public byte? GroupId { get; set; }
+        public byte? GroupId { get; set; }
         // public Group Group { get; set; }
     }
 }

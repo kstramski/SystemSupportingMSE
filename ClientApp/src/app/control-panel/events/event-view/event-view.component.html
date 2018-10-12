@@ -13,9 +13,9 @@
           <p *ngIf="!event.isActive">Event is Active: No</p>
           <hr>
           <div class="btn-group">
-            <button class="btn btn-primary" [routerLink]="['/panel/events/edit/', event.id]">Edit</button>
+            <a class="btn btn-primary" [routerLink]="['/panel/events/edit/', event.id]">Edit</a>
             <button class="btn btn-danger" type="button" *ngIf="event.id" (click)="delete()">Delete</button>
-            <button class="btn btn-secondary" [routerLink]="['/panel/events']">View All Competitions</button>
+            <a class="btn btn-secondary" [routerLink]="['/panel/events']">Back To All Events</a>
           </div>
         </div>
       </div>
@@ -36,8 +36,10 @@
               <tr class="row" *ngFor="let competition of event.competitions">
                 <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
                 <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}" >{{competition.name}}</td>
-                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}" >{{competition.users.length}}</td>
-                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}" ><a [routerLink]="['/panel/events/', event.id, 'competitions', competition.id]" class="btn btn-primary">View</a></td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}" >{{competition.usersCount}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}" >
+                  <a [routerLink]="['/panel/events/', event.id, 'competitions', competition.id]" class="btn btn-primary">Details</a>
+                </td>
               </tr>
             </tbody>
           </table>

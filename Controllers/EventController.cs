@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SystemSupportingMSE.Controllers.Resource;
 using SystemSupportingMSE.Controllers.Resource.Events;
 using SystemSupportingMSE.Core;
+using SystemSupportingMSE.Core.Models;
 using SystemSupportingMSE.Core.Models.Events;
+using SystemSupportingMSE.Core.Models.Query;
 
 namespace SystemSupportingMSE.Controllers
 {
@@ -28,11 +31,12 @@ namespace SystemSupportingMSE.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IEnumerable<EventResource>> GetEvents()
+        public async Task<QueryResultResource<EventResource>> GetEvents(EventQueryResource filterResource)
         {
-            var events = await eventRepository.GetEvents();
+            var filter = mapper.Map<EventQueryResource, EventQuery>(filterResource);
+            var queryResult = await eventRepository.GetEvents(filter);
 
-            return mapper.Map<IEnumerable<Event>, IEnumerable<EventResource>>(events);
+            return mapper.Map<QueryResult<Event>, QueryResultResource<EventResource>>(queryResult);
         }
 
         [HttpGet("{id}")]
@@ -131,6 +135,18 @@ namespace SystemSupportingMSE.Controllers
             var result = mapper.Map<EventCompetition, EventCompetitionResource>(eventCompetition);
 
             return Ok(result);
+        }
+
+        //Event Competition Users
+        [HttpGet("{eventId}/competitions/{competitionId}/participants")]
+        [AllowAnonymous]
+        public async Task<IEnumerable<UserCompetitionResource>> GetEventCompetitionUsers(int eventId, int competitionId)
+        {
+            var users = await eventRepository.GetEventCompetitionUsers(eventId, competitionId);
+
+            var result = mapper.Map<IEnumerable<UserCompetition>, IEnumerable<UserCompetitionResource>>(users);
+
+            return result;
         }
 
 

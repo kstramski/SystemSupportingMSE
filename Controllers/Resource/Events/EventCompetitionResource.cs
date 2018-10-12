@@ -16,11 +16,6 @@ namespace SystemSupportingMSE.Controllers.Resource.Events
         public bool GroupRequired { get; set; }
         public TimeSpan? TimePerGroup { get; set; }
 
-        public ICollection<UserCompetitionResource> UsersCompetitions { get; set; }
-
-        public EventCompetitionResource()
-        {
-            UsersCompetitions = new Collection<UserCompetitionResource>();
-        }
+        public int UsersCount { get; set; }
     }
 }

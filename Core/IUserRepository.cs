@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Query;
 
 namespace SystemSupportingMSE.Core
 {

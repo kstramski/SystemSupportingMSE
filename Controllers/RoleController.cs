@@ -8,6 +8,7 @@ using SystemSupportingMSE.Controllers.Resource.Roles;
 using SystemSupportingMSE.Controllers.Resource.Users;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Query;
 
 namespace SystemSupportingMSE.Controllers
 {

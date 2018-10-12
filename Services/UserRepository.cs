@@ -9,6 +9,7 @@ using SystemSupportingMSE.Controllers.Resource;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
 using SystemSupportingMSE.Core.Models.Events;
+using SystemSupportingMSE.Core.Models.Query;
 using SystemSupportingMSE.Extensions;
 using SystemSupportingMSE.Helpers;
 

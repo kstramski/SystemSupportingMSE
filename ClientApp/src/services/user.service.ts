@@ -36,7 +36,7 @@ export class UserService {
         return this.http.get("/api/users/dashboard");
     }
 
-    toQueryString(obj) {
+    private toQueryString(obj) {
         var parts = [];
         for (var prop in obj) {
             var value = obj[prop];

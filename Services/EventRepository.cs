@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SystemSupportingMSE.Core;
+using SystemSupportingMSE.Core.Models;
 using SystemSupportingMSE.Core.Models.Events;
+using SystemSupportingMSE.Core.Models.Query;
+using SystemSupportingMSE.Extensions;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Services
@@ -17,12 +21,33 @@ namespace SystemSupportingMSE.Services
         {
             this.context = context;
         }
-        public async Task<IEnumerable<Event>> GetEvents()
+        public async Task<QueryResult<Event>> GetEvents(EventQuery queryObj)
         {
-            return await context.Events
+            var result = new QueryResult<Event>();
+            var query = context.Events
                 .Include(e => e.Competitions)
                     .ThenInclude(ec => ec.Competition)
-                .ToListAsync();
+                .AsQueryable();
+
+            if(queryObj.CompetitionId.HasValue)
+                query = query.Where(q => q.Competitions.Any(ec => ec.CompetitionId == queryObj.CompetitionId));
+
+            var columnsMap = new Dictionary<string, Expression<Func<Event, object>>> 
+            {
+                ["name"] = e => e.Name,
+                ["eventStarts"] = e => e.EventStarts,
+                ["eventEnds"] = e => e.EventEnds,
+            };
+
+            query = query.ApplyOrderBy(queryObj, columnsMap);
+            
+            result.TotalItems = query.Count();
+
+            query = query.ApplyPaging(queryObj);
+
+            result.Items = await query.ToListAsync();
+
+            return result;
         }
 
         public async Task<Event> GetEvent(int id)
@@ -71,14 +96,23 @@ namespace SystemSupportingMSE.Services
             }
         }
 
-        public Task<EventCompetition> GetEventCompetition(int eventId, int competitionId)
+        public async Task<EventCompetition> GetEventCompetition(int eventId, int competitionId)
         {
-            return context.EventsCompetitions
+            return await context.EventsCompetitions
                 .Include(ec => ec.Event)
                 .Include(ec => ec.Competition)
                 .Include(ec => ec.UsersCompetitions)
                     .ThenInclude(uc => uc.User)
                 .SingleOrDefaultAsync(ec => ec.EventId == eventId && ec.CompetitionId == competitionId);
+        }
+
+        public async Task<IEnumerable<UserCompetition>> GetEventCompetitionUsers(int eventId, int competitionId)
+        {
+            return await context.UsersCompetitions
+                .Include(uc => uc.User)
+                .Include(uc => uc.Stage)
+                .Where(uc => uc.EventId == eventId && uc.CompetitionId == competitionId)
+                .ToListAsync();
         }
 
         public async Task<UserCompetition> FindUserCompetition(int userId, int eventId, int competitionId)

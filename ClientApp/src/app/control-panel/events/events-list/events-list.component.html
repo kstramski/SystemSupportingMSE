@@ -9,11 +9,30 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}">{{col.title}}</th>
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}">
+                  <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+                    {{column.title}}
+                    <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" _ngcontent-c4=""
+                      aria-hidden="true">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                    <svg *ngIf="query.sortBy === column.key && !query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" _ngcontent-c4=""
+                      aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                  <div *ngIf="!column.isSortable">
+                    {{column.title}}
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let e of events" [ngClass]="{'table-danger': !e.isActive}">
+              <tr class="row" *ngFor="let e of queryResult.items" [ngClass]="{'table-danger': !e.isActive}">
                 <th class="col-md-{{columns[0].size}}" scope="row">{{e.id}}</th>
                 <td class="col-md-{{columns[1].size}}">{{e.name}}</td>
                 <td class="col-md-{{columns[2].size}}">{{e.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</td>
@@ -23,6 +42,7 @@
               </tr>
             </tbody>
           </table>
+          <app-pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onChangePage($event)"></app-pagination>
         </div>
       </div>
     </div>

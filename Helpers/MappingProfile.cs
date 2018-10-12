@@ -10,6 +10,7 @@ using SystemSupportingMSE.Controllers.Resource.Users;
 using SystemSupportingMSE.Controllers.Resource.UsersCompetitions;
 using SystemSupportingMSE.Core.Models;
 using SystemSupportingMSE.Core.Models.Events;
+using SystemSupportingMSE.Core.Models.Query;
 
 namespace SystemSupportingMSE.Helpers
 {
@@ -21,11 +22,6 @@ namespace SystemSupportingMSE.Helpers
             //Domain To API Resource
             /*****************************************/
             CreateMap(typeof(QueryResult<>), typeof(QueryResultResource<>));
-            //CreateMap<Competition, KeyValuePairResource>();
-            // CreateMap<Event, KeyValuePairResource>();
-            // CreateMap<Gender, KeyValuePairResource>();
-            // CreateMap<Role, KeyValuePairResource>();
-            // CreateMap<Team, KeyValuePairResource>();
 
             //Competitions
             CreateMap<Competition, CompetitionResource>()
@@ -40,9 +36,9 @@ namespace SystemSupportingMSE.Helpers
                     {
                         Id = ec.Competition.Id,
                         Name = ec.Competition.Name,
-                        Users = ec.UsersCompetitions
-                            .Select(uc => new UserBasicsResource { Id = uc.User.Id, Name = uc.User.Name, Surname = uc.User.Surname })
-                            .ToList()
+                        UsersCount = ec.UsersCompetitions
+                            .Where(uc => uc.CompetitionId == ec.CompetitionId && uc.EventId == ec.EventId && uc.StageId == 1)
+                            .Count()
                     })));
 
             //EventCompetition
@@ -50,15 +46,11 @@ namespace SystemSupportingMSE.Helpers
                 .ForMember(er => er.Event, opt => opt.MapFrom(ec => new Event { Id = ec.Event.Id, Name = ec.Event.Name }))
                 .ForMember(er => er.Competition, opt => opt.MapFrom(ec => new Competition { Id = ec.Competition.Id, Name = ec.Competition.Name }))
                 .ForMember(er => er.GroupRequired, opt => opt.MapFrom(ec => ec.Competition.GroupsRequired))
-                .ForMember(er => er.UsersCompetitions, opt => opt.MapFrom(ec => ec.UsersCompetitions
-                    .Select(uc =>
-                        new UserCompetitionResource
-                        {
-                            User = new UserBasicsResource { Id = uc.User.Id, Name = uc.User.Name, Surname = uc.User.Surname },
-                            //StageId = ec.StageId,
-                            //GroupId = ec.GroupId,
-                        })));
+                .ForMember(er => er.UsersCount, opt => opt.MapFrom(ec => ec.UsersCompetitions.Where(uc => uc.StageId == 1).Count()));
 
+            //UserCompetition
+            CreateMap<UserCompetition, UserCompetitionResource>()
+                .ForMember(ur => ur.User, opt => opt.MapFrom(uc => new UserBasicsResource{ Id = uc.User.Id, Name = uc.User.Name, Surname = uc.User.Surname}));
 
             //Roles
             CreateMap<Role, RoleResource>();

@@ -10,8 +10,8 @@ export class EventService {
 
     constructor(private http: HttpClient) { }
 
-    getEvents() {
-        return this.http.get("/api/events");
+    getEvents(filter) {
+        return this.http.get("/api/events?" + this.toQueryString(filter));
     }
 
     getEvent(id) {
@@ -39,5 +39,21 @@ export class EventService {
     updateEventCompetition(e) {
         var body = JSON.stringify(e);
         return this.http.put("/api/events/" + e.eventId + "/competitions/" + e.competitionId, body, httpOptions);
+    }
+
+    getEventCompetitionParticipants(eventId, competitionId) {
+        return this.http.get("/api/events/" + eventId + "/competitions/" + competitionId + "/participants");
+    }
+
+    
+    private toQueryString(obj) {
+        var parts = [];
+        for (var prop in obj) {
+            var value = obj[prop];
+            if (value != null && value != undefined)
+                parts.push(encodeURIComponent(prop) + '=' + encodeURIComponent(value));
+        }
+        console.log(parts.join('&'));
+        return parts.join('&');
     }
 }

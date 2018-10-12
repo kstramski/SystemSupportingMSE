@@ -14,6 +14,7 @@ using SystemSupportingMSE.Controllers.Resource;
 using SystemSupportingMSE.Controllers.Resource.Users;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Query;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Controllers
