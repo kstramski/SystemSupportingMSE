@@ -41,8 +41,8 @@ export class EventService {
         return this.http.put("/api/events/" + e.eventId + "/competitions/" + e.competitionId, body, httpOptions);
     }
 
-    getEventCompetitionParticipants(eventId, competitionId) {
-        return this.http.get("/api/events/" + eventId + "/competitions/" + competitionId + "/participants");
+    getEventCompetitionParticipants(eventId, competitionId, filter) {
+        return this.http.get("/api/events/" + eventId + "/competitions/" + competitionId + "/participants?" + this.toQueryString(filter));
     }
 
     

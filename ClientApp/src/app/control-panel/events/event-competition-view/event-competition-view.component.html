@@ -32,27 +32,46 @@
           <div class="row">
             <div class="form-group col-md-6">
               <label for="stage">Stage</label>
-              <select id="stage" class="form-control" [(ngModel)]="query.stage" (change)="onStageChange()">
+              <select id="stage" class="form-control" [(ngModel)]="query.stageId" (change)="onStageChange()">
                 <option value=""></option>
-                <option *ngFor="let stage of stages" value="{{stage.is}}">{{stage.name}}</option>
+                <option *ngFor="let stage of stages" value="{{stage.id}}">{{stage.name}}</option>
               </select>
             </div>
-            <div class="form-group col-md-6" *ngIf="query.stage">
+            <div class="form-group col-md-6" *ngIf="query.stageId">
               <label for="group">Group</label>
-              <select id="group" class="form-control" [(ngModel)]="query.group" (change)="onGroupChange()">
+              <select id="group" class="form-control" [(ngModel)]="query.groupId" (change)="onGroupChange()">
                 <option value=""></option>
-                <option value="1">1</option>
+                <option *ngFor="let group of groups[query.stageId]" value="{{group}}">{{group}}</option>
               </select>
             </div>
           </div>
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}" [ngClass]="{coltext: col.center}">{{col.title}}</th>
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}" [ngClass]="{coltext: column.center}">
+                    <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+                        {{column.title}}
+                        <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" _ngcontent-c4=""
+                          aria-hidden="true">
+                          <polyline points="18 15 12 9 6 15"></polyline>
+                        </svg>
+                        <svg *ngIf="query.sortBy === column.key && !query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" _ngcontent-c4=""
+                          aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
+                      <div *ngIf="!column.isSortable">
+                        {{column.title}}
+                      </div>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let user of participants">
+              <tr class="row" *ngFor="let user of queryResult.items">
                 <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
                 <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}">{{user.user.name}}</td>
                 <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}">{{user.user.surname}}</td>
@@ -64,6 +83,7 @@
               </tr>
             </tbody>
           </table>
+          <app-pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onChangePage($event)"></app-pagination>
         </div>
       </div>
     </div>

@@ -140,11 +140,12 @@ namespace SystemSupportingMSE.Controllers
         //Event Competition Users
         [HttpGet("{eventId}/competitions/{competitionId}/participants")]
         [AllowAnonymous]
-        public async Task<IEnumerable<UserCompetitionResource>> GetEventCompetitionUsers(int eventId, int competitionId)
+        public async Task<QueryResultResource<UserCompetitionResource>> GetEventCompetitionUsers(int eventId, int competitionId, UserCompetitionQueryResource filterResource)
         {
-            var users = await eventRepository.GetEventCompetitionUsers(eventId, competitionId);
+            var filter = mapper.Map<UserCompetitionQueryResource, UserCompetitionQuery>(filterResource);
+            var queryResult = await eventRepository.GetEventCompetitionUsers(filter, eventId, competitionId);
 
-            var result = mapper.Map<IEnumerable<UserCompetition>, IEnumerable<UserCompetitionResource>>(users);
+            var result = mapper.Map<QueryResult<UserCompetition>, QueryResultResource<UserCompetitionResource>>(queryResult);
 
             return result;
         }

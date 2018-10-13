@@ -30,7 +30,7 @@ export class EventsListComponent implements OnInit {
   ngOnInit() {
     this.populateEvents()
     console.log(this.queryResult);
-    
+
   }
 
   private populateEvents() {

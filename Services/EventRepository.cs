@@ -29,10 +29,10 @@ namespace SystemSupportingMSE.Services
                     .ThenInclude(ec => ec.Competition)
                 .AsQueryable();
 
-            if(queryObj.CompetitionId.HasValue)
+            if (queryObj.CompetitionId.HasValue)
                 query = query.Where(q => q.Competitions.Any(ec => ec.CompetitionId == queryObj.CompetitionId));
 
-            var columnsMap = new Dictionary<string, Expression<Func<Event, object>>> 
+            var columnsMap = new Dictionary<string, Expression<Func<Event, object>>>
             {
                 ["name"] = e => e.Name,
                 ["eventStarts"] = e => e.EventStarts,
@@ -40,7 +40,7 @@ namespace SystemSupportingMSE.Services
             };
 
             query = query.ApplyOrderBy(queryObj, columnsMap);
-            
+
             result.TotalItems = query.Count();
 
             query = query.ApplyPaging(queryObj);
@@ -106,13 +106,38 @@ namespace SystemSupportingMSE.Services
                 .SingleOrDefaultAsync(ec => ec.EventId == eventId && ec.CompetitionId == competitionId);
         }
 
-        public async Task<IEnumerable<UserCompetition>> GetEventCompetitionUsers(int eventId, int competitionId)
+        public async Task<QueryResult<UserCompetition>> GetEventCompetitionUsers(UserCompetitionQuery queryObj, int eventId, int competitionId)
         {
-            return await context.UsersCompetitions
+            var result = new QueryResult<UserCompetition>();
+            var query = context.UsersCompetitions
                 .Include(uc => uc.User)
                 .Include(uc => uc.Stage)
                 .Where(uc => uc.EventId == eventId && uc.CompetitionId == competitionId)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (queryObj.StageId.HasValue)
+                query = query.Where(q => q.StageId == queryObj.StageId);
+
+            if (queryObj.GroupId.HasValue)
+                query = query.Where(q => q.GroupId == queryObj.GroupId);
+
+            var columnsMap = new Dictionary<string, Expression<Func<UserCompetition, object>>>
+            {
+                ["name"] = uc => uc.User.Name,
+                ["surname"] = uc => uc.User.Surname,
+                // ["result"] = uc => uc.Results.Result,
+            };
+
+            query = query.ApplyOrderBy(queryObj, columnsMap);
+
+            result.TotalItems = query.Count();
+
+            if (queryObj.Paging == true)
+                query = query.ApplyPaging(queryObj);
+
+            result.Items = await query.ToListAsync();
+
+            return result;
         }
 
         public async Task<UserCompetition> FindUserCompetition(int userId, int eventId, int competitionId)

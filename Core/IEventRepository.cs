@@ -15,7 +15,7 @@ namespace SystemSupportingMSE.Core
         bool CompetitionExist(Event e, int competitionId);
         void AddDatesToCompetitions(Event e);
         Task<EventCompetition> GetEventCompetition(int eventId, int competitionId);
-        Task<IEnumerable<UserCompetition>> GetEventCompetitionUsers(int eventId, int competitionId);
+        Task<QueryResult<UserCompetition>> GetEventCompetitionUsers(UserCompetitionQuery queryObj, int eventId, int competitionId);
         Task<UserCompetition> FindUserCompetition(int userId, int eventId, int competitionId);
         void AddUserToCompetition(int userId, int eventId, int competitionId);
         void RemoveUserFromEvent(UserCompetition userCompetition);
