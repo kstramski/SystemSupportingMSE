@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using SystemSupportingMSE.Controllers.Resource.Teams;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Query;
 
 namespace SystemSupportingMSE.Controllers
 {
@@ -31,11 +32,12 @@ namespace SystemSupportingMSE.Controllers
 
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IEnumerable<TeamResource>> GetTeams()
+        public async Task<QueryResult<TeamResource>> GetTeams(TeamQueryResource filterResource)
         {
-            var teams = await teamRepository.GetTeams();
+            var filter = mapper.Map<TeamQueryResource, TeamQuery>(filterResource);
+            var queryResult = await teamRepository.GetTeams(filter);
 
-            return mapper.Map<IEnumerable<Team>, IEnumerable<TeamResource>>(teams);
+            return mapper.Map<QueryResult<Team>, QueryResult<TeamResource>>(queryResult);
 
         }
 

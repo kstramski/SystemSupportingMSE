@@ -12,8 +12,8 @@ export class TeamService {
         private http: HttpClient,
     ) { }
 
-    getTeams() {
-        return this.http.get("/api/teams");
+    getTeams(filter) {
+        return this.http.get("/api/teams?" + this.toQueryString(filter));
     }
 
     getTeam(id) {
@@ -41,5 +41,16 @@ export class TeamService {
 
     userStatus(userId, teamId) {
         return this.http.put("/api/status/" + teamId, userId, httpOptions);
+    }
+
+    private toQueryString(obj) {
+        var parts = [];
+        for (var prop in obj) {
+            var value = obj[prop];
+            if (value != null && value != undefined)
+                parts.push(encodeURIComponent(prop) + '=' + encodeURIComponent(value));
+        }
+        console.log(parts.join('&'));
+        return parts.join('&');
     }
 }

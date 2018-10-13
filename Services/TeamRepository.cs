@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
+using SystemSupportingMSE.Core.Models.Query;
+using SystemSupportingMSE.Extensions;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Services
@@ -26,12 +30,26 @@ namespace SystemSupportingMSE.Services
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Team>> GetTeams()
+        public async Task<QueryResult<Team>> GetTeams(TeamQuery queryObj)
         {
-            return await context.Teams
+            var result = new QueryResult<Team>();
+            var query = context.Teams
                 .Include(t => t.Users)
                     .ThenInclude(ut => ut.User)
-                .ToListAsync();
+                .AsQueryable();
+
+            var columnMap = new Dictionary<string, Expression<Func<Team, object>>>
+            {
+                ["name"] = t => t.Name,
+            };
+
+            query = query.ApplyOrderBy(queryObj, columnMap);
+            result.TotalItems = query.Count();
+
+            query = query.ApplyPaging(queryObj);
+            result.Items = await query.ToListAsync();
+
+            return result;
         }
 
         public void Add(Team team)

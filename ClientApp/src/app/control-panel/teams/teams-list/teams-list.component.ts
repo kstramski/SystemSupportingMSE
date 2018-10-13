@@ -1,6 +1,6 @@
 import { TeamService } from './../../../../services/team.service';
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import * as feather from 'feather-icons';
 
 @Component({
   selector: 'app-teams-list',
@@ -8,22 +8,47 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./teams-list.component.css']
 })
 export class TeamsListComponent implements OnInit {
-  queryResult: any;
+  private readonly PAGE_SIZE = 10;
+  queryResult: any = {};
+  query: any = {
+    pageSize: this.PAGE_SIZE
+  };
+
   columns: Array<any> = [
-    {title: 'Id'},
-    {title: 'Team'},
-    {title: 'Action'},
+    { title: 'Id', size: 1 },
+    { title: 'Team', key: 'name', isSortable: true, size: 9 },
+    { title: 'Action', size: 2 },
   ];
 
   constructor(
-    private router: Router,
     private teamService: TeamService
   ) { }
 
   ngOnInit() {
-    this.teamService.getTeams()
-      .subscribe(t => {
-        this.queryResult = t;
+    this.populateTeams()
+  }
+
+  private populateTeams() {
+    this.teamService.getTeams(this.query)
+      .subscribe(result => {
+        this.queryResult = result;
       });
+  }
+
+  sortBy(columnName) {
+    if (this.query.sortBy === columnName)
+      this.query.isSortAscending = !this.query.isSortAscending;
+    else {
+      this.query.isSortAscending = true;
+      this.query.sortBy = columnName;
+    }
+    console.log(this.query.isSortAscending);
+    feather.replace();
+    this.populateTeams();
+  }
+
+  onChangePage(page) {
+    this.query.page = page;
+    this.populateTeams();
   }
 }

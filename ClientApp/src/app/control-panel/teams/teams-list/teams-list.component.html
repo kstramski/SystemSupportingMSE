@@ -1,17 +1,47 @@
-<h2>Teams</h2>
-<hr>
-
-<table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col" *ngFor="let col of columns">{{col.title}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let team of queryResult">
-      <th scope="row">{{team.id}}</th>
-      <td>{{team.name}}</td>
-      <td><a [routerLink]="['/panel/teams/', team.id]" class="btn btn-primary">View Team</a></td>
-    </tr>
-  </tbody>
-</table>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Teams</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr class="row">
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}">
+                  <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+                    {{column.title}}
+                    <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" _ngcontent-c4=""
+                      aria-hidden="true">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                    <svg *ngIf="query.sortBy === column.key && !query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" _ngcontent-c4=""
+                      aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                  <div *ngIf="!column.isSortable">
+                    {{column.title}}
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let team of queryResult.items">
+                <th class="col-md-{{columns[0].size}}" scope="row">{{team.id}}</th>
+                <td class="col-md-{{columns[1].size}}">{{team.name}}</td>
+                <td class="col-md-{{columns[2].size}}"><a [routerLink]="['/panel/teams/', team.id]" class="btn btn-primary">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <app-pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onChangePage($event)"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
