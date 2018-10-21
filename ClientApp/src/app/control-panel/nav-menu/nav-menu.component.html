@@ -7,29 +7,68 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/panel/competitions']" routerLinkActive="active" (click)="navbar.collapse()">
-          <span data-feather="list"></span> Competitions
+        <a class="nav-link" href="#competitions" data-toggle="collapse" aria-expanded="false" aria-controls="competitions">
+          <span data-feather="award"></span> Competitions
         </a>
+        <ul id="competitions" class="nav collapse" data-parent="#sidenav">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/competitions/new']" routerLinkActive="active" (click)="navbar.collapse()">
+              New Competition
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/competitions']" routerLinkActive="active"
+              [routerLinkActiveOptions]='{ exact: true }' (click)="navbar.collapse()">
+              Competitions List
+            </a>
+          </li>
+        </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/panel/events']" routerLinkActive="active" (click)="navbar.collapse()">
-          <span data-feather="list"></span> Events
+        <a class="nav-link" href="#events" data-toggle="collapse" aria-expanded="false" aria-controls="events">
+          <span data-feather="calendar"></span> Events
         </a>
+        <ul id="events" class="nav collapse" data-parent="#sidenav">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/events/new']" routerLinkActive="active" (click)="navbar.collapse()">
+              New Event
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/events']" routerLinkActive="active" [routerLinkActiveOptions]='{ exact: true }'
+              (click)="navbar.collapse()">
+              Events List
+            </a>
+          </li>
+        </ul>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]='["/panel/users"]' routerLinkActive="active" (click)="navbar.collapse()">
-          <span data-feather="list"></span> Users
+          <span data-feather="user"></span> Users
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/panel/teams']" routerLinkActive="active" (click)="navbar.collapse()">
-          <span data-feather="shield"></span> Teams
+          <span data-feather="users"></span> Teams
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/panel/roles']" routerLinkActive="active" (click)="navbar.collapse()">
+        <a class="nav-link" href="#roles" data-toggle="collapse" aria-expanded="false" aria-controls="roles">
           <span data-feather="shield"></span> Roles
         </a>
+        <ul id="roles" class="nav collapse" data-parent="#sidenav">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/roles']" routerLinkActive="active" [routerLinkActiveOptions]='{ exact: true }'
+              (click)="navbar.collapse()">
+              Roles List
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/panel/roles/users']" routerLinkActive="active" (click)="navbar.collapse()">
+              Manage User Roles
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
 

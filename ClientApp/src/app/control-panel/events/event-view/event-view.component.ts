@@ -19,6 +19,11 @@ export class EventViewComponent implements OnInit {
     { title: "Action", size: 2, center: true }
   ];
 
+  modal: Array<string> = [
+    "Delete Event",
+    "Are you sure want to delete this event?"
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -44,7 +49,7 @@ export class EventViewComponent implements OnInit {
   delete(id) {
     this.eventService.remove(id)
       .subscribe(e => {
-        this.toastr.success("Event was successfuly removed.", "Success", { timeOut: 5000 });
+        this.toastr.success("Event was successfully removed.", "Success", { timeOut: 5000 });
         this.router.navigate(["/panel/events"]);
       });
   }

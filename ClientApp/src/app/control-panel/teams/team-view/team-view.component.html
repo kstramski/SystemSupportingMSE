@@ -1,31 +1,65 @@
 <div class="container-fluid" *ngIf="team">
-  <h2>{{team.name}}</h2>
-  <hr>
   <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-xl-6 col-md-12">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">Team Members</h5>
+          <h5 class="card-title">Team: {{team.name}}</h5>
         </div>
         <div class="card-body">
+          <h6 class="card-title">Team Members</h6><br>
           <table class="table">
-            <tr *ngFor="let user of team.users">
-              <th></th>
-              <td>{{user.name}} {{user.surname}}</td>
-              <td><a class="btn btn-primary" [routerLink]="['/panel/users', user.id]">View</a></td>
+            <tr class="row" *ngFor="let user of team.users">
+              <th class="col-md-1"></th>
+              <td class="col-md-7">
+                <span data-feather="award" *ngIf="user.id === team.captain">(C)</span> {{user.name}} {{user.surname}}
+              </td>
+              <td class="col-md-4">
+                <div class="btn-group">
+                  <a class="btn btn-primary" [routerLink]="['/panel/users', user.id]">View</a>
+                  <a class="btn btn-danger" [routerLink]="['/panel/users', user.id]" *ngIf="user.id != team.captain">Remove</a>
+                </div>
+              </td>
             </tr>
           </table>
+          <hr>
+          <div class="btn-group">
+            <a class="btn btn-primary" [routerLink]="['/panel/teams/edit/', team.id]">Edit</a>
+            <button *ngIf="team.users.length == 1" class="btn btn-danger" type="button" data-toggle="modal" data-target="#modalId">Delete</button>
+            <button *ngIf="team.users.length > 1" class="btn btn-danger" type="button" tooltip="Remove first all users from team">Delete</button>
+            <a class="btn btn-secondary" [routerLink]="['/panel/teams']">View Teams</a>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-xl-6 col-md-12">
       <div class="card">
         <div class="card-header">
           <h5 class="card-title">Team History</h5>
         </div>
         <div class="card-body">
-
+          <h6 class="card-title">Team Achievements</h6>
+          <ul>
+            <li>dd/mm/yyy - event: x place: n</li>
+            <li>
+              Date: dd/mm/yyyy <br>
+              Event: x <br>
+              Competition: y <br>
+              Place: n
+            </li>
+            <li>
+              Event: x - dd/mm/yyyy<br>
+              Competition: y Place: n
+            </li>
+          </ul>
+          <hr>
+          <h6 class="card-title">Team Activity</h6>
+          <ul>
+            <li>dd/mm/yyy - test</li>
+            <li>dd/mm/yyy - test</li>
+            <li>dd/mm/yyy - test</li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
+  <app-modal-delete [modal-title]="modal[0].title" [modal-body]="modal[0].body" (delete-clicked)="delete()"></app-modal-delete>

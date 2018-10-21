@@ -10,7 +10,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./competition-form.component.css']
 })
 export class CompetitionFormComponent implements OnInit {
-
   title: string = "New Competition";
   competition: SaveCompetition = {
     id: 0,
@@ -53,17 +52,22 @@ export class CompetitionFormComponent implements OnInit {
   submit() {
     if (this.competition.id) {
       this.competitionsService.update(this.competition)
-        .subscribe(x => this.toastr.success("Competition was succesfully updated.", "Success", { timeOut: 5000 }));
+        .subscribe(x => {
+          this.toastr.success("Competition was succesfully updated.", "Success", { timeOut: 5000 });
+          this.navigate(x);
+        });
     } else {
       this.competitionsService.create(this.competition)
-        .subscribe(x => this.toastr.success("New competiton was succesfully added.", "Success", { timeOut: 5000 }));
+        .subscribe(x => {
+          this.toastr.success("New competiton was succesfully added.", "Success", { timeOut: 5000 });
+          this.navigate(x);
+        });
     }
-    console.log(this.competition.id);
-    
-    this.router.navigate(['/panel/competitions']);
   }
 
-
+  navigate(c) {
+    this.router.navigate(['/panel/competitions/', c.id]);
+  }
 }
 
 export interface SaveCompetition {

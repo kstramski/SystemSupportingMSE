@@ -53,7 +53,8 @@ export class EventCompetitionViewComponent implements OnInit {
     this.eventService.getEventCompetitionParticipants(this.eventId, this.competitionId, this.query)
       .subscribe(e => {
         this.queryResult = e;
-        this.setStages(this.queryResult.items);
+        if (this.queryResult.totalItems)
+          this.setStages(this.queryResult.items);
         this.queryResult = {};
         this.query.paging = true;
       });

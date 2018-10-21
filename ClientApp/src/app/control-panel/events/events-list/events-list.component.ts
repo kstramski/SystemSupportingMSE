@@ -15,12 +15,12 @@ export class EventsListComponent implements OnInit {
   };
 
   columns: Array<any> = [
-    { title: "Id", size: 1 },
+    { title: "Id", size: 1, center: true },
     { title: "Name", size: 5, key: 'name', isSortable: true },
     { title: "Event Starts", size: 2, key: 'eventStarts', isSortable: true },
     { title: "Event Ends", size: 2, key: 'eventEnds', isSortable: true },
-    { title: "Competitons", size: 1 },
-    { title: "Action", size: 1 },
+    { title: "Competitons", size: 1, center: true },
+    { title: "Action", size: 1, center: true },
   ];
 
   constructor(

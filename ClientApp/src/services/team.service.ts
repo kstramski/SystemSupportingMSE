@@ -24,6 +24,10 @@ export class TeamService {
         var body = JSON.stringify(team);
         return this.http.post("/api/teams", body, httpOptions);
     }
+    update(team) {
+        var body = JSON.stringify(team);
+        return this.http.put("/api/teams/" + team.id, body, httpOptions);
+    }
 
     remove(id) {
         return this.http.delete("/api/teams/" + id);

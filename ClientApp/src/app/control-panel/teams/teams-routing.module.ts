@@ -4,13 +4,15 @@ import { AuthGuard } from '../../../services/guards/auth-guard.service';
 import { TeamsComponent } from './teams.component';
 import { TeamsListComponent } from './teams-list/teams-list.component';
 import { TeamViewComponent } from './team-view/team-view.component';
+import { TeamFormComponent } from './team-edit/team-form.component';
 
 export const usersRoutes: Routes = [
   {
     path: '', component: TeamsComponent,
     children: [
       { path: '', component: TeamsListComponent, canActivate: [AuthGuard] },
-      // { path: 'edit/:id', component: UserEditComponent, canActivate: [AuthGuard] },
+      { path: 'new', component: TeamFormComponent, canActivate: [AuthGuard] },
+      { path: 'edit/:id', component: TeamFormComponent, canActivate: [AuthGuard] },
       { path: ':id', component: TeamViewComponent, canActivate: [AuthGuard] },
     ]
   }
@@ -25,5 +27,6 @@ export class TeamsRoutingModule { }
 export const teamsComponents = [
   TeamsComponent,
   TeamsListComponent,
+  TeamFormComponent,
   TeamViewComponent
 ];

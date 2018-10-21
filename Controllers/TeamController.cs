@@ -74,6 +74,48 @@ namespace SystemSupportingMSE.Controllers
             return Ok(result);
         }
 
+        [HttpPut("{id}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> EditTeam([FromBody] TeamSaveResource teamResource, int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var team = await teamRepository.GetTeam(id);
+            if (team == null)
+                return NotFound();
+
+            mapper.Map<TeamSaveResource, Team>(teamResource, team);
+            await unitOfWork.Complete();
+
+            //team = await teamRepository.GetTeam(team.Id);
+
+            var result = mapper.Map<Team, TeamResource>(team);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> RemoveTeam(int id)
+        {
+            var team = await teamRepository.GetTeam(id);
+            if (team == null)
+                return NotFound();
+
+            if (!authRepository.IsModerator(User)
+            && !authRepository.IsAuthorizedById(User, team.Captain))
+                return Unauthorized();
+
+            if (team.Users.Where(ut => ut.Status == true).Count() > 1)
+                return BadRequest("You can not remove team with active users.");
+
+            teamRepository.Remove(team);
+            await unitOfWork.Complete();
+
+            return Ok();
+        }
+
         [HttpPut("add/{id}")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AddUserToTeam([FromBody] TeamSaveUserResource userResource, int id)
@@ -162,27 +204,5 @@ namespace SystemSupportingMSE.Controllers
             return Ok(result);
         }
 
-
-
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> RemoveTeam(int id)
-        {
-            var team = await teamRepository.GetTeam(id);
-            if (team == null)
-                return NotFound();
-
-            if (!authRepository.IsModerator(User)
-            && !authRepository.IsAuthorizedById(User, team.Captain))
-                return Unauthorized();
-
-            if (team.Users.Where(ut => ut.Status == true).Count() > 1)
-                return BadRequest("You can not remove team with active users.");
-
-            teamRepository.Remove(team);
-            await unitOfWork.Complete();
-
-            return Ok();
-        }
     }
 }

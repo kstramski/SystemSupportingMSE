@@ -9,16 +9,18 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}">{{col.title}}</th>
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}" [ngClass]="{'td-center': column.center}">{{column.title}}</th>
               </tr>
             </thead>
             <tbody>
               <tr class="row" *ngFor="let competition of competitions">
-                <th class="col-md-1" scope="row">{{competition.id}}</th>
-                <td class="col-md-5">{{competition.name}}</td>
-                <td class="col-md-2">{{competition.groupsRequired}}</td>
-                <td class="col-md-2">{{competition.groupSize}}</td>
-                <td class="col-md-2"><a [routerLink]="['/panel/competitions/', competition.id]" class="btn btn-primary">View</a></td>
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row">{{competition.id}}</th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{competition.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}" *ngIf="competition.groupsRequired">Yes</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}" *ngIf="!competition.groupsRequired">No</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{'td-center': columns[3].center}">{{competition.groupSize}}</td>
+                <td class="col-md-{{columns[4].size}}" [ngClass]="{'td-center': columns[4].center}"><a [routerLink]="['/panel/competitions/', competition.id]"
+                    class="btn btn-primary">View</a></td>
               </tr>
             </tbody>
           </table>

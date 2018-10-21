@@ -1,35 +1,68 @@
-<div *ngIf="user">
-  <h3>User Informations</h3>
-  <ul>
-    <li>Name: {{user.name}}</li>
-    <li>Surname: {{user.surname}}</li>
-    <li>Gender: {{user.gender.name}}</li>
-    <li>Birth Date: {{user.birthDate | date:'dd/MM/yyyy'}}</li>
-    <li>From: {{user.city}}</li>
-  </ul>
-  <hr>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">User Informations</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="user">
+            <ul>
+              <li>Name: {{user.name}}</li>
+              <li>Surname: {{user.surname}}</li>
+              <li>Gender: {{user.gender.name}}</li>
+              <li>Birth Date: {{user.birthDate | date:'dd/MM/yyyy'}}</li>
+              <li>From: {{user.city}}</li>
+            </ul>
+            <hr>
+            <ul>
+              <li>Registered since: {{user.dateOfRegistration | date:'dd/MM/yyyy'}}</li>
+              <li *ngIf="user.lastLogin">Last login: {{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</li>
+              <li *ngIf="!user.lastLogin">Last login: Never</li>
+            </ul>
+            <hr>
+            <div class="btn-group">
+              <a class="btn btn-primary" [routerLink]="['/panel/users/edit/', user.id]">Edit</a>
+              <button class="btn btn-danger" type="button" *ngIf="user.id" data-toggle="modal" data-target="#modalId">Delete</button>
+              <a class="btn btn-secondary" [routerLink]="['/panel/users']">View Users</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Assigned to Teams</h5>
+            </div>
+            <div class="card-body">
+              <div *ngIf="user">
+                <ol *ngIf="user.teams && user.teams.length > 0">
+                  <li *ngFor="let team of user.teams">
+                    <a [routerLink]="['/panel/teams/', team.id]">{{team.name}}</a>
+                  </li>
+                </ol>
+                <ul *ngIf="user.teams && user.teams.length <= 0">
+                  <li>User is not assigned to any team.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">User History</h5>
+            </div>
+            <div class="card-body">
 
-  <h3>Teams</h3>
-  <ol *ngIf="user.teams && user.teams.length > 0">
-    <li *ngFor="let team of user.teams">
-      <a [routerLink]="['/panel/teams/', team.id]">{{team.name}}</a>
-    </li>
-  </ol>
-  <ul *ngIf="user.teams && user.teams.length <= 0">
-    <li>User is not assigned to any team.</li>
-  </ul>
-  <hr>
-
-  <h3>Account Informations</h3>
-  <ul>
-    <li>Registered since: {{user.dateOfRegistration | date:'dd/MM/yyyy'}}</li>
-    <li *ngIf="user.lastLogin">Last login: {{user.lastLogin | date:'dd/MM/yyyy HH:mm:ss'}}</li>
-    <li *ngIf="!user.lastLogin">Last login: Never</li>
-  </ul>
-  <hr>
-  <div class="btn-group">
-    <button class="btn btn-primary" [routerLink]="['/panel/users/edit/', user.id]">Edit</button>
-    <button class="btn btn-danger" type="button" *ngIf="user.id" (click)="delete()">Delete</button>
-    <button class="btn btn-secondary" [routerLink]="['/panel/users']">View All Users</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+<app-modal-delete [modal-title]="modal[0]" [modal-body]="modal[1]" (delete-clicked)="delete()"></app-modal-delete>

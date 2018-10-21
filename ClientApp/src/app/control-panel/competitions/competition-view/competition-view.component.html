@@ -7,17 +7,17 @@
         </div>
         <div class="card-body">
           <p>Descritpion: {{competition.description}}</p>
-          <p>Group Required: {{competition.groupsRequired}}</p>
-          <p *ngIf="competition.groupsRequired">Group Size: {{competition.groupSize}}</p>
-          <ul>
-            <li>Descritpion: {{competition.description}}</li>
-            <li>Group Required: {{competition.groupsRequired}}</li>
-            <li *ngIf="competition.groupsRequired">Group Size: {{competition.groupSize}}</li>
-          </ul>
+          <hr>
+          <p *ngIf="competition.groupsRequired">
+            Group Required: Yes<br />
+            Group Size: {{competition.groupSize}}
+          </p>
+          <p *ngIf="!competition.groupsRequired">Group Required: No</p>
+          <hr>
           <div class="btn-group">
-            <button class="btn btn-primary" [routerLink]="['/panel/competitions/edit/', competition.id]">Edit</button>
-            <button class="btn btn-danger" type="button" *ngIf="competition.id" (click)="delete()">Delete</button>
-            <button class="btn btn-secondary" [routerLink]="['/panel/competitions']">View All Competitions</button>
+            <a class="btn btn-primary" [routerLink]="['/panel/competitions/edit/', competition.id]">Edit</a>
+            <button class="btn btn-danger" type="button" *ngIf="competition.id" data-toggle="modal" data-target="#modalId">Delete</button>
+            <a class="btn btn-secondary" [routerLink]="['/panel/competitions']">View All Competitions</a>
           </div>
         </div>
       </div>
@@ -28,11 +28,20 @@
           <h5 class="card-title">List of Events</h5>
         </div>
         <div class="card-body">
-          <ul>
-            <li *ngFor="let event of competition.events">{{event.name}}</li>
-          </ul>
+          <table class="table">
+            <tbody>
+              <tr class="row" *ngFor="let event of competition.events">
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row">1</th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{event.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}">
+                  <a [routerLink]="['/panel/events/', event.id]" class="btn btn-primary">Details</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
 </div>
+<app-modal-delete [modal-title]="modal[0]" [modal-body]="modal[1]" (delete-clicked)="delete()"></app-modal-delete>

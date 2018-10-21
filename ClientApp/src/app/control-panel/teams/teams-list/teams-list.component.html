@@ -9,7 +9,7 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}">
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}" [ngClass]="{'td-center': column.center}">
                   <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
                     {{column.title}}
                     <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
@@ -33,9 +33,11 @@
             </thead>
             <tbody>
               <tr class="row" *ngFor="let team of queryResult.items">
-                <th class="col-md-{{columns[0].size}}" scope="row">{{team.id}}</th>
-                <td class="col-md-{{columns[1].size}}">{{team.name}}</td>
-                <td class="col-md-{{columns[2].size}}"><a [routerLink]="['/panel/teams/', team.id]" class="btn btn-primary">View</a></td>
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row">{{team.id}}</th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{team.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}">{{team.users.length}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{'td-center': columns[3].center}"><a [routerLink]="['/panel/teams/', team.id]"
+                    class="btn btn-primary">View</a></td>
               </tr>
             </tbody>
           </table>

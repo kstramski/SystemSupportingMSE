@@ -3,7 +3,7 @@
     <div class="chart col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title"><span data-feather="activity"></span> Users and Accounts Information Charts</h4>
+          <h4 class="card-title">Users and Accounts Information Charts</h4>
         </div>
       </div>
     </div>
@@ -49,8 +49,8 @@
         <div class="card-header">
           <h5 class="card-title">Users Age</h5>
         </div>
-        <div class="card-body" *ngIf="ageData">
-          <canvas baseChart [data]="ageData" [labels]="ageLabels" [chartType]="rectangleChart" [options]="rectangleOptions"
+        <div class="card-body" *ngIf="ageDataset">
+          <canvas baseChart [datasets]="ageDataset" [labels]="ageLabels" [chartType]="rectangleChart" [options]="rectangleOptions"
             [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
@@ -60,9 +60,9 @@
         <div class="card-header">
           <h5 class="card-title">Accounts Registered</h5>
         </div>
-        <div class="card-body" *ngIf="registerData">
-          <canvas baseChart [data]="registerData" [labels]="registerLabels" [chartType]="lineChart" [colors]="rectangleColors"
-            [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        <div class="card-body" *ngIf="registerDataset">
+          <canvas baseChart [datasets]="registerDataset" [labels]="registerLabels" [chartType]="lineChart" [options]="lineChartOptions"
+            [colors]="rectangleColors" [legend]="legendDisplay" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
     </div>

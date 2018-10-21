@@ -9,15 +9,17 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let col of rolesColumns" class="col-md-{{col.size}}">{{col.title}}</th>
+                <th scope="col" *ngFor="let col of columns" class="col-md-{{col.size}}" [ngClass]="{'td-center': col.center}">{{col.title}}</th>
               </tr>
             </thead>
             <tbody>
               <tr class="row" *ngFor="let role of roles">
-                <th class="col-md-1" scope="row">{{role.id}}</th>
-                <td class="col-md-3">{{role.name}}</td>
-                <td class="col-md-6">{{role.description}}</td>
-                <td class="col-md-2"><a [routerLink]="['/panel/roles/', role.id]" class="btn btn-primary">Edit Desctiprion</a></td>
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row">{{role.id}}</th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{role.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}">{{role.description}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{'td-center': columns[3].center}"><a [routerLink]="['/panel/roles/', role.id]"
+                    class="btn btn-primary">Edit
+                    Desctiprion</a></td>
               </tr>
             </tbody>
           </table>
@@ -26,42 +28,3 @@
     </div>
   </div>
 </div>
-
-<tabset>
-  <tab heading="Users">
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col" *ngFor="let col of usersColumns">{{col.title}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of queryResults.items">
-          <th scope="row">{{user.id}}</th>
-          <td>{{user.name}}</td>
-          <td>{{user.surname}}</td>
-          <td>{{user.email}}</td>
-          <td><a [routerLink]="['/panel/roles/users/', user.id]" class="btn btn-primary">Edit Role</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </tab>
-  <tab heading="Roles">
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col" *ngFor="let col of rolesColumns">{{col.title}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let role of roles">
-          <th scope="row">{{role.id}}</th>
-          <td>{{role.name}}</td>
-          <td>{{role.description}}</td>
-          <td><a [routerLink]="['/panel/roles/', role.id]" class="btn btn-primary">Edit Desctiprion</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </tab>
-
-</tabset>

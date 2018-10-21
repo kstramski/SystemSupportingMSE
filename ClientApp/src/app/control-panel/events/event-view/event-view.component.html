@@ -7,6 +7,7 @@
         </div>
         <div class="card-body">
           <p>Descritpion: {{event.description}}</p>
+          <hr>
           <p>Event Starts: {{event.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</p>
           <p>Event Ends: {{event.eventEnds | date:'dd/MM/yyyy HH:mm:ss'}}</p>
           <p *ngIf="event.isActive">Event is Active: Yes</p>
@@ -14,8 +15,8 @@
           <hr>
           <div class="btn-group">
             <a class="btn btn-primary" [routerLink]="['/panel/events/edit/', event.id]">Edit</a>
-            <button class="btn btn-danger" type="button" *ngIf="event.id" (click)="delete()">Delete</button>
-            <a class="btn btn-secondary" [routerLink]="['/panel/events']">Back To All Events</a>
+            <button class="btn btn-danger" type="button" *ngIf="event.id" data-toggle="modal" data-target="#modalId">Delete</button>
+            <a class="btn btn-secondary" [routerLink]="['/panel/events']">Back To Events</a>
           </div>
         </div>
       </div>
@@ -35,9 +36,9 @@
             <tbody>
               <tr class="row" *ngFor="let competition of event.competitions">
                 <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
-                <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}" >{{competition.name}}</td>
-                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}" >{{competition.usersCount}}</td>
-                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}" >
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}">{{competition.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}">{{competition.usersCount}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}">
                   <a [routerLink]="['/panel/events/', event.id, 'competitions', competition.id]" class="btn btn-primary">Details</a>
                 </td>
               </tr>
@@ -48,3 +49,4 @@
     </div>
   </div>
 </div>
+<app-modal-delete [modal-title]="modal[0]" [modal-body]="modal[1]" (delete-clicked)="delete()"></app-modal-delete>

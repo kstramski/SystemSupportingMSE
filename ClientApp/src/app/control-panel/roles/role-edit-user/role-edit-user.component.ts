@@ -81,7 +81,9 @@ export class RoleEditUserComponent implements OnInit {
     this.roleService.updateUser(this.user)
       .subscribe(u => {
         this.toastr.success("Roles was successfully updated.", "Success", { timeOut: 5000 });
-        this.router.navigate(['/panel/roles']);
+        this.router.navigate(['/panel/roles/users']);
+      }, err => {
+        this.toastr.error(err['error'], "Error", { timeOut: 5000 });
       });
   }
 }

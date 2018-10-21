@@ -62,10 +62,11 @@ namespace SystemSupportingMSE.Controllers
             var e = mapper.Map<EventSaveResource, Event>(eventResource);
 
             eventRepository.Add(e);
-            eventRepository.AddDatesToCompetitions(e);
             await unitOfWork.Complete();
 
             e = await eventRepository.GetEvent(e.Id);
+            eventRepository.AddDatesToCompetitions(e);
+            await unitOfWork.Complete();
 
             var result = mapper.Map<Event, EventResource>(e);
 
@@ -84,10 +85,11 @@ namespace SystemSupportingMSE.Controllers
                 return NotFound();
 
             mapper.Map<EventSaveResource, Event>(eventResource, e);
-            eventRepository.AddDatesToCompetitions(e);
             await unitOfWork.Complete();
 
             e = await eventRepository.GetEvent(e.Id);
+            eventRepository.AddDatesToCompetitions(e);
+            await unitOfWork.Complete();
 
             var result = mapper.Map<Event, EventResource>(e);
 

@@ -1,5 +1,5 @@
 import { UserService } from './../../../services/user.service';
-import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as feather from 'feather-icons';
 
 @Component({
@@ -28,19 +28,29 @@ export class DashboardComponent implements OnInit {
         }
       }]
     }
-  }
+  };
+
+  lineChartOptions: any = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };
 
   genderLabels: string[];
   genderData: number[];
 
   ageLabels: string[];
-  ageData: number[];
+  ageDataset: Array<any>;
 
   emailLabels: string[];
   emailData: number[];
 
   registerLabels: string[];
-  registerData: number[];
+  registerDataset: Array<any>;
 
   public doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales', 'Test'];
   public doughnutChartData: number[] = [350, 450, 200, 150];
@@ -77,6 +87,7 @@ export class DashboardComponent implements OnInit {
   populateCharts(data) {
     this.genderData = [];
     this.genderLabels = [];
+
     data.genders.forEach(g => {
       this.genderLabels.push(g.name);
       this.genderData.push(g.items);
@@ -84,23 +95,26 @@ export class DashboardComponent implements OnInit {
 
     this.emailLabels = [];
     this.emailData = [];
+
     data.emails.forEach(e => {
       this.emailLabels.push(e.name);
       this.emailData.push(e.items);
     });
 
     this.ageLabels = [];
-    this.ageData = [];
+    this.ageDataset = [{ label: 'Users', data: [] }];
+
     data.usersAge.forEach(a => {
       this.ageLabels.push(a.name);
-      this.ageData.push(a.items);
+      this.ageDataset[0].data.push(a.items);
     });
 
     this.registerLabels = [];
-    this.registerData = [];
+    this.registerDataset = [{ label: 'Registered', data: [] }];
+
     data.usersRegistered.forEach(r => {
       this.registerLabels.push(r.name);
-      this.registerData.push(r.items);
+      this.registerDataset[0].data.push(r.items);
     });
   }
 }

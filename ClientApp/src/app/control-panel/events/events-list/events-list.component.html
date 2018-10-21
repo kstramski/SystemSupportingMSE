@@ -9,7 +9,7 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}">
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}" [ngClass]="{'td-center': column.center}">
                   <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
                     {{column.title}}
                     <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
@@ -33,12 +33,15 @@
             </thead>
             <tbody>
               <tr class="row" *ngFor="let e of queryResult.items" [ngClass]="{'table-danger': !e.isActive}">
-                <th class="col-md-{{columns[0].size}}" scope="row">{{e.id}}</th>
-                <td class="col-md-{{columns[1].size}}">{{e.name}}</td>
-                <td class="col-md-{{columns[2].size}}">{{e.eventStarts | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-                <td class="col-md-{{columns[3].size}}">{{e.eventEnds | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-                <td class="col-md-{{columns[4].size}}">{{e.competitions.length}}</td>
-                <td class="col-md-{{columns[5].size}}"><a [routerLink]="['/panel/events/', e.id]" class="btn btn-primary">View</a></td>
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row">{{e.id}}</th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{e.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}">{{e.eventStarts |
+                  date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{'td-center': columns[3].center}">{{e.eventEnds |
+                  date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td class="col-md-{{columns[4].size}}" [ngClass]="{'td-center': columns[4].center}">{{e.competitions.length}}</td>
+                <td class="col-md-{{columns[5].size}}" [ngClass]="{'td-center': columns[5].center}"><a [routerLink]="['/panel/events/', e.id]"
+                    class="btn btn-primary">View</a></td>
               </tr>
             </tbody>
           </table>

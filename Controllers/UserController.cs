@@ -46,7 +46,7 @@ namespace SystemSupportingMSE.Controllers
 
             var user = mapper.Map<UserRegisterResource, User>(userRegisterResource);
             user.DateOfRegistration = DateTime.Now;
-            user.Roles.Add(new UserRole{RoleId = 3});
+            user.Roles.Add(new UserRole { RoleId = 3 });
 
             userRepository.Add(user, userRegisterResource.Password);
             await unitOfWork.Complete();
@@ -81,12 +81,12 @@ namespace SystemSupportingMSE.Controllers
             claims.Add(new Claim(ClaimTypes.Name, user.Name.ToString()));
             foreach (var role in user.Roles)
                 claims.Add(new Claim(ClaimTypes.Role, role.Role.Name));
-            
+
             var tokeOptions = new JwtSecurityToken(
                 issuer: authSettings.Domain,
                 audience: authSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddHours(12),
                 signingCredentials: signinCredentials
             );
 
@@ -98,17 +98,17 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles="Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<QueryResultResource<UserProfileResource>> GetUsers(UserQueryResource filterResource)
         {
-            var filter = mapper.Map<UserQueryResource, UserQuery>(filterResource); 
+            var filter = mapper.Map<UserQueryResource, UserQuery>(filterResource);
             var queryResult = await userRepository.GetUsers(filter);
-            
-            return  mapper.Map<QueryResult<User>, QueryResultResource<UserProfileResource>>(queryResult);
+
+            return mapper.Map<QueryResult<User>, QueryResultResource<UserProfileResource>>(queryResult);
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await userRepository.GetUser(id);
@@ -118,7 +118,7 @@ namespace SystemSupportingMSE.Controllers
             if (!authRepository.IsModerator(User)
             && !authRepository.IsAuthorizedById(User, id))
                 return Unauthorized();
-            
+
 
             var result = mapper.Map<User, UserProfileResource>(user);
 
@@ -126,7 +126,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateUserProfile([FromBody] UserSaveProfileResource userResource, int id)
         {
             if (!ModelState.IsValid)
@@ -135,10 +135,10 @@ namespace SystemSupportingMSE.Controllers
             var user = await userRepository.GetUser(id);
             if (user == null)
                 return NotFound();
-            
+
             if (!authRepository.IsModerator(User)
             && !authRepository.IsAuthorizedById(User, id))
-                    return Unauthorized();
+                return Unauthorized();
 
             mapper.Map<UserSaveProfileResource, User>(userResource, user);
             await unitOfWork.Complete();
@@ -149,7 +149,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles="Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = await userRepository.GetUser(id);
@@ -163,25 +163,25 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPut("changeEmail/{id}")]
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> ChangeUserEmail([FromBody] UserNewEmailResource userResource, int id)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if(String.IsNullOrWhiteSpace(userResource.Email)
+            if (String.IsNullOrWhiteSpace(userResource.Email)
             || String.IsNullOrWhiteSpace(userResource.NewEmail))
                 return BadRequest("Email fields can not be empty.");
 
             var user = await userRepository.GetUser(id);
-            if(user == null)
+            if (user == null)
                 return NotFound();
 
             if (!authRepository.IsModerator(User)
             && !authRepository.IsAuthorizedById(User, id))
                 return Unauthorized();
 
-            if(userResource.Email != user.Email)
+            if (userResource.Email != user.Email)
                 return BadRequest("Invalid email.");
 
             mapper.Map<UserNewEmailResource, User>(userResource, user);
@@ -191,7 +191,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpPut("changePassword/{id}")]
-        [Authorize(Roles="User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> ChangeUserPassword([FromBody] UserNewPasswordResource userResource, int id)
         {
             if (!ModelState.IsValid)
@@ -212,7 +212,7 @@ namespace SystemSupportingMSE.Controllers
             if (user == null)
                 return NotFound();
 
-           if (!authRepository.IsAuthorizedById(User, id))
+            if (!authRepository.IsAuthorizedById(User, id))
                 return Unauthorized();
 
             if (user.Email != userResource.Email)
@@ -225,7 +225,7 @@ namespace SystemSupportingMSE.Controllers
         }
 
         [HttpGet("dashboard")]
-        [Authorize(Roles="Moderator")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> GetChartsData()
         {
             var filter = new UserQuery();

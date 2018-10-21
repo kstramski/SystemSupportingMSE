@@ -11,6 +11,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UserViewComponent implements OnInit {
   user: any;
   userId: number;
+  modal: Array<string> = [
+    "Delete User",
+    "Are you sure want to delete this user?"
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -20,23 +24,22 @@ export class UserViewComponent implements OnInit {
   ) {
     this.route.paramMap.subscribe(p => {
       this.userId = +p.get("id");
-      if(isNaN(this.userId) || this.userId <= 0) {
+      if (isNaN(this.userId) || this.userId <= 0) {
         this.router.navigate(['/panel/users']);
         return;
       }
     });
-   }
+  }
 
   ngOnInit() {
     this.userService.getUser(this.userId)
-    .subscribe(u => {
-      this.user = u;
-    }); 
+      .subscribe(u => {
+        this.user = u;
+      });
   }
 
   delete() {
-    if(confirm("Are you sure to delete this user?"))
-      this.userService.delete(this.userId)
+    this.userService.delete(this.userId)
       .subscribe(u => {
         this.toastr.success("User was succesfully deleted.", "Success", { timeOut: 5000 });
         this.router.navigate(['/panel/users']);

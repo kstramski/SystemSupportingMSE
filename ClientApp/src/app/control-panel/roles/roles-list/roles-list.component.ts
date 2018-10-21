@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { RoleService } from '../../../../services/role.service';
+import { RoleService } from 'src/services/role.service';
 
 @Component({
   selector: 'app-roles-list',
@@ -10,36 +9,19 @@ import { RoleService } from '../../../../services/role.service';
 
 export class RolesListComponent implements OnInit {
   roles: any;
-  queryResults: any = {};
-  query: any = {};
-
-  rolesColumns: Array<any> = [
-    { title: "Id", size: 1 },
+  columns: Array<any> = [
+    { title: "Id", size: 1, center: true },
     { title: "Role", size: 3 },
     { title: "Description", size: 6 },
-    { title: "Action", size: 2 }
+    { title: "Action", size: 2, center: true }
   ];
-  usersColumns: Array<any> = [
-    { title: "Id" },
-    { title: "Name" },
-    { title: "Surname" },
-    { title: "Email" },
-    { title: "Action" }
-  ]
 
-  constructor(
-    private router: Router,
-    private roleService: RoleService
-  ) { }
+  constructor(private roleService: RoleService) { }
 
   ngOnInit() {
     this.roleService.getRoles()
       .subscribe(r => {
         this.roles = r;
-      });
-    this.roleService.getUsers(this.query)
-      .subscribe(u => {
-        this.queryResults = u;
       });
   }
 }

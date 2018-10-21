@@ -48,35 +48,35 @@
           <table class="table">
             <thead>
               <tr class="row">
-                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}" [ngClass]="{coltext: column.center}">
-                    <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
-                        {{column.title}}
-                        <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
-                          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                          stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" _ngcontent-c4=""
-                          aria-hidden="true">
-                          <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                        <svg *ngIf="query.sortBy === column.key && !query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
-                          width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                          stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" _ngcontent-c4=""
-                          aria-hidden="true">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </div>
-                      <div *ngIf="!column.isSortable">
-                        {{column.title}}
-                      </div>
+                <th scope="col" *ngFor="let column of columns" class="col-md-{{column.size}}" [ngClass]="{'td-center': column.center}">
+                  <div *ngIf="column.isSortable" (click)="sortBy(column.key)">
+                    {{column.title}}
+                    <svg *ngIf="query.sortBy === column.key && query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up" _ngcontent-c4=""
+                      aria-hidden="true">
+                      <polyline points="18 15 12 9 6 15"></polyline>
+                    </svg>
+                    <svg *ngIf="query.sortBy === column.key && !query.isSortAscending" xmlns="http://www.w3.org/2000/svg"
+                      width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down" _ngcontent-c4=""
+                      aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                  <div *ngIf="!column.isSortable">
+                    {{column.title}}
+                  </div>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr class="row" *ngFor="let user of queryResult.items">
-                <th class="col-md-{{columns[0].size}}" [ngClass]="{coltext: columns[0].center}" scope="row"></th>
-                <td class="col-md-{{columns[1].size}}" [ngClass]="{coltext: columns[1].center}">{{user.user.name}}</td>
-                <td class="col-md-{{columns[2].size}}" [ngClass]="{coltext: columns[2].center}">{{user.user.surname}}</td>
-                <td class="col-md-{{columns[3].size}}" [ngClass]="{coltext: columns[3].center}">test</td>
-                <td class="col-md-{{columns[4].size}}" [ngClass]="{coltext: columns[4].center}">
+                <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row"></th>
+                <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{user.user.name}}</td>
+                <td class="col-md-{{columns[2].size}}" [ngClass]="{'td-center': columns[2].center}">{{user.user.surname}}</td>
+                <td class="col-md-{{columns[3].size}}" [ngClass]="{'td-center': columns[3].center}">test</td>
+                <td class="col-md-{{columns[4].size}}" [ngClass]="{'td-center': columns[4].center}">
                   <a [routerLink]="['/panel/events/', competitionInfo.event.id, 'competitions', competitionInfo.competition.id, 'users', user.user.id]"
                     class="btn btn-primary">View</a>
                 </td>

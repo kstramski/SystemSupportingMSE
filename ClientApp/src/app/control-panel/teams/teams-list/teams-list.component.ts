@@ -15,9 +15,10 @@ export class TeamsListComponent implements OnInit {
   };
 
   columns: Array<any> = [
-    { title: 'Id', size: 1 },
-    { title: 'Team', key: 'name', isSortable: true, size: 9 },
-    { title: 'Action', size: 2 },
+    { title: 'Id', size: 1, center: true },
+    { title: 'Team Name', key: 'name', isSortable: true, size: 8 },
+    { title: 'In Team', size: 1, center: true },
+    { title: 'Action', size: 2, center: true },
   ];
 
   constructor(
@@ -42,7 +43,6 @@ export class TeamsListComponent implements OnInit {
       this.query.isSortAscending = true;
       this.query.sortBy = columnName;
     }
-    console.log(this.query.isSortAscending);
     feather.replace();
     this.populateTeams();
   }

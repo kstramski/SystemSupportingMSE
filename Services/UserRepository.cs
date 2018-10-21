@@ -34,7 +34,7 @@ namespace SystemSupportingMSE.Services
                 .AsQueryable();
 
             if (queryObj.RoleId.HasValue)
-                query.Where(q => q.Roles.Any(r => r.RoleId == queryObj.RoleId));
+                query = query.Where(q => q.Roles.Any(r => r.RoleId == queryObj.RoleId));
 
             var columnMap = new Dictionary<string, Expression<Func<User, object>>>
             {

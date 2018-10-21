@@ -50,7 +50,7 @@ namespace SystemSupportingMSE.Helpers
 
             //UserCompetition
             CreateMap<UserCompetition, UserCompetitionResource>()
-                .ForMember(ur => ur.User, opt => opt.MapFrom(uc => new UserBasicsResource{ Id = uc.User.Id, Name = uc.User.Name, Surname = uc.User.Surname}));
+                .ForMember(ur => ur.User, opt => opt.MapFrom(uc => new UserBasicsResource { Id = uc.User.Id, Name = uc.User.Name, Surname = uc.User.Surname }));
 
             //Roles
             CreateMap<Role, RoleResource>();

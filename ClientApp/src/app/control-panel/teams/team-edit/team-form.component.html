@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">{{title}}</h5>
+        </div>
+        <div class="card-body">
+          <form #f="ngForm" (ngSubmit)=submit()>
+            <div class="form-group">
+              <label for="name">Team Name</label>
+              <input id="name" name="name" type="text" class="form-control" [(ngModel)]="team.name" required #name="ngModel">
+              <div class="alert alert-danger" *ngIf="name.touched && !name.valid">Please enter team name.</div>
+            </div>
+            <div class="form-group" *ngIf="team.users.length > 0">
+              <label for="captain">Actual Captain</label>
+              <input id="captain" name="captain" type="text" class="form-control" [(ngModel)]="captain.name" disabled>
+            </div>
+            <div class="form-group" *ngIf="team.users.length > 0">
+              <label for="newCaptain">Pick New Captain</label>
+              <select id="newCaptain" class="form-control" name="newCaptain" [(ngModel)]="team.captain" (change)="setCaptain(team.captain)">
+                <option *ngFor="let user of team.users" value="{{user.id}}">{{user.name}} {{user.surname}}</option>
+              </select>
+            </div>
+            <hr>
+            <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
+            <a *ngIf="team.id <= 0" class="btn btn-default" [routerLink]="['/panel/teams']">Cancel</a>
+            <a *ngIf="team.id > 0" class="btn btn-default" [routerLink]="['/panel/teams/', team.id]">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

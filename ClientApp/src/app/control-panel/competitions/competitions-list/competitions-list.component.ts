@@ -8,13 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompetitionsListComponent implements OnInit {
   competitions: any;
-
+  rowNumber: number = 5;
   columns: Array<any> = [
-    {title: "id", size: 1},
-    {title: "Name", size: 5},
-    {title: "Groups", size: 2},
-    {title: "Group Size", size: 2},
-    {title: "Action", size: 2},
+    { title: "Id", size: 1, center: true },
+    { title: "Name", size: 5 },
+    { title: "Groups", size: 2, center: true },
+    { title: "Group Size", size: 2, center: true },
+    { title: "Action", size: 2, center: true },
   ];
 
   constructor(

@@ -1,31 +1,48 @@
-<h2>Edit User Roles</h2>
-<hr>
-{{ user | json }}
-<form #f="ngForm" (ngSubmit)="submit()" *ngIf="user && roles">
-  <p>Name: {{user.name}} {{user.surname}}</p>
-  <p>Email: {{user.email}}</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Edit User Roles</h5>
+        </div>
+        <div class="card-body">
+          {{ user | json }}
+          <form #f="ngForm" (ngSubmit)="submit()" *ngIf="user && roles">
+            <div class="form-group">
+              <label for="name" class="card-title">Name</label>
+              <input id="name" name="name" type="text" class="form-control" [(ngModel)]="user.name + ' ' + user.surname"
+                disabled>
+            </div>
+            <div class="form-group">
+              <label for="email" class="card-title">Email</label>
+              <input id="email" name="email" type="text" class="form-control" [(ngModel)]="user.email" disabled>
+            </div>
+            <label class="card-title">Roles</label>
+            <div>
+              <label for="role{{roles[0].id}}">
+                <input type="checkbox" id="role{{roles[0].id}}" (change)="onRoleToggle(roles[0].id, $event)" [checked]="user.roles.includes(roles[0].id)">{{roles[0].name}}
+              </label>
+            </div>
+            <div>
+              <label for="role{{roles[1].id}}">
+                <input type="checkbox" id="role{{roles[1].id}}" (change)="onRoleToggle(roles[1].id, $event)" [checked]="user.roles.includes(roles[1].id)"
+                  [disabled]="user.roles.includes(roles[0].id)">{{roles[1].name}}
+              </label>
+            </div>
+            <div>
+              <label for="role{{roles[2].id}}">
+                <input type="checkbox" id="role{{roles[2].id}}" (change)="onRoleToggle(roles[2].id, $event)" [checked]="user.roles.includes(roles[2].id)"
+                  [disabled]="user.roles.includes(roles[1].id)">{{roles[2].name}}
+              </label>
+            </div>
 
-  <h4>Roles</h4>
-  <div>
-    <label for="role{{roles[0].id}}">
-      <input type="checkbox" id="role{{roles[0].id}}" (change)="onRoleToggle(roles[0].id, $event)" [checked]="user.roles.includes(roles[0].id)">{{roles[0].name}}
-    </label>
+            <div class="btn-group">
+              <button class="btn btn-primary" type="submit" [disabled]="user.roles.length <= 0">Save</button>
+              <button class="btn btn-secondary" [routerLink]="['/panel/roles/users']">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-  <div>
-    <label for="role{{roles[1].id}}">
-      <input type="checkbox" id="role{{roles[1].id}}" (change)="onRoleToggle(roles[1].id, $event)" [checked]="user.roles.includes(roles[1].id)"
-        [disabled]="user.roles.includes(roles[0].id)">{{roles[1].name}}
-    </label>
-  </div>
-  <div>
-    <label for="role{{roles[2].id}}">
-      <input type="checkbox" id="role{{roles[2].id}}" (change)="onRoleToggle(roles[2].id, $event)" [checked]="user.roles.includes(roles[2].id)"
-        [disabled]="user.roles.includes(roles[1].id)">{{roles[2].name}}
-    </label>
-  </div>
-
-  <div class="btn-group">
-    <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
-    <button class="btn btn-secondary" [routerLink]="['/panel/roles']">Cancel</button>
-  </div>
-</form>
+</div>

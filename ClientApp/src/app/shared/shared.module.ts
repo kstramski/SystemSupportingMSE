@@ -9,11 +9,11 @@ import {
   BsDropdownModule,
   CollapseModule,
   ModalModule,
-  PaginationModule,
+  TooltipModule,
   TabsModule,
-  TooltipModule
 } from 'ngx-bootstrap';
 
+import { ModalDeleteComponent } from './modal-delete.component';
 import { PaginationComponent } from './pagination.component';
 
 @NgModule({
@@ -21,32 +21,33 @@ import { PaginationComponent } from './pagination.component';
     CommonModule,
     FormsModule,
     HttpClientModule,
+
     ToastrModule,
+
     BsDropdownModule,
     CollapseModule,
     ModalModule,
-    PaginationModule,
-    TabsModule,
     TooltipModule,
+    TabsModule,
 
-    PaginationComponent
+    PaginationComponent,
+    ModalDeleteComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     HttpClientModule,
 
-    
     ToastrModule.forRoot(),
 
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
     ModalModule.forRoot(),
-    PaginationModule.forRoot(),
+    TooltipModule.forRoot(),
     TabsModule.forRoot(),
-    TooltipModule.forRoot()
   ],
   declarations: [
+    ModalDeleteComponent,
     PaginationComponent
   ]
 })
