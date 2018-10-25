@@ -15,6 +15,7 @@ import {
 
 import { ModalDeleteComponent } from './modal-delete.component';
 import { PaginationComponent } from './pagination.component';
+import { LoadingSpinnerComponent } from './loading-spinner.component';
 
 @NgModule({
   exports: [
@@ -31,7 +32,8 @@ import { PaginationComponent } from './pagination.component';
     TabsModule,
 
     PaginationComponent,
-    ModalDeleteComponent
+    ModalDeleteComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ import { PaginationComponent } from './pagination.component';
   ],
   declarations: [
     ModalDeleteComponent,
-    PaginationComponent
+    PaginationComponent,
+    LoadingSpinnerComponent
   ]
 })
 export class SharedModule { }

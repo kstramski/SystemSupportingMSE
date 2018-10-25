@@ -13,6 +13,7 @@ export class EventsListComponent implements OnInit {
   query: any = {
     pageSize: this.PAGE_SIZE
   };
+  showSpinner: boolean = true;
 
   columns: Array<any> = [
     { title: "Id", size: 1, center: true },
@@ -37,22 +38,24 @@ export class EventsListComponent implements OnInit {
     this.eventService.getEvents(this.query)
       .subscribe(result => {
         this.queryResult = result;
+        this.showSpinner = false;
       });
   }
 
   sortBy(columnName) {
+    this.showSpinner = true;
     if (this.query.sortBy === columnName)
       this.query.isSortAscending = !this.query.isSortAscending;
     else {
       this.query.isSortAscending = true;
       this.query.sortBy = columnName;
     }
-    console.log(this.query.isSortAscending);
     feather.replace();
     this.populateEvents();
   }
 
   onChangePage(page) {
+    this.showSpinner = true;
     this.query.page = page;
     this.populateEvents();
   }

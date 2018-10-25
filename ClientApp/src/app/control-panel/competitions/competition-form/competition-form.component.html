@@ -44,9 +44,10 @@
                 size can not be smaller than 2.</div>
             </div>
             <hr>
-
-            <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
-            <a class="btn btn-default" [routerLink]="['/panel/competitions/', competition.id]">Cancel</a>
+            <div class="btn-group">
+              <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Save</button>
+              <a class="btn btn-secondary" [routerLink]="['/panel/competitions/']">Cancel</a>
+            </div>
           </form>
         </div>
       </div>

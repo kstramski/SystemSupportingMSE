@@ -32,6 +32,7 @@
               </tr>
             </thead>
             <tbody>
+              <app-loading-spinner *ngIf="showSpinner"></app-loading-spinner>
               <tr class="row" *ngFor="let e of queryResult.items" [ngClass]="{'table-danger': !e.isActive}">
                 <th class="col-md-{{columns[0].size}}" [ngClass]="{'td-center': columns[0].center}" scope="row">{{e.id}}</th>
                 <td class="col-md-{{columns[1].size}}" [ngClass]="{'td-center': columns[1].center}">{{e.name}}</td>
