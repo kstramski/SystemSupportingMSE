@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Migrations
 {
     [DbContext(typeof(SportEventsDbContext))]
-    partial class SportEventsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181024173907_AddResultStatus")]
+    partial class AddResultStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,9 +89,7 @@ namespace SystemSupportingMSE.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20);
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -251,28 +251,6 @@ namespace SystemSupportingMSE.Migrations
                     b.ToTable("UserTeams");
                 });
 
-            modelBuilder.Entity("SystemSupportingMSE.Core.Models.UserToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("ExpirationDate");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTokens");
-                });
-
             modelBuilder.Entity("SystemSupportingMSE.Core.Models.Events.EventCompetition", b =>
                 {
                     b.HasOne("SystemSupportingMSE.Core.Models.Events.Competition", "Competition")
@@ -334,14 +312,6 @@ namespace SystemSupportingMSE.Migrations
 
                     b.HasOne("SystemSupportingMSE.Core.Models.User", "User")
                         .WithMany("Teams")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SystemSupportingMSE.Core.Models.UserToken", b =>
-                {
-                    b.HasOne("SystemSupportingMSE.Core.Models.User", "User")
-                        .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -49,11 +49,14 @@ namespace SystemSupportingMSE.Core.Models
 
         public ICollection<UserCompetition> Competitions { get; set; }
 
+        public ICollection<UserToken> Tokens { get; set; }
+
         public User()
         {
             this.Roles = new Collection<UserRole>();
             this.Teams = new Collection<UserTeam>();
             this.Competitions = new Collection<UserCompetition>();
+            Tokens = new Collection<UserToken>();
         }
     }
 }

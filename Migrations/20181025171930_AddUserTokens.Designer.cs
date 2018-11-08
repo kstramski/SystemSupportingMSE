@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SystemSupportingMSE.Helpers;
 
 namespace SystemSupportingMSE.Migrations
 {
     [DbContext(typeof(SportEventsDbContext))]
-    partial class SportEventsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181025171930_AddUserTokens")]
+    partial class AddUserTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,8 +259,6 @@ namespace SystemSupportingMSE.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("ExpirationDate");
-
-                    b.Property<bool>("IsActive");
 
                     b.Property<string>("Token")
                         .IsRequired()

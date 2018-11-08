@@ -9,21 +9,29 @@ namespace SystemSupportingMSE.Helpers
         public DbSet<Event> Events { get; set; }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<EventCompetition> EventsCompetitions { get; set; }
+
         public DbSet<UserCompetition> UsersCompetitions { get; set; }
-        public DbSet<Gender> Genders { get; set; }
+        // public DbSet<UserResult> UserResults { get; set; }
+        public DbSet<ResultStatus> ResultStatuses { get; set; }
+
+
         public DbSet<Role> Roles { get; set; }
+
         public DbSet<User> Users { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+        public DbSet<UserToken> Tokens { get; set; }
+
         public DbSet<Team> Teams { get; set; }
 
         public SportEventsDbContext(DbContextOptions<SportEventsDbContext> options) : base(options)
-        {            
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //EventsCompetitions
             modelBuilder.Entity<EventCompetition>()
-                .HasKey(ec => new { ec.CompetitionId, ec.EventId});
+                .HasKey(ec => new { ec.CompetitionId, ec.EventId });
             modelBuilder.Entity<EventCompetition>()
                 .HasOne(ec => ec.Event)
                 .WithMany(e => e.Competitions)
@@ -31,7 +39,7 @@ namespace SystemSupportingMSE.Helpers
             modelBuilder.Entity<EventCompetition>()
                 .HasOne(ec => ec.Competition)
                 .WithMany(c => c.Events)
-                .HasForeignKey(ec => ec.CompetitionId);  
+                .HasForeignKey(ec => ec.CompetitionId);
 
             //UsersRoles
             modelBuilder.Entity<UserRole>()
@@ -56,7 +64,7 @@ namespace SystemSupportingMSE.Helpers
                 .HasOne(ut => ut.Team)
                 .WithMany(t => t.Users)
                 .HasForeignKey(ut => ut.TeamId);
-            
+
         }
     }
 }

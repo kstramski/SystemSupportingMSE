@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Policy;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SystemSupportingMSE.Controllers.Resource;
 using SystemSupportingMSE.Core;
 using SystemSupportingMSE.Core.Models;
@@ -18,10 +22,14 @@ namespace SystemSupportingMSE.Services
     public class UserRepository : IUserRepository
     {
         private readonly SportEventsDbContext context;
+        private readonly IEmailSender emailSender;
+        private readonly AuthSettings authSettings;
 
-        public UserRepository(SportEventsDbContext context)
+        public UserRepository(SportEventsDbContext context, IEmailSender emailSender, IOptions<AuthSettings> authSettings)
         {
             this.context = context;
+            this.emailSender = emailSender;
+            this.authSettings = authSettings.Value;
         }
 
         public async Task<QueryResult<User>> GetUsers(UserQuery queryObj, bool filter)
@@ -53,20 +61,29 @@ namespace SystemSupportingMSE.Services
             return result;
         }
 
-        public async Task<User> GetUser(int id, string email)
+        public async Task<User> GetUserById(int id)
         {
-            var user = context.Users.AsQueryable();//do zmiany
-
-            if (id == 0 && !String.IsNullOrWhiteSpace(email))
-                return await user.SingleOrDefaultAsync(u => u.Email == email);
-
-            return await user
+            return await context.Users
                 .Include(g => g.Gender)
                 .Include(t => t.Teams)
                     .ThenInclude(ut => ut.Team)
                 .Include(r => r.Roles)
                     .ThenInclude(ur => ur.Role)
                 .SingleOrDefaultAsync(u => u.Id == id);
+        }
+
+        public async Task<User> GetUserByEmail(string email, bool full)
+        {
+            if (!full)
+                return await context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
+            return await context.Users
+                .Include(g => g.Gender)
+                .Include(t => t.Teams)
+                    .ThenInclude(ut => ut.Team)
+                .Include(r => r.Roles)
+                    .ThenInclude(ur => ur.Role)
+                .SingleOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<User> AuthenticateUser(string email, string password)
@@ -92,6 +109,9 @@ namespace SystemSupportingMSE.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            user.DateOfRegistration = DateTime.Now;
+            user.Roles.Add(new UserRole { RoleId = 3 });
+
             context.Users.Add(user);
         }
 
@@ -100,6 +120,7 @@ namespace SystemSupportingMSE.Services
             context.Remove(user);
         }
 
+        //Password
         public void SetNewPassword(User user, string password, string newPassword)
         {
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
@@ -138,6 +159,83 @@ namespace SystemSupportingMSE.Services
             }
 
             return true;
+        }
+
+        private string GenerateNewPassword(User user)
+        {
+            var length = 20;
+            string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,?!@#";
+
+            var newPassword = GenerateString(characters, length);
+
+            byte[] passwordHash, passwordSalt;
+            CreatePaswordHash(newPassword, out passwordHash, out passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            return newPassword;
+        }
+
+        //Token
+        public async Task AddToken(int id, string email, string type)
+        {
+            var date = DateTime.Now;
+            var token = CreateToken(date);
+
+            context.Tokens.Add(new UserToken { UserId = id, Token = token, ExpirationDate = date, IsActive = true });
+
+            var callbackUrl = $"{authSettings.Domain}/{type}/confirm?e={email}&t={token}";
+
+            if (type == "confirmEmail")
+                await emailSender.SendEmailAsync("matius992@gmail.com", "Email verification request", $"Please verify your account by <a href='{callbackUrl}'>clicking here</a>.");
+            else if (type == "resetPassword")
+                await emailSender.SendEmailAsync("matius992@gmail.com", "Password reset", $"Reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+            else if (type == "confirmJoinEvent")
+                await emailSender.SendEmailAsync("matius992@gmail.com", "", $"Please confirm your willingness event participation by <a href='{callbackUrl}'>clicking here</a>.");
+
+        }
+
+        public async Task ConfirmToken(User user, string type)
+        {
+            if (type == "confirmEmail")
+            {
+                user.EmailConfirmed = true;
+                await emailSender.SendEmailAsync("matius992@gmail.com", "Email verification", "Email was successfully verify.");
+            }
+            else if (type == "resetPassword")
+            {
+                var newPassword = GenerateNewPassword(user);
+                await emailSender.SendEmailAsync("matius992@gmail.com", "Reset Password", $"Your password has successfully reseted.</br> New password: {newPassword}");
+            }
+            else if (type == "confirmJoinEvent")
+                await emailSender.SendEmailAsync("matius992@gmail.com", "Event participation confirmed", $"Your event participation was successfully confirmed."); //do zmiany
+        }
+
+        public async Task<UserToken> GetToken(string token)
+        {
+            return await context.Tokens
+                .Include(t => t.User)
+                .SingleOrDefaultAsync(t => t.Token == token);
+        }
+
+        private string CreateToken(DateTime date)
+        {
+            var length = 128;
+            string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+            return GenerateString(characters, length);
+        }
+
+        private string GenerateString(string characters, int length)
+        {
+            Random random = new Random();
+            StringBuilder result = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(characters[random.Next(characters.Length)]);
+            }
+            return result.ToString();
         }
 
         //Dashboard

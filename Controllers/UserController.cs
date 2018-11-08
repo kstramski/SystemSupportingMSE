@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -28,7 +29,13 @@ namespace SystemSupportingMSE.Controllers
         private readonly IUserRepository userRepository;
         private readonly AuthSettings authSettings;
 
-        public UserController(IMapper mapper, IAuthRepository authRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IOptions<AuthSettings> authSettings)
+        public UserController(
+            IMapper mapper,
+            IAuthRepository authRepository,
+            IUnitOfWork unitOfWork,
+            IUserRepository userRepository,
+            IOptions<AuthSettings> authSettings
+        )
         {
             this.authSettings = authSettings.Value;
             this.mapper = mapper;
@@ -44,14 +51,19 @@ namespace SystemSupportingMSE.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = mapper.Map<UserRegisterResource, User>(userRegisterResource);
-            user.DateOfRegistration = DateTime.Now;
-            user.Roles.Add(new UserRole { RoleId = 3 });
+            var user = await userRepository.GetUserByEmail(userRegisterResource.Email, false);
+            if (user != null)
+                return BadRequest("Email is already in use.");
+
+            user = mapper.Map<UserRegisterResource, User>(userRegisterResource);
 
             userRepository.Add(user, userRegisterResource.Password);
             await unitOfWork.Complete();
 
-            user = await userRepository.GetUser(user.Id);
+            user = await userRepository.GetUserById(user.Id);
+
+            //await userRepository.AddToken(user.Id, user.Email, "confirmEmail");
+            //await unitOfWork.Complete();
 
             var result = mapper.Map<User, UserProfileResource>(user);
 
@@ -94,8 +106,13 @@ namespace SystemSupportingMSE.Controllers
             await unitOfWork.Complete();
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+            // await userRepository.AddToken(user.Id, user.Email, "confirmEmail");
+            //await unitOfWork.Complete();
             return Ok(new { Token = tokenString });
         }
+
+
 
         [HttpGet]
         [Authorize(Roles = "Moderator")]
@@ -111,7 +128,7 @@ namespace SystemSupportingMSE.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await userRepository.GetUser(id);
+            var user = await userRepository.GetUserById(id);
             if (user == null)
                 return NotFound();
 
@@ -132,7 +149,7 @@ namespace SystemSupportingMSE.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await userRepository.GetUser(id);
+            var user = await userRepository.GetUserById(id);
             if (user == null)
                 return NotFound();
 
@@ -152,7 +169,7 @@ namespace SystemSupportingMSE.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await userRepository.GetUser(id);
+            var user = await userRepository.GetUserById(id);
             if (user == null)
                 return NotFound();
 
@@ -173,7 +190,7 @@ namespace SystemSupportingMSE.Controllers
             || String.IsNullOrWhiteSpace(userResource.NewEmail))
                 return BadRequest("Email fields can not be empty.");
 
-            var user = await userRepository.GetUser(id);
+            var user = await userRepository.GetUserById(id);
             if (user == null)
                 return NotFound();
 
@@ -208,7 +225,7 @@ namespace SystemSupportingMSE.Controllers
             if (userResource.NewPassword != userResource.NewPasswordRepeat)
                 return BadRequest("New password and repeated password must be equal.");
 
-            var user = await userRepository.GetUser(id);
+            var user = await userRepository.GetUserById(id);
             if (user == null)
                 return NotFound();
 
@@ -219,6 +236,32 @@ namespace SystemSupportingMSE.Controllers
                 return BadRequest("Invalid email.");
 
             userRepository.SetNewPassword(user, userResource.Password, userResource.NewPassword);
+            await unitOfWork.Complete();
+
+            return Ok();
+        }
+
+        [HttpPut("confirm")]
+        [AllowAnonymous]
+        public async Task<IActionResult> TokenConfirmation([FromBody] TokenDataResource tokenData)
+        {
+            var userToken = await userRepository.GetToken(tokenData.Token);
+            if (userToken == null)
+                return BadRequest("Invalid token.");
+
+            if (userToken.ExpirationDate < DateTime.Now)
+            {
+                userToken.IsActive = false;
+                await unitOfWork.Complete();
+
+                return BadRequest("Token has expired.");
+            }
+
+            if (userToken.User.Email != tokenData.Email)
+                return BadRequest("Invalid email.");
+
+
+            await userRepository.ConfirmToken(userToken.User, tokenData.Type);
             await unitOfWork.Complete();
 
             return Ok();

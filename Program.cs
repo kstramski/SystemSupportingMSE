@@ -19,7 +19,8 @@ namespace SystemSupportingMSE
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls("http://localhost:5000", "https://localhost:5001", "http://192.168.1.109:5000", "https://192.168.1.109:5001")
+                 // .UseUrls("http://localhost:5000", "https://localhost:5001", "http://192.168.1.109:5000", "https://192.168.1.109:5001")
+                 .UseUrls("https://192.168.1.109:443")
                 .UseStartup<Startup>();
     }
 }

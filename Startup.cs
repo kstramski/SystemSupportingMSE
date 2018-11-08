@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,9 @@ namespace SystemSupportingMSE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var emailSettingSection = Configuration.GetSection("EmailSettings");
+            services.Configure<EmailSettings>(emailSettingSection);
+
             var authSettingsSection = Configuration.GetSection("AuthSettings");
             services.Configure<AuthSettings>(authSettingsSection);
 
@@ -58,12 +62,14 @@ namespace SystemSupportingMSE
             });
 
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddScoped<ICompetitionRepository, CompetitionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper();
             services.AddDbContext<SportEventsDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")).EnableSensitiveDataLogging()); //usunac .EnableSensitiveDataLogging()
